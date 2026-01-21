@@ -1,5 +1,7 @@
 import Student from "../models/studentModel.js";
 import User from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 export const createStudent = async (req,res) => {
     try {
@@ -46,6 +48,29 @@ export const removeStudent = async (req,res) => {
         }
         const deletedStudent = await Student.findByIdAndDelete(student._id);
         return res.json({ success: true, deletedStudent, message: "Student deleted" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const studentLogin = async (req,res) => {
+    try {
+        const { studentId, password } = req.body;
+        if (!studentId || !password) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const student = await Student.findOne({ studentId });
+        if (!student) {
+            return res.json({ success: false, message: "Invalid student id" });
+        }
+        const user = await User.findOne({ _id: student.userId });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!user || !isMatch || user.role !== "student") {
+            return res.json({ success: false, message: "Invalid student id or password" });
+        }
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        return res.json({ success: true, user, token, message: "Student successfully logged in" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

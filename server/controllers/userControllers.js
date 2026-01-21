@@ -47,14 +47,14 @@ export const UserCreation = async (req,res) => {
     }
 }
 
-export const userLogin = async (req,res) => {
+export const adminLogin = async (req,res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
             return res.json({ success: false, message: "Missing details" });
         }
         const existingUser = await User.findOne({ email });
-        if (!existingUser) {
+        if (!existingUser || existingUser.role !== "admin") {
             return res.json({ success: false, message: "User not found" });
         }
         const isMatch = await bcrypt.compare(password, existingUser.password);
@@ -62,7 +62,7 @@ export const userLogin = async (req,res) => {
             return res.json({ success: false, message: "Invalid password" });
         }
         const token = jwt.sign({ id: existingUser._id, role: existingUser.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
-        return res.json({ success: true, user: existingUser, token, message: `${existingUser.role} logged in successfully` });
+        return res.json({ success: true, user: existingUser, token, message: "Admin logged in successfully" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
@@ -91,25 +91,6 @@ export const updatePassword = async (req,res) => {
         existingUser.password = hashedPassword;
         await existingUser.save();
         return res.json({ success: true, message: "Password updated" });
-    } catch(error) {
-        console.log(error.message);
-        return res.json({ success: false, message: error.message });
-    }
-}
-
-export const deleteAccount = async (req,res) => {
-    try {
-        const { email, password } = req.body;
-        const userId = req.user;
-        if (!email || !password || !userId) {
-            return res.json({ success: false, message: "Missing details" });
-        }
-        const user = await User.findOne({ _id: userId, email, password });
-        if (!user) {
-            return res.json({ success: false, message: "Invalid email or password" });
-        }
-        await user.deleteOne();
-        return res.json({ success: true, message: "Account deleted" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
