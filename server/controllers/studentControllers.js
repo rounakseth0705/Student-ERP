@@ -2,11 +2,12 @@ import Student from "../models/studentModel.js";
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Course from "../models/courseModel.js";
 
 export const createStudent = async (req,res) => {
     try {
-        const { userId, name, course, rollNo, age, address } = req.body;
-        if (!userId || !name || !course || !rollNo || !age || !address) {
+        const { userId, name, courseCode, rollNo, age, address } = req.body;
+        if (!userId || !name || !courseCode || !rollNo || !age || !address) {
             return res.json({ success: false, message: "Missing details" });
         }
         const isUser = await User.findById(userId);
@@ -17,8 +18,13 @@ export const createStudent = async (req,res) => {
         if (existingStudent) {
             return res.json({ success: false, message: "Student already exists" });
         }
+        const course = await Course.findOne({ courseCode });
+        if (!course) {
+            return res.json({ success: false, message: "Invalid course" });
+        }
+        const courseId = course._id;
         const studentId = String(Math.floor(1000000 + Math.random() * 9000000));
-        await Student.create({ userId, studentId, name, course, rollNo, age, address });
+        await Student.create({ userId, studentId, name, courseId, rollNo, age, address });
         return res.json({ success: true, message: "Student successfully created" });
     } catch(error) {
         console.log(error.message);
@@ -42,11 +48,10 @@ export const removeStudent = async (req,res) => {
         if (!studentId || !rollNo) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const student = await Student.findOne({ studentId, rollNo });
-        if (!student) {
+        const deletedStudent = await Student.findOneAndDelete({ studentId, rollNo });
+        if (!deletedStudent) {
             return res.json({ success: false, message: "Invalid userId or roll no." });
         }
-        const deletedStudent = await Student.findByIdAndDelete(student._id);
         return res.json({ success: true, deletedStudent, message: "Student deleted" });
     } catch(error) {
         console.log(error.message);

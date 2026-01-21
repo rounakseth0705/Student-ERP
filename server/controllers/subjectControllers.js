@@ -26,3 +26,30 @@ export const createSubject = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const deleteSubject = async (req,res) => {
+    try {
+        const { courseCode, subjectName, subjectCode } = req.body;
+        if (!courseCode || !subjectName || !subjectCode) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const result = await Subject.deleteOne({ courseCode, subjectName, subjectCode });
+        if (result.deletedCount === 1) {
+            return res.json({ success: false, message: "Invalid course or subject" });
+        }
+        return res.json({ success: true, message: "Subject deleted" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getSubjects = async (req,res) => {
+    try {
+        const subjects = await Subject.find();
+        return res.json({ success: true, subjects, message: "List of all subjects" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
