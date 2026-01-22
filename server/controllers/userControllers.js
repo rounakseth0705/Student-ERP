@@ -4,8 +4,8 @@ import User from "../models/userModel.js";
 
 export const adminSignUp = async (req,res) => {
     try {
-        const { name, email, password, role, adminSecret } = req.body;
-        if (!name || !email || !password || !role || !adminSecret) {
+        const { name, mobileNo, email, password, role, adminSecret } = req.body;
+        if (!name || !mobileNo || !email || !password || !role || !adminSecret) {
             return res.json({ success: false, message: "Missing details" });
         }
         if (role !== "admin") {
@@ -14,12 +14,12 @@ export const adminSignUp = async (req,res) => {
         if (adminSecret !== process.env.ADMIN_SECRET) {
             return res.json({ success: false, message: "Invalid admin secret" });
         }
-        const isAdminExists = await User.findOne({ $or: [{ email },{ role }] });
+        const isAdminExists = await User.findOne({ $or: [{ mobileNo },{ email },{ role }] });
         if (isAdminExists) {
             return res.json({ success: false, message: "Cannot create admin" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ name, email, password: hashedPassword, role });
+        const user = await User.create({ name, mobileNo, email, password: hashedPassword, role });
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
         return res.json({ success: true, user, token, message: "First Admin" });
     } catch(error) {
@@ -30,16 +30,16 @@ export const adminSignUp = async (req,res) => {
 
 export const UserCreation = async (req,res) => {
     try {
-        const { name, email, password, role } = req.body;
-        if (!name || !email || !password || !role) {
+        const { name, mobileNo, email, password, role } = req.body;
+        if (!name || !mobileNo || !email || !password || !role) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ $or: [{ mobileNo },{ email }] });
         if (existingUser) {
             return res.json({ success: false, message: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ name, email, password: hashedPassword, role });
+        const user = await User.create({ name, mobileNo, email, password: hashedPassword, role });
         return res.json({ success: true, userId: user._id, message: `${role} created` });
     } catch(error) {
         console.log(error.message);
@@ -49,11 +49,11 @@ export const UserCreation = async (req,res) => {
 
 export const adminLogin = async (req,res) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) {
+        const { identifier, password } = req.body;
+        if (!identifier || !password) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ $or: [{ mobileNo: identifier },{ email: identifier }] });
         if (!existingUser || existingUser.role !== "admin") {
             return res.json({ success: false, message: "User not found" });
         }
@@ -71,17 +71,17 @@ export const adminLogin = async (req,res) => {
 
 export const updatePassword = async (req,res) => {
     try {
-        const { email, currentPassword, newPassword } = req.body;
-        if (!email || !currentPassword || !newPassword) {
+        const { identifier, currentPassword, newPassword } = req.body;
+        if (!identifier || !currentPassword || !newPassword) {
             return res.json({ success: false, message: "Missing details" });
         }
         if (currentPassword === newPassword) {
             return res.json({ success: false, message: "Old password and new password cannot be same" });
         }
         const userId = req.user._id;
-        const existingUser = await User.findOne({ _id: userId, email });
+        const existingUser = await User.findOne({ _id: userId, $or: [{ mobileNo: identifier },{ email: identifier }] });
         if (!existingUser) {
-            return res.json({ success: false, message: "Invalid email" });
+            return res.json({ success: false, message: "Invalid email or mobile no." });
         }
         const isMatch = await bcrypt.compare(currentPassword, existingUser.password);
         if (!isMatch) {

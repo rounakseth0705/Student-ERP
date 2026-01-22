@@ -14,7 +14,8 @@ export const createStudent = async (req,res) => {
         if (!isUser || isUser.role !== "student" || isUser.name !== name) {
             return res.json({ success: false, message: "Invalid user id or name" });
         }
-        const existingStudent = await Student.findOne({ $or: [{ userId },{ rollNo }] });
+        const studentId = String(Math.floor(1000000 + Math.random() * 9000000));
+        const existingStudent = await Student.findOne({ $or: [{ userId },{ studentId },{ rollNo }] });
         if (existingStudent) {
             return res.json({ success: false, message: "Student already exists" });
         }
@@ -23,7 +24,6 @@ export const createStudent = async (req,res) => {
             return res.json({ success: false, message: "Invalid course" });
         }
         const courseId = course._id;
-        const studentId = String(Math.floor(1000000 + Math.random() * 9000000));
         await Student.create({ userId, studentId, name, courseId, rollNo, address });
         return res.json({ success: true, message: "Student successfully created" });
     } catch(error) {
