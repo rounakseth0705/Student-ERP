@@ -8,7 +8,6 @@ const studentSchema = new mongoose.Schema({
     rollNo: { type: String, required: true, unique: true },
     semester: { type: Number, required: true, default: 1 },
     attendence: { type: Number, required: true, default: 0 },
-    age: { type: Number, required: true },
     address: { type: String, required: true },
 });
 

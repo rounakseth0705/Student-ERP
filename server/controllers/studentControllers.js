@@ -6,8 +6,8 @@ import Course from "../models/courseModel.js";
 
 export const createStudent = async (req,res) => {
     try {
-        const { userId, name, courseCode, rollNo, age, address } = req.body;
-        if (!userId || !name || !courseCode || !rollNo || !age || !address) {
+        const { userId, name, courseCode, rollNo, address } = req.body;
+        if (!userId || !name || !courseCode || !rollNo || !address) {
             return res.json({ success: false, message: "Missing details" });
         }
         const isUser = await User.findById(userId);
@@ -24,7 +24,7 @@ export const createStudent = async (req,res) => {
         }
         const courseId = course._id;
         const studentId = String(Math.floor(1000000 + Math.random() * 9000000));
-        await Student.create({ userId, studentId, name, courseId, rollNo, age, address });
+        await Student.create({ userId, studentId, name, courseId, rollNo, address });
         return res.json({ success: true, message: "Student successfully created" });
     } catch(error) {
         console.log(error.message);
