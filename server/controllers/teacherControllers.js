@@ -75,7 +75,7 @@ export const teacherLogin = async (req,res) => {
             return res.json({ success: false, message: "Invalid teacher id or password" });
         }
         const token = jwt.sign({ id: isUser._id, role: isUser.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
-        return res.json({ success: true, teacher, token, message: "Teacher successfully logged in" });
+        return res.json({ success: true, isUser, teacher, token, message: "Teacher successfully logged in" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
