@@ -7,6 +7,6 @@ const subjectRouter = express.Router();
 
 subjectRouter.post("/create-subject", authUser, verifyAccess("admin"), createSubject);
 subjectRouter.delete("/delete-subject", authUser, verifyAccess("admin"), deleteSubject);
-subjectRouter.get("/get-subjects", authUser, verifyAccess("admin"), getSubjects);
+subjectRouter.get("/get-subjects", authUser, getSubjects);
 
 export default subjectRouter;

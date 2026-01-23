@@ -1,6 +1,8 @@
 import Course from "../models/courseModel.js";
 import Teacher from "../models/teacherModel.js";
 import User from "../models/userModel.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const createTeacher = async (req,res) => {
     try {
@@ -23,6 +25,57 @@ export const createTeacher = async (req,res) => {
             return res.json({ success: false, message: "Teacher already exists" });
         }
         await Teacher.create({ userId, teacherId, name, courseId, employeeId });
+        return res.json({ success: true, message: "Teacher successfully created" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getTeachers = async (req,res) => {
+    try {
+        const teachers = await Teacher.find();
+        return res.json({ success: true, teachers, message: "List of all teachers" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const removeTeacher = async (req,res) => {
+    try {
+        const { teacherId, employeeId } = req.body;
+        if (!teacherId || !employeeId) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const deletedTeacher = await Teacher.findOneAndDelete({ teacherId, employeeId });
+        if (!deletedTeacher) {
+            return res.json({ success: false, message: "Invalid teacher id or employee id" });
+        }
+        return res.json({ success: true, deletedTeacher, message: "Teacher deleted" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const teacherLogin = async (req,res) => {
+    try {
+        const { teacherId, password } = req.body;
+        if (!teacherId || !password) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const teacher = await Teacher.findOne({ teacherId });
+        if (!teacher) {
+            return res.json({ success: false, message: "Invalid teacher id" });
+        }
+        const isUser = await User.findOne({ _id: teacher.userId });
+        const isMatch = await bcrypt.compare(password, isUser.password);
+        if (!isUser || !isMatch || isUser.role !== "teacher") {
+            return res.json({ success: false, message: "Invalid teacher id or password" });
+        }
+        const token = jwt.sign({ id: isUser._id, role: isUser.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        return res.json({ success: true, teacher, token, message: "Teacher successfully logged in" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

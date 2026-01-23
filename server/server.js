@@ -6,6 +6,7 @@ import studentRouter from "./routes/studentRoutes.js";
 import courseRouter from "./routes/courseRoutes.js";
 import subjectRouter from "./routes/subjectRoutes.js";
 import assignmentRouter from "./routes/assignmentRoutes.js";
+import teacherRouter from "./routes/teacherRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/user", userRouter);
 app.use("/api/course", courseRouter);
 app.use("/api/subject", subjectRouter);
+app.use("/api/teacher", teacherRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/assignment", assignmentRouter);
 app.get("/test", (req,res) => res.send("Server is live"));

@@ -103,11 +103,10 @@ export const deleteUser = async (req,res) => {
         if (!userId) {
             return res.json({ success: false, message: "Missing user id" });
         }
-        const user = await User.findById(userId);
+        const user = await User.findByIdAndDelete(userId);
         if (!user) {
             return res.json({ success: false, message: "Invalid user id" });
         }
-        await User.findByIdAndDelete(userId);
         return res.json({ success: true, message: "User deleted" });
     } catch(error) {
         console.log(error.message);
