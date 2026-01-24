@@ -6,7 +6,7 @@ export const createAssignment = async (req,res) => {
     try {
         const { assignmentName, assignmentSubjectId, assignmentCourseId, semester, assignmentUploadDate, assignmentSubmitDate } = req.body;
         const { assignmentFile } = req.file;
-        const assignmentProviderId = req.user.userId;
+        const assignmentcreaterId = req.user.userId;
         if (!assignmentName || !assignmentSubjectId || !assignmentCourseId || !semester || !teacherId || assignmentUploadDate || !assignmentSubmitDate || !assignmentFile) {
             return res.json({ success: false, message: "Missing details" });
         }
@@ -14,7 +14,7 @@ export const createAssignment = async (req,res) => {
             return res.json({ success: false, message: "Invalid semester" });
         }
         const assignmentId = String(Math.floor(100000 + Math.random() * 900000));
-        const existingAssignment = await Assignment.findOne({ $or: [{ assignmentName },{ assignmentId }] });
+        const existingAssignment = await Assignment.findOne({ assignmentId });
         if (existingAssignment) {
             return res.json({ success: false, message: "Assignment name or Id already exists" });
         }
@@ -23,7 +23,7 @@ export const createAssignment = async (req,res) => {
             return res.json({ success: false, message: "Invalid subject id" });
         }
         const result = await uploadToCloudinary(assignmentFile.buffer, "assignment", "teacher");
-        await Assignment.create({ assignmentName, assignmentSubjectId, assignmentCourseId, semester, assignmentId, assignmentProviderId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
+        await Assignment.create({ assignmentName, assignmentSubjectId, assignmentCourseId, semester, assignmentId, assignmentcreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);

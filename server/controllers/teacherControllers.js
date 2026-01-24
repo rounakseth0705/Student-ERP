@@ -11,7 +11,7 @@ export const createTeacher = async (req,res) => {
             return res.json({ success: false, message: "Missing details" });
         }
         const isUser = await User.findById(userId);
-        if (!isUser || isUser.name !== name) {
+        if (!isUser || isUser.name !== name || isUser.role !== "teacher") {
             return res.json({ success: false, message: "Invalid user id or name" });
         }
         const course = await Course.findOne({ courseCode });
