@@ -7,6 +7,12 @@ export const createSubject = async (req,res) => {
         if (!courseCode || !subjectName || !subjectCode || !semester) {
             return res.json({ success: false, message: "Missing details" });
         }
+        if (!subjectCode?.split("-")[1]?.startsWith(semester)) {
+            return res.json({ success: false, message: "Invalid subject code" });
+        }
+        if (subjectCode?.split("-")[0] !== courseCode?.split("-")[0]) {
+            return res.json({ success: false, message: "Invalid subject code" });
+        }
         const course = await Course.findOne({ courseCode });
         if (!course) {
             return res.json({ success: false, message: "Invalid course code" });
@@ -33,8 +39,12 @@ export const deleteSubject = async (req,res) => {
         if (!courseCode || !subjectName || !subjectCode) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const result = await Subject.deleteOne({ courseCode, subjectName, subjectCode });
-        if (result.deletedCount === 1) {
+        const course = await Course.findOne({ courseCode });
+        if (!course) {
+            return res.json({ success: false, message: "Invalid course code" });
+        }
+        const result = await Subject.deleteOne({ courseId: course._id, subjectName, subjectCode });
+        if (result.deletedCount !== 1) {
             return res.json({ success: false, message: "Invalid course or subject" });
         }
         return res.json({ success: true, message: "Subject deleted" });

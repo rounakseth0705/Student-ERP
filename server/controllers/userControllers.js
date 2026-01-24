@@ -14,6 +14,9 @@ export const adminSignUp = async (req,res) => {
         if (adminSecret !== process.env.ADMIN_SECRET) {
             return res.json({ success: false, message: "Invalid admin secret" });
         }
+        if (mobileNo.length !== 10) {
+            return res.json({ success: false, message: "Invalid mobile no." });
+        }
         const isAdminExists = await User.findOne({ $or: [{ mobileNo },{ email },{ role }] });
         if (isAdminExists) {
             return res.json({ success: false, message: "Cannot create admin" });
@@ -33,6 +36,9 @@ export const UserCreation = async (req,res) => {
         const { name, mobileNo, email, password, role } = req.body;
         if (!name || !mobileNo || !email || !password || !role) {
             return res.json({ success: false, message: "Missing details" });
+        }
+        if (mobileNo.length !== 10) {
+            return res.json({ success: false, message: "Invalid mobile no." });
         }
         const existingUser = await User.findOne({ $or: [{ mobileNo },{ email }] });
         if (existingUser) {

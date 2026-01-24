@@ -2,16 +2,19 @@ import Course from "../models/courseModel.js";
 
 export const createCourse = async (req,res) => {
     try {
-        let { courseName, courseCode, duration, semesters } = req.body;
-        if (!courseName || !courseCode || !duration || !semesters) {
+        let { courseName, courseCode, duration } = req.body;
+        if (!courseName || !courseCode || !duration) {
             return res.json({ success: false, message: "Missing details" });
         }
         courseName = courseName?.toUpperCase();
-        const isExists = await Course.findOne({ courseName });
+        if (courseCode?.split("-")[0] !== courseName) {
+            return res.json({ success: false, message: "Invalid course code" });
+        }
+        const isExists = await Course.findOne({ $or: [{ courseName },{ courseCode }] });
         if (isExists) {
             return res.json({ success: false, message: "Course already exists" });
         }
-        await Course.create({ courseName, courseCode, duration, semesters });
+        await Course.create({ courseName, courseCode, duration, semesters: duration*2 });
         return res.json({ success: true, message: "Course created" });
     } catch(error) {
         console.log(error.message);
@@ -25,7 +28,10 @@ export const deleteCourse = async (req,res) => {
         if (!courseCode) {
             return res.json({ success: false, message: "Missing details" });
         }
-        await Course.deleteOne({ courseCode });
+        const result = await Course.deleteOne({ courseCode });
+        if (result.deletedCount !== 1) {
+            return res.json({ success: false, message: "Something went wrong" });
+        }
         return res.json({ success: true, message: "Course deleted" });
     } catch(error) {
         console.log(error.message);
@@ -33,7 +39,7 @@ export const deleteCourse = async (req,res) => {
     }
 }
 
-export const getCourse = async (req,res) => {
+export const getCourses = async (req,res) => {
     try {
         const courses = await Course.find();
         return res.json({ success: true, courses, message: "List of all courses" });

@@ -2,7 +2,7 @@ import Assignment from "../models/assignmentModel.js";
 import Subject from "../models/subjectModel.js";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
-export const provideAssignment = async (req,res) => {
+export const createAssignment = async (req,res) => {
     try {
         const { assignmentName, assignmentSubjectId, assignmentCourseId, semester, assignmentUploadDate, assignmentSubmitDate } = req.body;
         const { assignmentFile } = req.file;
@@ -67,6 +67,27 @@ export const getAssignmetsForStudent = async (req,res) => {
         const { courseId, semester } = req.user;
         const assignments = await Assignment.find({ courseId, semester });
         return res.json({ success: true, assignments, message: "List of all assignments" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getAssignmentsForAdmin = async (req,res) => {
+    try {
+        const assignments = await Assignment.find();
+        return res.json({ success: true, assignments, message: "List of all assignments" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteAssignment = async (req,res) => {
+    try {
+        const { assignmentId } = req.body;
+        const result = await Assignment.deleteOne({ assignmentId });
+        return res.json({ success: true, message: "Assignment deleted" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
