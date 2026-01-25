@@ -4,10 +4,10 @@ import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 export const createAssignment = async (req,res) => {
     try {
-        const { assignmentName, assignmentSubjectId, assignmentCourseId, semester, assignmentUploadDate, assignmentSubmitDate } = req.body;
-        const { assignmentFile } = req.file;
+        const { assignmentName, assignmentSubjectCode, assignmentCourseId, semester, assignmentSubmitDate } = req.body;
+        const assignmentFile = req.file;
         const assignmentcreaterId = req.user.userId;
-        if (!assignmentName || !assignmentSubjectId || !assignmentCourseId || !semester || !teacherId || assignmentUploadDate || !assignmentSubmitDate || !assignmentFile) {
+        if (!assignmentName || !assignmentSubjectCode || !assignmentCourseId || !semester || !assignmentSubmitDate || !assignmentFile) {
             return res.json({ success: false, message: "Missing details" });
         }
         if (semester > assignmentCourseId.semesters) {
@@ -16,14 +16,15 @@ export const createAssignment = async (req,res) => {
         const assignmentId = String(Math.floor(100000 + Math.random() * 900000));
         const existingAssignment = await Assignment.findOne({ assignmentId });
         if (existingAssignment) {
-            return res.json({ success: false, message: "Assignment name or Id already exists" });
+            return res.json({ success: false, message: "Assignment Id already exists" });
         }
-        const subject = await Subject.findById(assignmentSubjectId);
-        if (!subject) {
-            return res.json({ success: false, message: "Invalid subject id" });
+        const subject = await Subject.findOne({ subjectCode: assignmentSubjectCode });
+        if (!subject) { 
+            return res.json({ success: false, message: "Invalid subject Code" });
         }
         const result = await uploadToCloudinary(assignmentFile.buffer, "assignment", "teacher");
-        await Assignment.create({ assignmentName, assignmentSubjectId, assignmentCourseId, semester, assignmentId, assignmentcreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
+        const assignmentUploadDate = new Date().toDateString();
+        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId, semester, assignmentId, assignmentcreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);
@@ -34,16 +35,14 @@ export const createAssignment = async (req,res) => {
 export const updateAssignmentDate = async (req,res) => {
     try {
         const { assignmentId, assignmentUpdatedUploadDate } = req.body;
-        const assignmentProviderId = req.user.userId;
-        if (!assignmentId || !assignmentUpdatedUploadDate || !assignmentProviderId) {
+        const assignmentcreaterId = req.user.userId;
+        if (!assignmentId || !assignmentUpdatedUploadDate || !assignmentcreaterId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const assignment = await Assignment.findOne({ assignmentId, assignmentProviderId });
+        const assignment = await Assignment.findOneAndUpdate({ assignmentId, assignmentcreaterId },{ assignmentSubmitDate: assignmentUpdatedUploadDate },{ new: true });
         if (!assignment) {
             return res.json({ success: false, message: "Something went wrong" });
         }
-        assignment.assignmentUploadDate = assignmentUpdatedUploadDate;
-        await assignment.save();
         return res.json({ success: true, message: "Assignment date updated" });
     } catch(error) {
         console.log(error.message);

@@ -1,10 +1,11 @@
 import Course from "../models/courseModel.js";
 import Subject from "../models/subjectModel.js";
+import Teacher from "../models/teacherModel.js";
 
 export const createSubject = async (req,res) => {
     try {
-        const { courseCode, subjectName, subjectCode, semester } = req.body;
-        if (!courseCode || !subjectName || !subjectCode || !semester) {
+        const { courseCode, subjectName, subjectCode, semester, teacherId } = req.body;
+        if (!courseCode || !subjectName || !subjectCode || !semester || !teacherId) {
             return res.json({ success: false, message: "Missing details" });
         }
         if (!subjectCode?.split("-")[1]?.startsWith(semester)) {
@@ -17,16 +18,45 @@ export const createSubject = async (req,res) => {
         if (!course) {
             return res.json({ success: false, message: "Invalid course code" });
         }
+        if (semester > course.semesters) {
+            return res.json({ success: false, message: "Invalid semester" });
+        }
+        const teacher = await Teacher.findOne({ teacherId });
+        if (!teacher) {
+            return res.json({ success: false, message: "Invalid teacher id" });
+        }
         const courseId = course._id;
-        const isSubjectExists = await Subject.findOne({ courseId, $or: [{ subjectCode },{ subjectName }] });
+        const isSubjectExists = await Subject.findOne({ courseId, teacherId: teacher._id, $or: [{ subjectCode },{ subjectName }] });
         if (isSubjectExists) {
             if (isSubjectExists.subjectName === subjectName) {
                 return res.json({ success: false, message: "Subject already exists" });
             }
             return res.json({ success: false, message: "Subject code already exists" });
         }
-        await Subject.create({ courseId, subjectName, subjectCode, semester });
+        await Subject.create({ courseId, subjectName, subjectCode, semester, teacherId: teacher._id });
         return res.json({ success: true, message: `Subject created in ${course.courseName}` });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const changeSubjectTeacher = async (req,res) => {
+    try {
+        const { subjectCode, teacherId, newTeacherId } = req.body;
+        if (!subjectCode || !teacherId || !newTeacherId) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const newTeacher = await Teacher.findOne({ teacherId: newTeacherId });
+        if (!newTeacher) {
+            return res.json({ success: false, message: "Invalid teacher id" });
+        }
+        const teacher = await Teacher.findOne({ teacherId });
+        const updatedSubject = await Subject.findOneAndUpdate({ subjectCode, teacherId: teacher._id },{ teacherId: newTeacher._id },{ new: true });
+        if (!updatedSubject) {
+            return res.json({ success: false, message: "Invalid details" });
+        }
+        return res.json({ success: true, message: "Subject teacher updated" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

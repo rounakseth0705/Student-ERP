@@ -2,10 +2,11 @@ import express from "express";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
 import { createAssignment, deleteAssignment, getAssignmentsForAdmin, getAssignmentsForTeacher, getAssignmetsForStudent, updateAssignmentDate } from "../controllers/assignmentControllers.js";
+import upload from "../config/multer.js";
 
 const assignmentRouter = express.Router();
 
-assignmentRouter.post("/create-assignment", authUser, verifyAccess("teacher"), createAssignment);
+assignmentRouter.post("/create-assignment", upload.single("assignmentFile"), authUser, verifyAccess("teacher"), createAssignment);
 assignmentRouter.put("/update-assignment-date", authUser, verifyAccess("teacher"), updateAssignmentDate);
 assignmentRouter.get("/get-assignments-teacher", authUser, verifyAccess("teacher"), getAssignmentsForTeacher);
 assignmentRouter.get("/get-assignments-student", authUser, verifyAccess("student"), getAssignmetsForStudent);
