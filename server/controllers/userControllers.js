@@ -31,6 +31,15 @@ export const adminSignUp = async (req,res) => {
     }
 }
 
+export const getAdmins = async (req,res) => {
+    try {
+        
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
 export const UserCreation = async (req,res) => {
     try {
         const { name, mobileNo, email, password, role } = req.body;
