@@ -33,7 +33,12 @@ export const adminSignUp = async (req,res) => {
 
 export const getAdmins = async (req,res) => {
     try {
-        
+        const role = "admin";
+        const admins = await User.find({ role });
+        if (admins.length === 0) {
+            return res.json({ success: false, message: "No admin exists" });
+        }
+        return res.json({ success: true, message: "Admin already exists" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

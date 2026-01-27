@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import userIcon from "../assets/userIcon.svg";
 import passwordIcon from "../assets/passwordIcon.svg";
 import { UserContext } from "../context/AuthContext.jsx";
+import CreateFirstAdmin from "../components/createFirstAdmin.jsx";
+import toast from "react-hot-toast";
 
 const Login = () => {
-    const { login } = useContext(UserContext);
+    const { login, isAdminExists } = useContext(UserContext);
     const [role, setRole] = useState("student");
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
@@ -12,10 +14,14 @@ const Login = () => {
         setRole(event.target.value);
     }
     const handleLogin = async (event) => {
-        event.preventDefault();
-        await login(userId,password,role);
+        try {
+            event.preventDefault();
+            await login(userId,password,role);
+        } catch(error) {
+            toast.error(error.message);
+        }
     }
-    return(
+    return isAdminExists ? (
         <div className="flex flex-col justify-center items-center h-screen w-screen bg-[#5C6FA3]">
             <h1 className="text-white text-3xl font-semibold mb-5 sm:text-5xl sm:font-extrabold sm:mb-10">{role.toUpperCase()} LOGIN</h1>
             <form className="flex flex-col justify-center items-center">
@@ -35,6 +41,8 @@ const Login = () => {
                 <option value="admin">admin</option>
             </select>
         </div>
+    ) : (
+        <CreateFirstAdmin/>
     )
 }
 
