@@ -7,9 +7,11 @@ import keyIcon from "../assets/keyIcon.svg";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateFirstAdmin = () => {
     const { createAdmin } = useContext(UserContext);
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
     const [email, setEmail] = useState("");
@@ -20,6 +22,7 @@ const CreateFirstAdmin = () => {
         try {
             event.preventDefault();
             await createAdmin(name,mobileNumber,email,password,role,adminSecret);
+            navigate("/admin-dashboard");
         } catch(error) {
             toast.error(error.message);
         }

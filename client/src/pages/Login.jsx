@@ -3,7 +3,6 @@ import userIcon from "../assets/userIcon.svg";
 import passwordIcon from "../assets/passwordIcon.svg";
 import { UserContext } from "../context/AuthContext.jsx";
 import CreateFirstAdmin from "../components/createFirstAdmin.jsx";
-import toast from "react-hot-toast";
 
 const Login = () => {
     const { login, isAdminExists } = useContext(UserContext);
@@ -14,12 +13,8 @@ const Login = () => {
         setRole(event.target.value);
     }
     const handleLogin = async (event) => {
-        try {
-            event.preventDefault();
-            await login(userId,password,role);
-        } catch(error) {
-            toast.error(error.message);
-        }
+        event.preventDefault();
+        await login(userId,password,role);
     }
     return isAdminExists ? (
         <div className="flex flex-col justify-center items-center h-screen w-screen bg-[#5C6FA3]">

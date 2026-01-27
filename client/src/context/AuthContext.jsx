@@ -1,13 +1,15 @@
 import { createContext, useEffect, useState } from "react";
-import API from "../config/api.js";
+import API, { setAuthToken } from "../config/api.js";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
 const AuthProvider = ({children}) => {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [userIdentity, setUserIdentity] = useState(null);
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState(localStorage.getItem("token"));
     const [isAdminExists, setIsAdminExists] = useState(null);
     const login = async (userId,password,role) => {
         try {
@@ -15,8 +17,10 @@ const AuthProvider = ({children}) => {
             if (role == "admin") {
                 response = await API.post("/user/admin-login", { identifier: userId, password });
                 if (response) {
+                    localStorage.setItem("token",response.data.token);
                     setUser(response.data.user);
-                    setToken(response.data.token);                   
+                    setToken(response.data.token);
+                    navigate("/admin-dashboard");                   
                     toast.success("Logged in successfully");
                     return;
                 } else {
@@ -25,9 +29,11 @@ const AuthProvider = ({children}) => {
             } else if (role === "teacher") {
                 response = await API.post("/teacher/teacher-login", { teacherId: userId, password });
                 if (response) {
+                    localStorage.setItem("token",response.data.token);
                     setUser(response.data.user);
                     setUserIdentity(response.data.teacher);
                     setToken(response.data.token);
+                    navigate("/teacher-dashboard");
                     toast.success("Logged in successfully");
                     return;
                 } else {
@@ -36,15 +42,28 @@ const AuthProvider = ({children}) => {
             } else if (role === "student") {
                 response = await API.post("/student/student-login", { studentId: userId, password });
                 if (response) {
+                    localStorage.setItem("token",response.data.token);
                     setUser(response.data.user);
                     setUserIdentity(response.data.student);
                     setToken(response.data.token);
+                    navigate("/student-dashboard");
                     toast.success("Logged in successfully");
                     return;
                 } else {
                     toast.error("Something went wrong");
                 }
             }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const logout = () => {
+        try {
+            localStorage.clear();
+            setUser(null);
+            setToken("");
+            navigate("/");
+            toast.success("logged out successfully");
         } catch(error) {
             toast.error(error.message);
         }
@@ -68,7 +87,7 @@ const AuthProvider = ({children}) => {
             const response = await API.post("/user/admin-signup", { name, mobileNo, email, password, role, adminSecret });
             console.log(response);
             if (response) {
-                console.log(response.data.user);
+                localStorage.setItem("token",response.data.token);
                 setUser(response.data.user);
                 setToken(response.data.token);
                 toast.success("Admin created successfully");
@@ -81,8 +100,9 @@ const AuthProvider = ({children}) => {
     }
     useEffect(() => {
         checkAdmin();
+        setAuthToken(token);
     }, [])
-    const value = { user, userIdentity, token, isAdminExists, login, createAdmin };
+    const value = { user, userIdentity, token, isAdminExists, login, logout, createAdmin };
     return(
         <UserContext.Provider value={value}>
             {children}
