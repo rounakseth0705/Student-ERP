@@ -3,16 +3,16 @@ import graduationCapIcon from "../assets/graduationCapIcon.svg";
 import { UserContext } from "../context/AuthContext.jsx";
 import { useContext } from "react";
 
-const Navbar = () => {
+const Navbar = ({setIsMenuClicked}) => {
     const { logout } = useContext(UserContext);
     const handleLogout = (event) => {
         event.preventDefault();
         logout();
     }
     return(
-        <div className="flex items-center justify-between bg-blue-500 p-5">
-            <span className="p-1">
-                <img src={menuIcon} alt="menuIcon" className="w-10 h-10" />
+        <div className="flex items-center justify-between bg-blue-800 p-5">
+            <span onClick={() => setIsMenuClicked((prev) => !prev)} className="p-1">
+                <img src={menuIcon} alt="menuIcon" className="w-10 h-10  cursor-pointer" />
             </span>
             <span className="p-1">
                 <img src={graduationCapIcon} alt="erpLogo" className="w-10 h-10" />
