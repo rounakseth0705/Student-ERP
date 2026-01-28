@@ -4,15 +4,14 @@ const API = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL
 });
 
-export const setAuthToken = (token) => {
-    API.interceptors.request.use((req) => {
-        if (token) {
+API.interceptors.request.use((req) => {
+    const token = localStorage.getItem("token");
+    if (token) {
         req.headers.Authorization = `Bearer ${token}`;
-        }
-        return req;
-    },(error) => {
-        Promise.reject(error);
-    });
-}
+    }
+    return req;
+},(error) => {
+    Promise.reject(error);
+});
 
 export default API;

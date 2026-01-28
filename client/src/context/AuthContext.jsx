@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import API, { setAuthToken } from "../config/api.js";
+import API from "../config/api.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -100,8 +100,7 @@ const AuthProvider = ({children}) => {
     }
     useEffect(() => {
         checkAdmin();
-        setAuthToken(token);
-    }, [])
+    },[])
     const value = { user, userIdentity, token, isAdminExists, login, logout, createAdmin };
     return(
         <UserContext.Provider value={value}>
