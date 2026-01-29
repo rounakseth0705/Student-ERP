@@ -14,8 +14,8 @@ export const createCourse = async (req,res) => {
         if (isExists) {
             return res.json({ success: false, message: "Course already exists" });
         }
-        await Course.create({ courseName, courseCode, duration, semesters: duration*2 });
-        return res.json({ success: true, message: "Course created" });
+        const course = await Course.create({ courseName, courseCode, duration, semesters: duration*2 });
+        return res.json({ success: true, course, message: "Course created" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

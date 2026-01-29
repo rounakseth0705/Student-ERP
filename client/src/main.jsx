@@ -8,6 +8,8 @@ import StudentDashboard from './pages/StudentDashboard.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Courses from './pages/Courses.jsx';
+import CourseDetails from './pages/CourseDetails.jsx';
+import CreateCourse from './pages/CreateCourse.jsx';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,18 @@ const router = createBrowserRouter([
         path: "admin-dashboard/courses",
         element: <ProtectedRoute>
           <Courses/>
+        </ProtectedRoute>
+      },
+      {
+        path: "admin-dashboard/courses/:courseId",
+        element: <ProtectedRoute>
+          <CourseDetails/>
+        </ProtectedRoute>
+      },
+      {
+        path: "admin-dashboard/create-course",
+        element: <ProtectedRoute>
+          <CreateCourse/>
         </ProtectedRoute>
       },
       {
