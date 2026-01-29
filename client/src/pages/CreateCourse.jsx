@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { CourseContext } from "../context/CoursesContext.jsx";
+import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import toast from "react-hot-toast";
 
 const CreateCourse = () => {
-    const { createCourse } = useContext(CourseContext);
+    const { createCourse } = useContext(AdminDashboardContext);
     const [courseName, setCourseName] = useState("");
     const [courseCode, setCourseCode] = useState("");
     const [courseDuration, setCourseDuration] = useState("");

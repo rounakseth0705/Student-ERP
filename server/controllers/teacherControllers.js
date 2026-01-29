@@ -24,8 +24,8 @@ export const createTeacher = async (req,res) => {
         if (existingTeacher) {
             return res.json({ success: false, message: "Teacher already exists" });
         }
-        await Teacher.create({ userId, teacherId, name, courseId, employeeId });
-        return res.json({ success: true, message: "Teacher successfully created" });
+        const teacher = await Teacher.create({ userId, teacherId, name, courseId, employeeId });
+        return res.json({ success: true, teacher, message: "Teacher successfully created" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

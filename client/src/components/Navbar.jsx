@@ -17,7 +17,7 @@ const Navbar = ({setIsMenuClicked}) => {
             <span className="p-1">
                 <img src={graduationCapIcon} alt="erpLogo" className="w-10 h-10" />
             </span>
-            <button onClick={(event) => handleLogout(event)} className="px-5 py-1 bg-white text-blue-950 rounded-full">Logout</button>
+            <button onClick={(event) => handleLogout(event)} className="px-5 py-1 bg-white text-blue-950 rounded-full cursor-pointer hover:opacity-95 transition-all duration-400 ease-in-out">Logout</button>
         </div>
     )
 }

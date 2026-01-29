@@ -6,7 +6,7 @@ import { createCourse, deleteCourse, getCourses } from "../controllers/courseCon
 const courseRouter = express.Router();
 
 courseRouter.post("/create-course", authUser, verifyAccess("admin"), createCourse);
-courseRouter.delete("/delete-course", authUser, verifyAccess("admin"), deleteCourse);
+courseRouter.delete("/delete-course/:courseCode", authUser, verifyAccess("admin"), deleteCourse);
 courseRouter.get("/get-courses", authUser, verifyAccess("admin"), getCourses);
 
 export default courseRouter;

@@ -24,7 +24,7 @@ export const createCourse = async (req,res) => {
 
 export const deleteCourse = async (req,res) => {
     try {
-        const { courseCode } = req.body;
+        const { courseCode } = req.params;
         if (!courseCode) {
             return res.json({ success: false, message: "Missing details" });
         }

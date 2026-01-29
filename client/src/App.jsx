@@ -1,16 +1,16 @@
 import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
-import CourseProvider from "./context/CoursesContext";
+import AdminDashboardProvider from "./context/AdminDashboardContext";
 
 const App = () => {
     return(
         <div>
             <AuthProvider>
-                <CourseProvider>
+                <AdminDashboardProvider>
                     <Toaster/>
                     <Outlet/>
-                </CourseProvider>
+                </AdminDashboardProvider>
             </AuthProvider>
         </div>
     )

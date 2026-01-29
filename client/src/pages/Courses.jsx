@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { CourseContext } from "../context/CoursesContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 
 const Courses = () => {
-    const { courses } = useContext(CourseContext);
+    const { courses } = useContext(AdminDashboardContext);
     const navigate = useNavigate();
     return(
         <div>
