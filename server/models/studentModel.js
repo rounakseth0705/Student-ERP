@@ -7,8 +7,7 @@ const studentSchema = new mongoose.Schema({
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true },
     rollNo: { type: String, required: true, unique: true },
     semester: { type: Number, required: true, default: 1 },
-    attendence: { type: Number, required: true, default: 0 },
-    address: { type: String, required: true },
+    attendence: { type: Number, required: true, default: 0 }
 });
 
 const Student = mongoose.model("student", studentSchema);

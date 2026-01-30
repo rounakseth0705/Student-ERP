@@ -6,8 +6,8 @@ import Course from "../models/courseModel.js";
 
 export const createStudent = async (req,res) => {
     try {
-        const { userId, name, courseCode, rollNo, address } = req.body;
-        if (!userId || !name || !courseCode || !rollNo || !address) {
+        const { userId, name, courseCode, rollNo } = req.body;
+        if (!userId || !name || !courseCode || !rollNo) {
             return res.json({ success: false, message: "Missing details" });
         }
         const isUser = await User.findById(userId);
@@ -24,8 +24,8 @@ export const createStudent = async (req,res) => {
             return res.json({ success: false, message: "Invalid course" });
         }
         const courseId = course._id;
-        await Student.create({ userId, studentId, name, courseId, rollNo, address });
-        return res.json({ success: true, message: "Student successfully created" });
+        const student = await Student.create({ userId, studentId, name, courseId, rollNo });
+        return res.json({ success: true, student, message: "Student successfully created" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
@@ -34,7 +34,7 @@ export const createStudent = async (req,res) => {
 
 export const getStudents = async (req,res) => {
     try {
-        const students = await Student.find();
+        const students = await Student.find().select("-userId");
         return res.json({ success: true, students, message: "List of all students" });
     } catch(error) {
         console.log(error.message);

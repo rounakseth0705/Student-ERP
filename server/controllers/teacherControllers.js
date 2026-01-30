@@ -34,7 +34,7 @@ export const createTeacher = async (req,res) => {
 
 export const getTeachers = async (req,res) => {
     try {
-        const teachers = await Teacher.find();
+        const teachers = await Teacher.find().select("-userId");
         return res.json({ success: true, teachers, message: "List of all teachers" });
     } catch(error) {
         console.log(error.message);

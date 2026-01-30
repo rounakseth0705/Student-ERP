@@ -9,6 +9,7 @@ const AdminDashboardProvider = ({children}) => {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);
+    const [students, setStudents] = useState([]);
     const getCourses = async () => {
         try {
             const response = await API.get("/course/get-courses");
@@ -58,18 +59,53 @@ const AdminDashboardProvider = ({children}) => {
             toast.error(error.message);
         }
     }
-    const createTeacher = async (name,mobileNo,email,password,courseCode,employeeId) => {
+    const createUser = async (name,mobileNo,email,password,role) => {
         try {
-            const response1 = await API.post("/user/create-user", { name, mobileNo, email, password, role: "teacher" });
+            const response = await API.post("/user/create-user", { name, mobileNo, email, password, role });
+            return response;
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const createTeacher = async (name,mobileNo,email,password,courseCode,employeeId,role) => {
+        try {
+            const response1 = await createUser(name,mobileNo,email,password,role);
             if (response1) {
                 if (response1.data.success) {
-                    const response2 = await API.post("/teacher/create-teacher", { userId: response1.data.userId, name, courseCode, employeeId });
+                    const userId = response1.data.userId;
+                    const response2 = await API.post("/teacher/create-teacher", { userId, name, courseCode, employeeId });
                     if (response2) {
                         if (response2.data.success) {
                             setTeachers((prev) => [...prev,response2.data.teacher]);
                             toast.success(response2.data.message);
                             navigate("/admin-dashboard");
+                        } else {
+                            toast.error(response2.data.message);
                         }
+                    }
+                } else {
+                    toast.error(response1.data.message);
+                }
+            } else {
+                toast.error("Something went wrong");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const createStudent = async (name,mobileNo,email,password,courseCode,rollNo,role) => {
+        try {
+            const response1 = await createUser(name,mobileNo,email,password,role);
+            if (response1) {
+                if (response1.data.success) {
+                    const userId = response1.data.userId;
+                    const response2 = await API.post("/student/create-student", { userId, name, courseCode, rollNo });
+                    if (response2.data.success) {
+                        setStudents((prev) => [...prev,response2.data.student]);
+                        toast.success(response2.data.message);
+                        navigate("/admin-dashboard");
+                    } else {
+                        toast.error(response2.data.message);
                     }
                 } else {
                     toast.error(response1.data.message);
@@ -84,7 +120,7 @@ const AdminDashboardProvider = ({children}) => {
     useEffect(() => {
         getCourses();
     },[])
-    const value = { courses, teachers, createCourse, deleteCourse, createTeacher }
+    const value = { courses, teachers, students, createCourse, deleteCourse, createTeacher, createStudent }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}
