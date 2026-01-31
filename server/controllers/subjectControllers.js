@@ -26,15 +26,15 @@ export const createSubject = async (req,res) => {
             return res.json({ success: false, message: "Invalid teacher id" });
         }
         const courseId = course._id;
-        const isSubjectExists = await Subject.findOne({ courseId, teacherId: teacher._id, $or: [{ subjectCode },{ subjectName }] });
+        const isSubjectExists = await Subject.findOne({ courseId, $or: [{ subjectCode },{ subjectName }] });
         if (isSubjectExists) {
             if (isSubjectExists.subjectName === subjectName) {
                 return res.json({ success: false, message: "Subject already exists" });
             }
             return res.json({ success: false, message: "Subject code already exists" });
         }
-        await Subject.create({ courseId, subjectName, subjectCode, semester, teacherId: teacher._id });
-        return res.json({ success: true, message: `Subject created in ${course.courseName}` });
+        const subject = await Subject.create({ courseId, subjectName, subjectCode, semester, teacherId: teacher._id });
+        return res.json({ success: true, subject, message: `Subject created in ${course.courseName}` });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
@@ -65,17 +65,13 @@ export const changeSubjectTeacher = async (req,res) => {
 
 export const deleteSubject = async (req,res) => {
     try {
-        const { courseCode, subjectName, subjectCode } = req.body;
-        if (!courseCode || !subjectName || !subjectCode) {
+        const { subjectId } = req.params;
+        if (!subjectId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const course = await Course.findOne({ courseCode });
-        if (!course) {
-            return res.json({ success: false, message: "Invalid course code" });
-        }
-        const result = await Subject.deleteOne({ courseId: course._id, subjectName, subjectCode });
-        if (result.deletedCount !== 1) {
-            return res.json({ success: false, message: "Invalid course or subject" });
+        const result = await Subject.findByIdAndDelete(subjectId);
+        if (!result) {
+            return res.json({ success: false, message: "Invalid subject id" });
         }
         return res.json({ success: true, message: "Subject deleted" });
     } catch(error) {
@@ -96,11 +92,11 @@ export const getSubjects = async (req,res) => {
 
 export const fetchSubjectsByCourseId = async (req,res) => {
     try {
-        const { courseId, semester } = req.params;
-        if (!courseId || !semester) {
+        const { courseId } = req.params;
+        if (!courseId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const subjects = await Subject.find({ courseId, semester }).select("-courseId");
+        const subjects = await Subject.find({ courseId }).select("-courseId");
         return res.json({ success: true, subjects, message: "List of subjects" });
     } catch(error) {
         console.log(error.message);

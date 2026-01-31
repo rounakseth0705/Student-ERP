@@ -13,7 +13,7 @@ import CreateCourse from './pages/CreateCourse.jsx';
 import Teachers from './pages/Teachers.jsx';
 import CreateTeacher from './pages/CreateTeacher.jsx';
 import CreateStudent from './pages/CreateStudent.jsx';
-import SemesterDetails from './pages/SemesterDetails.jsx';
+import CreateSubject from './pages/CreateSubject.jsx';
 
 const router = createBrowserRouter([
   {
@@ -61,9 +61,9 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "admin-dashboard/courses/:courseId/semester-details",
+        path: "admin-dashboard/courses/:courseId/:courseCode/:semester/create-subject",
         element: <ProtectedRoute>
-          <SemesterDetails/>
+          <CreateSubject/>
         </ProtectedRoute>
       },
       {

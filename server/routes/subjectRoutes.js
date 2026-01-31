@@ -7,8 +7,8 @@ const subjectRouter = express.Router();
 
 subjectRouter.post("/create-subject", authUser, verifyAccess("admin"), createSubject);
 subjectRouter.put("/update-subject-teacher", authUser, verifyAccess("admin"), changeSubjectTeacher);
-subjectRouter.delete("/delete-subject", authUser, verifyAccess("admin"), deleteSubject);
+subjectRouter.delete("/delete-subject/:subjectId", authUser, verifyAccess("admin"), deleteSubject);
 subjectRouter.get("/get-subjects", authUser, getSubjects);
-subjectRouter.get("/fetch-subjects/:courseId/:semester", authUser, fetchSubjectsByCourseId);
+subjectRouter.get("/fetch-subjects/:courseId", authUser, fetchSubjectsByCourseId);
 
 export default subjectRouter;
