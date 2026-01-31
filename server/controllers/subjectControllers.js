@@ -93,3 +93,17 @@ export const getSubjects = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const fetchSubjectsByCourseId = async (req,res) => {
+    try {
+        const { courseId, semester } = req.params;
+        if (!courseId || !semester) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const subjects = await Subject.find({ courseId, semester }).select("-courseId");
+        return res.json({ success: true, subjects, message: "List of subjects" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}

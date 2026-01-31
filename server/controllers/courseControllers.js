@@ -48,3 +48,20 @@ export const getCourses = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const getCourseById = async (req,res) => {
+    try {
+        const { courseId } = req.params;
+        if (!courseId) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.json({ success: false, message: "Invalid course" });
+        }
+        return res.json({ success: true, course, message: "Course details" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error. message });
+    }
+}

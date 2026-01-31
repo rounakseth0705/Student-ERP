@@ -5,14 +5,14 @@ import AdminDashboardProvider from "./context/AdminDashboardContext";
 
 const App = () => {
     return(
-        <div>
+        <>
             <AuthProvider>
                 <AdminDashboardProvider>
                     <Toaster/>
                     <Outlet/>
                 </AdminDashboardProvider>
             </AuthProvider>
-        </div>
+        </>
     )
 }
 

@@ -1,10 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 
 const Courses = () => {
-    const { courses } = useContext(AdminDashboardContext);
+    const { courses, getCourses } = useContext(AdminDashboardContext);
     const navigate = useNavigate();
+    const handleGetCourses = async () => {
+        await getCourses()
+    }
+    useEffect(() => {
+        handleGetCourses();
+    },[]);
     return(
         <div>
             <h1 className="bg-blue-800 text-center p-5 text-white font-semibold text-2xl sm:text-3xl">List of all Courses</h1>

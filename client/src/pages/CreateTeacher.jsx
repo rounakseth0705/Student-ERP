@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AdminDashboardContext } from "../context/AdminDashboardContext";
-import CreateTeacherAndStudent from "./CreateTeacherAndStudent";
+import CreateTeacherAndStudent from "../components/CreateTeacherAndStudent";
 
 const CreateTeacher = () => {
     const { createTeacher } = useContext(AdminDashboardContext);
