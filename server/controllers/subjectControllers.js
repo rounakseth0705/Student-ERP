@@ -56,7 +56,7 @@ export const changeSubjectTeacher = async (req,res) => {
         if (!updatedSubject) {
             return res.json({ success: false, message: "Invalid details" });
         }
-        return res.json({ success: true, message: "Subject teacher updated" });
+        return res.json({ success: true, updatedSubject, message: "Subject teacher updated" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
@@ -96,7 +96,7 @@ export const fetchSubjectsByCourseId = async (req,res) => {
         if (!courseId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const subjects = await Subject.find({ courseId }).select("-courseId");
+        const subjects = await Subject.find({ courseId }).select("-courseId").populate("teacherId", "teacherId");
         return res.json({ success: true, subjects, message: "List of subjects" });
     } catch(error) {
         console.log(error.message);

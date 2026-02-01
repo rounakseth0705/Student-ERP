@@ -1,4 +1,5 @@
 import Course from "../models/courseModel.js";
+import Subject from "../models/subjectModel.js";
 import Teacher from "../models/teacherModel.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
@@ -48,10 +49,15 @@ export const removeTeacher = async (req,res) => {
         if (!teacherId || !employeeId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const deletedTeacher = await Teacher.findOneAndDelete({ teacherId, employeeId });
-        if (!deletedTeacher) {
+        const teacher = await Teacher.findOne({ teacherId, employeeId });
+        if (!teacher) {
             return res.json({ success: false, message: "Invalid teacher id or employee id" });
         }
+        const isAssigned = await Subject.findOne({ teacherId: teacher._id });
+        if (isAssigned) {
+            return res.json({ success: false, message: "Can't delete an assigned teacher" });
+        }
+        const deletedTeacher = await Teacher.findByIdAndDelete(teacher._id);
         return res.json({ success: true, deletedTeacher, message: "Teacher deleted" });
     } catch(error) {
         console.log(error.message);

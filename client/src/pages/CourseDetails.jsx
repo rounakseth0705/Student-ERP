@@ -4,11 +4,16 @@ import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import React from "react";
 import removeIcon from "../assets/removeIcon.svg";
 import editIcon from "../assets/editIcon.svg";
+import checkIcon from "../assets/checkIcon.svg";
+import { useState } from "react";
 
 const CourseDetails = () => {
-    const { course, subjects, deleteCourse, getCourse, getSubjects, deleteSubject } = useContext(AdminDashboardContext);
+    const { course, subjects, deleteCourse, getCourse, getSubjects, deleteSubject, changeSubjectTeacher } = useContext(AdminDashboardContext);
     const { courseId } = useParams();
     const navigate = useNavigate();
+    const [isEditing, setIsEditing] = useState(false);
+    const [subjectCode, setSubjectCode] = useState("");
+    const [newTeacherId, setNewTeacherId] = useState("");
     const handleGetCourse = async () => {
         await getCourse(courseId);
     }
@@ -20,6 +25,11 @@ const CourseDetails = () => {
     }
     const handleDeleteSubject = async (subjectId) => {
         await deleteSubject(subjectId);
+    }
+    const handleEditTeacherId = async (subjectCode,teacherId) => {
+        await changeSubjectTeacher(subjectCode,teacherId,newTeacherId);
+        setSubjectCode("");
+        setIsEditing(false);
     }
     useEffect(() => {
         handleGetCourse();
@@ -35,13 +45,6 @@ const CourseDetails = () => {
                     <h1 className="m-2 p-2">Course Duration : {course.duration} years</h1>
                     <h1 className="m-2 p-2">Total Semesters : {course.semesters}</h1>
                 </div>
-                {/* <div className={`grid grid-cols-2 gap-3 rounded p-5 ${courseDetails.semesters > 4 ? "sm:grid-cols-2" : "sm:grid-cols-1"} md:text-2xl`}>
-                    {
-                        Array(courseDetails.semesters).fill("").map((_,index) => (
-                            <div onClick={() => navigate(`/admin-dashboard/courses/$${courseId}/`)} key={index} className="bg-blue-400 text-white p-5 rounded cursor-pointer hover:bg-blue-300 transition-all duration-400 ease-in-out">Semester {index+1}</div>
-                        ))
-                    }
-                </div> */}
                 <div className="flex justify-center items-center">
                     <button onClick={handleDeleteCourse} className="bg-red-600 text-white rounded mt-2 py-2 px-5 cursor-pointer hover:bg-red-500 transition-all duration-400 ease-in-out sm:mt-5 sm:text-2xl">Delete course</button>
                 </div>
@@ -62,9 +65,15 @@ const CourseDetails = () => {
                                             <h1>{index+1}.</h1>
                                             <h1 className="">{subject.subjectName}</h1>
                                             <h1>{subject.subjectCode}</h1>
-                                            <h1>{subject.teacherId}</h1>
+                                            <div className="flex gap-2">
+                                                { isEditing && subject.subjectCode===subjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" placeholder="enter teacher id" className="border rounded px-1" /> : <h1>{subject.teacherId.teacherId}</h1> }
+                                                { (isEditing && subject.subjectCode===subjectCode) && <img onClick={() => handleEditTeacherId(subject.subjectCode,subject.teacherId.teacherId)} src={checkIcon} alt="checkIcon" className="w-5 h-5 cursor-pointer" /> }
+                                            </div>
                                             <div className="flex gap-3">
-                                                <img src={editIcon} alt="editIcon" className="w-5 h-5 cursor-pointer" />
+                                                <img onClick={() => {
+                                                    setIsEditing(true);
+                                                    setSubjectCode(subject.subjectCode);
+                                                }} src={editIcon} alt="editIcon" className="w-5 h-5 cursor-pointer" />
                                                 <img onClick={() => handleDeleteSubject(subject._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 cursor-pointer" />
                                             </div>
                                         </div>

@@ -28,9 +28,7 @@ const AdminDashboardProvider = ({children}) => {
     }
     const getCourse = async (courseId) => {
         try {
-            console.log(courseId);
             const response = await API.get(`/course/get-course/${courseId}`);
-            console.log(response.data);
             if (response) {
                 if (response.data.success) {
                     setCourse(response.data.course);
@@ -116,9 +114,7 @@ const AdminDashboardProvider = ({children}) => {
     }
     const getSubjects = async (courseId) => {
         try {
-            console.log(courseId);
             const response = await API.get(`/subject/fetch-subjects/${courseId}`);
-            console.log(response.data);
             if (response) {
                 if (response.data.success) {
                     setSubjects(response.data.subjects);
@@ -167,6 +163,24 @@ const AdminDashboardProvider = ({children}) => {
             toast.error(error.message);
         }
     }
+    const changeSubjectTeacher = async (subjectCode,teacherId,newTeacherId) => {
+        try {
+            const response = await API.put("/subject/update-subject-teacher", { subjectCode, teacherId, newTeacherId });
+            if (response) {
+                if (response.data.success) {
+                    setSubjects((prev) => prev.filter(subject => subject.subjectCode !== subjectCode));
+                    setSubjects((prev) => [...prev,response.data.updatedSubject]);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const createStudent = async (name,mobileNo,email,password,courseCode,rollNo,role) => {
         try {
             const response1 = await createUser(name,mobileNo,email,password,role);
@@ -191,7 +205,7 @@ const AdminDashboardProvider = ({children}) => {
             toast.error(error.message);
         }
     }
-    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, createTeacher, getSubjects, createSubject, deleteSubject, createStudent }
+    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, changeSubjectTeacher, createTeacher, getSubjects, createSubject, deleteSubject, createStudent }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}
