@@ -21,6 +21,8 @@ const AdminDashboardProvider = ({children}) => {
                     toast.success(response.data.message);
                     return;
                 }
+            } else {
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             console.log(error.message);
@@ -36,7 +38,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -54,7 +56,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -72,7 +74,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -106,7 +108,41 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response1.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const deleteTeacher = async (teacherId,employeeId) => {
+        try {
+            const response = await API.delete(`teacher/delete-teacher/${teacherId}/${employeeId}`);
+            if (response) {
+                if (response.data.success) {
+                    setTeachers((prev) => prev.filter(teacher => teacher.teacherId !== teacherId && teacher.employeeId !== employeeId));
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const getTeachers = async () => {
+        try {
+            const response = await API.get("/teacher/get-teachers");
+            if (response) {
+                if (response.data.success) {
+                    setTeachers(response.data.teachers);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -122,7 +158,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             console.log(error.message);
@@ -140,7 +176,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -157,7 +193,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -175,7 +211,7 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -199,13 +235,13 @@ const AdminDashboardProvider = ({children}) => {
                     toast.error(response1.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
         }
     }
-    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, changeSubjectTeacher, createTeacher, getSubjects, createSubject, deleteSubject, createStudent }
+    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, createTeacher, deleteTeacher, getTeachers, getSubjects, createSubject, deleteSubject, changeSubjectTeacher, createStudent }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}

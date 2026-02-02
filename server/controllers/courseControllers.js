@@ -1,4 +1,6 @@
 import Course from "../models/courseModel.js";
+import Subject from "../models/subjectModel.js";
+import Teacher from "../models/teacherModel.js";
 
 export const createCourse = async (req,res) => {
     try {
@@ -28,8 +30,17 @@ export const deleteCourse = async (req,res) => {
         if (!courseCode) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const result = await Course.deleteOne({ courseCode });
-        if (result.deletedCount !== 1) {
+        const course = await Course.findOne({ courseCode });
+        if (!course) {
+            return res.json({ success: false, message: "Invalid course" });
+        }
+        const isSubjectsExists = await Subject.findOne({ courseId: course._id });
+        const isTeacherExists = await Teacher.findOne({ courseId: course._id });
+        if (isSubjectsExists || isTeacherExists) {
+            return res.json({ success: false, message: "Can't delete because the course is already in use" });
+        }
+        const deletedCourse = await Course.findByIdAndDelete(course._id);
+        if (!deletedCourse) {
             return res.json({ success: false, message: "Something went wrong" });
         }
         return res.json({ success: true, message: "Course deleted" });

@@ -4,7 +4,7 @@ const teacherSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
     teacherId: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true },
+    courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
     employeeId: { type: String, required: true, unique: true }
 });
 

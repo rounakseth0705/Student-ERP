@@ -55,31 +55,39 @@ const CourseDetails = () => {
                         <React.Fragment key={index}>
                             <h1 className="text-white bg-blue-400 font-semibold text-3xl text-center p-3 my-3">{course.courseName} - Semester {index+1}</h1>
                             <div className="flex justify-between items-center">
-                                <h1 className="text-blue-950 text-2xl p-2 mx-5">Subjects List</h1>
+                                <h1 className="text-blue-950 text-2xl font-semibold p-2 mx-5">Subjects List</h1>
                                 <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${course.courseCode}/${index+1}/create-subject`)} className="bg-blue-600 text-white rounded cursor-pointer p-2 mx-5 hover:bg-blue-500 transition-all duration-400 ease-in-out">Add Subject</button>
                             </div>
-                            <div className="mt-5 text-blue-950">
+                            <div className="mt-5 mx-10 text-blue-950">
+                                <div className="grid grid-cols-5 font-semibold p-2">
+                                    <h1 className="mx-18">S.NO.</h1>
+                                    <h1 className="mx-18">SUBJECT NAME</h1>
+                                    <h1 className="mx-18">SUBJECT CODE</h1>
+                                    <h1 className="mx-18">TEACHER ID</h1>
+                                    <h1 className="mx-18">ACTION</h1>
+                                </div>
                                 { subjects.length > 0 &&
                                     subjects.filter(subject => subject.semester===index+1).map((subject,index) => (
-                                        <div key={index} className="flex justify-around items-center p-2">
-                                            <h1>{index+1}.</h1>
-                                            <h1 className="">{subject.subjectName}</h1>
-                                            <h1>{subject.subjectCode}</h1>
+                                        <div key={index} className="grid grid-cols-5 p-2">
+                                            <h1 className="mx-18">{index+1}.</h1>
+                                            <h1 className="mx-18">{subject.subjectName}</h1>
+                                            <h1 className="mx-18">{subject.subjectCode}</h1>
                                             <div className="flex gap-2">
-                                                { isEditing && subject.subjectCode===subjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" placeholder="enter teacher id" className="border rounded px-1" /> : <h1>{subject.teacherId.teacherId}</h1> }
+                                                { isEditing && subject.subjectCode===subjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" placeholder="enter teacher id" className="border rounded px-1" /> : <h1 className="mx-18">{subject.teacherId.teacherId}</h1> }
                                                 { (isEditing && subject.subjectCode===subjectCode) && <img onClick={() => handleEditTeacherId(subject.subjectCode,subject.teacherId.teacherId)} src={checkIcon} alt="checkIcon" className="w-5 h-5 cursor-pointer" /> }
                                             </div>
-                                            <div className="flex gap-3">
+                                            <div className="flex gap-3 mx-18">
                                                 <img onClick={() => {
                                                     setIsEditing(true);
                                                     setSubjectCode(subject.subjectCode);
-                                                }} src={editIcon} alt="editIcon" className="w-5 h-5 cursor-pointer" />
-                                                <img onClick={() => handleDeleteSubject(subject._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 cursor-pointer" />
+                                                }} src={editIcon} alt="editIcon" className="w-5 h-5 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out" />
+                                                <img onClick={() => handleDeleteSubject(subject._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out" />
                                             </div>
                                         </div>
                                     ))
                                 }
                             </div>
+                            <h1>Timetable</h1>
                         </React.Fragment>
                     ))
                 }

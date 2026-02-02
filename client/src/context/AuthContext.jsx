@@ -17,38 +17,50 @@ const AuthProvider = ({children}) => {
             if (role == "admin") {
                 response = await API.post("/user/admin-login", { identifier: userId, password });
                 if (response) {
-                    localStorage.setItem("token",response.data.token);
-                    setUser(response.data.user);
-                    setToken(response.data.token);
-                    navigate("/admin-dashboard");                   
-                    toast.success("Logged in successfully");
-                    return;
+                    if (response.data.success) {
+                        localStorage.setItem("token",response.data.token);
+                        setUser(response.data.user);
+                        setToken(response.data.token);
+                        navigate("/admin-dashboard");                   
+                        toast.success(response.data.message);
+                        return;
+                    } else {
+                        toast.error(response.data.message);
+                    }
                 } else {
                     toast.error("Something went wrong");
                 }
             } else if (role === "teacher") {
                 response = await API.post("/teacher/teacher-login", { teacherId: userId, password });
                 if (response) {
-                    localStorage.setItem("token",response.data.token);
-                    setUser(response.data.user);
-                    setUserIdentity(response.data.teacher);
-                    setToken(response.data.token);
-                    navigate("/teacher-dashboard");
-                    toast.success("Logged in successfully");
-                    return;
+                    if (response.data.success) {
+                        localStorage.setItem("token",response.data.token);
+                        setUser(response.data.user);
+                        setUserIdentity(response.data.teacher);
+                        setToken(response.data.token);
+                        navigate("/teacher-dashboard");
+                        toast.success("Logged in successfully");
+                        return;
+                    } else {
+                        toast.error(response.data.message);
+                    }
                 } else {
                     toast.error("Something went wrong");
                 }
             } else if (role === "student") {
                 response = await API.post("/student/student-login", { studentId: userId, password });
                 if (response) {
-                    localStorage.setItem("token",response.data.token);
-                    setUser(response.data.user);
-                    setUserIdentity(response.data.student);
-                    setToken(response.data.token);
-                    navigate("/student-dashboard");
-                    toast.success("Logged in successfully");
-                    return;
+                    if (response.data.success) {
+                        localStorage.setItem("token",response.data.token);
+                        setUser(response.data.user);
+                        setUserIdentity(response.data.student);
+                        setToken(response.data.token);
+                        navigate("/student-dashboard");
+                        toast.success("Logged in successfully");
+                        return;
+                    } else {
+                        toast.error(response.data.message);
+                    }
                 } else {
                     toast.error("Something went wrong");
                 }
@@ -87,10 +99,14 @@ const AuthProvider = ({children}) => {
             const response = await API.post("/user/admin-signup", { name, mobileNo, email, password, role, adminSecret });
             console.log(response);
             if (response) {
-                localStorage.setItem("token",response.data.token);
-                setUser(response.data.user);
-                setToken(response.data.token);
-                toast.success("Admin created successfully");
+                if (response.data.success) {
+                    localStorage.setItem("token",response.data.token);
+                    setUser(response.data.user);
+                    setToken(response.data.token);
+                    toast.success("Admin created successfully");
+                } else {
+                    toast.error(response.data.message);
+                }
             } else {
                 toast.error("Something went wrong");
             }

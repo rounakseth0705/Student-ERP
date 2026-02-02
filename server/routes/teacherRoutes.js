@@ -7,7 +7,7 @@ const teacherRouter = express.Router();
 
 teacherRouter.post("/create-teacher", authUser, verifyAccess("admin"), createTeacher);
 teacherRouter.get("/get-teachers", authUser, verifyAccess("admin"), getTeachers);
-teacherRouter.delete("/delete-teacher", authUser, verifyAccess("admin"), removeTeacher);
+teacherRouter.delete("/delete-teacher/:teacherId/:employeeId", authUser, verifyAccess("admin"), removeTeacher);
 teacherRouter.post("/teacher-login", teacherLogin);
 
 export default teacherRouter;
