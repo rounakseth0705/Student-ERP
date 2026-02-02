@@ -17,7 +17,7 @@ const AdminDashboard = () => {
                 <div onClick={() => navigate("/admin-dashboard/create-teacher")} className="flex items-center justify-center gap-2 rounded-2xl bg-blue-500 hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer sm:flex-col">
                     <h1>Create Teacher</h1>
                 </div>
-                <div className="flex items-center justify-center gap-2 rounded-2xl bg-blue-500 hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer sm:flex-col">
+                <div onClick={() => navigate("/admin-dashboard/students")} className="flex items-center justify-center gap-2 rounded-2xl bg-blue-500 hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer sm:flex-col">
                     <h1>Students</h1>
                 </div>
                 <div onClick={() => navigate("/admin-dashboard/create-student")} className="flex items-center justify-center gap-2 rounded-2xl bg-blue-500 hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer sm:flex-col">

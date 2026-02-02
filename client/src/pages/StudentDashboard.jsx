@@ -1,8 +1,14 @@
+import { useState } from "react";
+import Navbar from "../components/Navbar.jsx";
+import ProfileSidebar from "../components/ProfileSidebar.jsx";
+
 const StudentDashboard = () => {
+    const [isMenuClicked, setIsMenuClicked] = useState(false);
     return(
-        <div>
-            <h1>Student Dashboard</h1>
-        </div>
+        <>
+            <Navbar setIsMenuClicked={setIsMenuClicked}/>
+            <ProfileSidebar isMenuClicked={isMenuClicked} setIsMenuClicked={setIsMenuClicked}/>
+        </>
     )
 }
 

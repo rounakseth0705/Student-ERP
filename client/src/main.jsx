@@ -14,6 +14,7 @@ import Teachers from './pages/Teachers.jsx';
 import CreateTeacher from './pages/CreateTeacher.jsx';
 import CreateStudent from './pages/CreateStudent.jsx';
 import CreateSubject from './pages/CreateSubject.jsx';
+import Students from './pages/Students.jsx';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,12 @@ const router = createBrowserRouter([
         path: "admin-dashboard/create-teacher",
         element: <ProtectedRoute>
           <CreateTeacher/>
+        </ProtectedRoute>
+      },
+      {
+        path: "admin-dashboard/students",
+        element: <ProtectedRoute>
+          <Students/>
         </ProtectedRoute>
       },
       {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const subjectSchema = new mongoose.Schema({
-    courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true },
+    courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
     subjectName: { type: String, required: true },
     subjectCode: { type: String, required: true },
     semester: { type: Number, required: true },

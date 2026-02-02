@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import { useEffect } from "react";
 import removeIcon from "../assets/removeIcon.svg";
+import { useState } from "react";
 
 const Teachers = () => {
     const { teachers, getTeachers, deleteTeacher } = useContext(AdminDashboardContext);
+    const [query, setQuery] = useState("");
     const handleGetTeachers = async () => {
         await getTeachers();
     }
@@ -18,9 +20,9 @@ const Teachers = () => {
         <>
             <h1 className="text-center text-4xl font-semibold mt-5">LIST OF TEACHERS</h1>
             <div className="flex flex-col items-center">
-                <input type="text" placeholder="search teacher" className="m-5 p-5 bg-gray-300 outline-0 rounded-full w-150"/>
-                <div className="p-5 w-350 bg-blue-200 rounded">
-                    <div className="grid grid-cols-6 gap-3 my-5 mx-2 font-semibold text-blue-950 text-2xl">
+                <input onChange={(event) => setQuery(event.target.value)} type="text" placeholder="search teacher" className="m-5 p-5 bg-gray-300 outline-0 rounded-full w-150"/>
+                <div className="p-5 w-350 bg-blue-100 shadow-lg rounded">
+                    <div className="grid grid-cols-6 gap-3 my-5 mx-auto font-semibold text-blue-950 text-2xl">
                         <h1>S.NO.</h1>
                         <h1>TEACHER NAME</h1>
                         <h1>COURSE CODE</h1>

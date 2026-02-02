@@ -10,7 +10,7 @@ const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [userIdentity, setUserIdentity] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [isAdminExists, setIsAdminExists] = useState(null);
+    const [isAdminExists, setIsAdminExists] = useState(false);
     const login = async (userId,password,role) => {
         try {
             let response;

@@ -28,7 +28,7 @@ const Login = () => {
                     <img src={passwordIcon} alt="passwordIcon" className="h-15 w-15 sm:h-20 sm:w-20" />
                     <input onChange={(event) => setPassword(event.target.value)} value={password} type="password" placeholder="Password" className="bg-gray-400 text-blue-950 outline-0 w-60 p-3 rounded-4xl sm:w-100 sm:p-5 md:w-120" />
                 </div>
-                <button onClick={(event) => handleLogin(event)} className="bg-white text-blue-950 font-semibold mt-5 py-2 px-10 rounded-full hover:opacity-85 transition-all duration-500 ease-in-out cursor-pointer sm:text-3xl sm:py-5 sm:px-20">LOGIN</button>
+                <button onClick={(event) => handleLogin(event)} className="bg-white text-blue-950 font-semibold mt-5 py-2 px-10 rounded-full hover:opacity-75 transition-all duration-500 ease-in-out cursor-pointer sm:text-3xl sm:py-5 sm:px-20">LOGIN</button>
             </form>
             <select onChange={getRole} className="mt-5 p-2 outline-0 text-white bg-blue-950 rounded cursor-pointer">
                 <option value="student">student</option>
