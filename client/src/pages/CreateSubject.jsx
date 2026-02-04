@@ -16,7 +16,7 @@ const CreateSubject = () => {
     return(
         <div className="h-screen w-screen flex flex-col items-center">
             <h1 className="text-blue-900 text-4xl mt-20 font-semibold">Create Subject</h1>
-            <h1 className="text-blue-900 text-3xl mt-1 font-semibold">({courseCode})</h1>
+            <h1 className="text-blue-900 text-3xl mt-1 font-semibold">{courseCode.split("-")[0]} (Semester-{semester})</h1>
             <form className="m-5 bg-blue-300 py-4 px-5 rounded-2xl sm:px-20 md:px-30">
                 <div>
                     <h1 className="p-1">Subject name</h1>

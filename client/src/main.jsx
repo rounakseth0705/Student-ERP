@@ -15,6 +15,7 @@ import CreateTeacher from './pages/CreateTeacher.jsx';
 import CreateStudent from './pages/CreateStudent.jsx';
 import CreateSubject from './pages/CreateSubject.jsx';
 import Students from './pages/Students.jsx';
+import AssignSubjectToLecture from './pages/AssignSubjectToLecture.jsx';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,12 @@ const router = createBrowserRouter([
         path: "admin-dashboard/courses/:courseId",
         element: <ProtectedRoute>
           <CourseDetails/>
+        </ProtectedRoute>
+      },
+      {
+        path: "admin-dashboard/courses/:courseId/:semester/:day/:classTime",
+        element: <ProtectedRoute>
+          <AssignSubjectToLecture/>
         </ProtectedRoute>
       },
       {
