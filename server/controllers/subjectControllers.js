@@ -96,8 +96,37 @@ export const fetchSubjectsByCourseId = async (req,res) => {
         if (!courseId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const subjects = await Subject.find({ courseId }).select("-courseId").populate("teacherId", "teacherId");
+        const subjects = await Subject.find({ courseId }).select("-courseId").populate("teacherId", "teacherId name");
         return res.json({ success: true, subjects, message: "List of subjects" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const scheduleClass = async (req,res) => {
+    try {
+        const { subjectName, subjectCode, courseId, semester, day, classTime } = req.body;
+        if (!subjectName || !subjectCode || !courseId || !semester || !day || !classTime) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const subject = await Subject.findOne({ subjectName, subjectCode, courseId, semester });
+        if (!subject) {
+            return res.json({ success: false, message: "Invalid details" });
+        }
+        const isDayAndTimeExists = subject.schedule?.some(item => item.day === day);
+        if (isDayAndTimeExists) {
+            return res.json({ success: false, message: "Schedule already exists" });
+        }
+        if (!subject.schedule) {
+            subject.schedule = [{ day, classTime }];
+        } else {
+            subject.schedule.push({ day, classTime });
+        }
+        console.log(subject.schedule[0]);
+        console.log(subject.schedule[1].classTime);
+        await subject.save();
+        return res.json({ success: true, message: "Subject scheduled" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

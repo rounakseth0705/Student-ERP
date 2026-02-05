@@ -1,12 +1,16 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { AdminDashboardContext } from "../context/AdminDashboardContext";
 
 const AssignSubjectToLecture = () => {
     const { courseId, semester, day, classTime } = useParams();
+    const { scheduleClass } = useContext(AdminDashboardContext);
     const [subjectName, setSubjectName] = useState("");
     const [subjectCode, setSubjectCode] = useState("");
     const handleAssignSubject = async (event) => {
-        
+        event.preventDefault();
+        await scheduleClass(subjectName,subjectCode,courseId,semester,day,classTime);
     }
     return(
         <div className="h-screen w-screen flex flex-col items-center">
@@ -21,7 +25,7 @@ const AssignSubjectToLecture = () => {
                     <h1 className="p-1">Subject code</h1>
                     <input onChange={(event) => setSubjectCode(event.target.value)} value={subjectCode} placeholder="enter subject code" className="bg-gray-300 w-60 outline-0 rounded-full py-2 px-5 sm:w-80" required/>
                 </div>
-                <button onClick={(event) => handleAssignSubject(event)} className="py-2 px-5 my-3 rounded-full bg-white text-blue-950 cursor-pointer">Create</button>
+                <button onClick={(event) => handleAssignSubject(event)} className="py-2 px-5 my-3 rounded-full bg-white text-blue-950 cursor-pointer">Schedule class</button>
             </form>
         </div>
     )

@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const scheduleSchema = new mongoose.Schema({
-    day: { type: String, enum: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], required: true },
-    time: { type: String, required: true }
+    day: { type: String, enum: ["Mon","Tue","Wed","Thu","Fri"], required: true },
+    classTime: { type: String, required: true }
 },{ _id: false });
 
 const subjectSchema = new mongoose.Schema({

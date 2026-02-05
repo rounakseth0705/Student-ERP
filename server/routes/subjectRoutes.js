@@ -1,7 +1,7 @@
 import express from "express";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
-import { changeSubjectTeacher, createSubject, deleteSubject, fetchSubjectsByCourseId, getSubjects } from "../controllers/subjectControllers.js";
+import { changeSubjectTeacher, createSubject, deleteSubject, fetchSubjectsByCourseId, getSubjects, scheduleClass } from "../controllers/subjectControllers.js";
 
 const subjectRouter = express.Router();
 
@@ -10,5 +10,6 @@ subjectRouter.put("/update-subject-teacher", authUser, verifyAccess("admin"), ch
 subjectRouter.delete("/delete-subject/:subjectId", authUser, verifyAccess("admin"), deleteSubject);
 subjectRouter.get("/get-subjects", authUser, getSubjects);
 subjectRouter.get("/fetch-subjects/:courseId", authUser, fetchSubjectsByCourseId);
+subjectRouter.put("/schedule-class", authUser, verifyAccess("admin"), scheduleClass);
 
 export default subjectRouter;
