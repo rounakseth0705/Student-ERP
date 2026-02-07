@@ -16,6 +16,12 @@ import CreateStudent from './pages/CreateStudent.jsx';
 import CreateSubject from './pages/CreateSubject.jsx';
 import Students from './pages/Students.jsx';
 import AssignSubjectToLecture from './pages/AssignSubjectToLecture.jsx';
+import Assignments from './pages/Assignments.jsx';
+import AboutCourse from './pages/AboutCourse.jsx';
+import Notes from './pages/Notes.jsx';
+import MarkAttendence from './pages/MarkAttendence.jsx';
+import ReviewStudents from './pages/ReviewStudents.jsx';
+import AttendenceHistory from './pages/AttendenceHistory.jsx';
 
 const router = createBrowserRouter([
   {
@@ -87,17 +93,53 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
+        path: "teacher-dashboard",
+        element: <ProtectedRoute>
+          <TeacherDashboard/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/assignments",
+        element: <ProtectedRoute>
+          <Assignments/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/:about-course",
+        element: <ProtectedRoute>
+          <AboutCourse/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/notes",
+        element: <ProtectedRoute>
+          <Notes/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/mark-attendence",
+        element: <ProtectedRoute>
+          <MarkAttendence/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/review-students",
+        element: <ProtectedRoute>
+          <ReviewStudents/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/attendence-history",
+        element: <ProtectedRoute>
+          <AttendenceHistory/>
+        </ProtectedRoute>
+      },
+      {
         path: "student-dashboard",
         element: <ProtectedRoute>
           <StudentDashboard/>
         </ProtectedRoute>
       },
-      {
-        path: "teacher-dashboard",
-        element: <ProtectedRoute>
-          <TeacherDashboard/>
-        </ProtectedRoute>
-      }
     ]
   }
 ]);

@@ -145,7 +145,6 @@ const AuthProvider = ({children}) => {
         } else if (role === "teacher") {
             API.get("teacher/verify-teacher").then(res => {
                 if (res.data.success) {
-                    console.log("Verifying teacher",res.data.teacher);
                     setUser(res.data.user);
                     setUserIdentity(res.data.teacher);
                     setToken(res.data.token);

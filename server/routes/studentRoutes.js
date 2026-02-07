@@ -9,6 +9,6 @@ studentRouter.post("/create-student", authUser, verifyAccess("admin"), createStu
 studentRouter.get("/get-students", authUser, verifyAccess("admin"), getStudents);
 studentRouter.delete("/delete-student", authUser, verifyAccess("admin"), removeStudent);
 studentRouter.post("/student-login", studentLogin);
-studentRouter.get("/student/verify-student", authUser, verifyStudent);
+studentRouter.get("/verify-student", authUser, verifyStudent);
 
 export default studentRouter;

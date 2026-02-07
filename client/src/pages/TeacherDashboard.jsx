@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import ProfileSidebar from "../components/ProfileSidebar.jsx";
 import { UserContext } from "../context/AuthContext.jsx";
+import UserDashboard from "../components/UserDashboard.jsx";
 
 const TeacherDashboard = () => {
     const { userIdentity } = useContext(UserContext);
@@ -10,7 +11,7 @@ const TeacherDashboard = () => {
         <>
             <Navbar setIsMenuClicked={setIsMenuClicked}/>
             <ProfileSidebar isMenuClicked={isMenuClicked} setIsMenuClicked={setIsMenuClicked}/>
-            <div className="grid gird-rows-6 grid-cols-1 gap-5 text-white font-semibold mt-5 mx-20 sm:mt-10 sm:mx-20 md:mx-30 lg:mx-40 h-[75vh] sm:grid-rows-3 sm:grid-cols-2">
+            {/* <div className="grid gird-rows-6 grid-cols-1 gap-5 text-white font-semibold mt-5 mx-20 sm:mt-10 sm:mx-20 md:mx-30 lg:mx-40 h-[75vh] sm:grid-rows-3 sm:grid-cols-2">
                 <div className="flex justify-center items-center rounded-2xl bg-blue-500 hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer">
                     <h1>Assignments</h1>
                 </div>
@@ -29,7 +30,8 @@ const TeacherDashboard = () => {
                 <div className="flex justify-center items-center rounded-2xl bg-blue-500 hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer">
                     <h1>Attendence History</h1>
                 </div>
-            </div>
+            </div> */}
+            <UserDashboard option1="Asignments" option2={`About ${userIdentity.courseId.courseName}`} option3="Notes" option4="Mark Attendence" option5="Review Students" option6="Attendence History" dashboard="teacher-dashboard" navigate1="assignments" navigate2={`about-${userIdentity.courseId.courseName.toLowerCase()}`} navigate3="notes" navigate4="mark-attendence" navigate5="review-students" navigate6="attendence-history"/>
         </>
     )
 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export const AdminDashboardContext = createContext();
 
-const AdminDashboardProvider = ({children}) => {
+const AdminDashboardProvider = ({ children }) => {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);

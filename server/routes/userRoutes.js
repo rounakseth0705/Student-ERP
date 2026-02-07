@@ -11,6 +11,6 @@ userRouter.post("/admin-login", adminLogin);
 userRouter.put("/update-password", authUser, updatePassword);
 userRouter.delete("/delete-user", authUser, verifyAccess("admin"), deleteUser);
 userRouter.get("/get-admins", getAdmins);
-userRouter.get("/user/verify-admin", authUser, verifyAdmin);
+userRouter.get("/verify-admin", authUser, verifyAdmin);
 
 export default userRouter;
