@@ -133,3 +133,16 @@ export const deleteUser = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const verifyAdmin = async (req,res) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.json({ success: false, message: "Not authenticated" });
+        }
+        return res.json({ success: true, user, message: "Admin details" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}

@@ -10,7 +10,8 @@ const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [userIdentity, setUserIdentity] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [isAdminExists, setIsAdminExists] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdminExists, setIsAdminExists] = useState(true);
     const login = async (userId,password,role) => {
         try {
             let response;
@@ -19,8 +20,10 @@ const AuthProvider = ({children}) => {
                 if (response) {
                     if (response.data.success) {
                         localStorage.setItem("token",response.data.token);
+                        localStorage.setItem("role",response.data.user.role);
                         setUser(response.data.user);
                         setToken(response.data.token);
+                        setIsLoggedIn(true);
                         navigate("/admin-dashboard");                   
                         toast.success(response.data.message);
                         return;
@@ -35,9 +38,11 @@ const AuthProvider = ({children}) => {
                 if (response) {
                     if (response.data.success) {
                         localStorage.setItem("token",response.data.token);
+                        localStorage.setItem("role",response.data.user.role);
                         setUser(response.data.user);
                         setUserIdentity(response.data.teacher);
                         setToken(response.data.token);
+                        setIsLoggedIn(true);
                         navigate("/teacher-dashboard");
                         toast.success("Logged in successfully");
                         return;
@@ -52,9 +57,11 @@ const AuthProvider = ({children}) => {
                 if (response) {
                     if (response.data.success) {
                         localStorage.setItem("token",response.data.token);
+                        localStorage.setItem("role",response.data.user.role);
                         setUser(response.data.user);
                         setUserIdentity(response.data.student);
                         setToken(response.data.token);
+                        setIsLoggedIn(true);
                         navigate("/student-dashboard");
                         toast.success("Logged in successfully");
                         return;
@@ -71,9 +78,11 @@ const AuthProvider = ({children}) => {
     }
     const logout = () => {
         try {
+            console.log("Logout function called");
             localStorage.clear();
             setUser(null);
             setToken("");
+            setIsLoggedIn(false);
             navigate("/");
             toast.success("logged out successfully");
         } catch(error) {
@@ -103,6 +112,7 @@ const AuthProvider = ({children}) => {
                     localStorage.setItem("token",response.data.token);
                     setUser(response.data.user);
                     setToken(response.data.token);
+                    setIsLoggedIn(true);
                     toast.success("Admin created successfully");
                 } else {
                     toast.error(response.data.message);
@@ -116,8 +126,50 @@ const AuthProvider = ({children}) => {
     }
     useEffect(() => {
         checkAdmin();
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        if (!token) {
+            return;
+        }
+        if (role === "admin") {
+            API.get("user/verify-admin").then(res => {
+                if (res.data.success) {
+                    setUser(res.data.user);
+                    setToken(res.data.token);
+                    setIsLoggedIn(true);
+                    navigate("/admin-dashboard");
+                } else {
+                    logout();
+                }
+            }).catch(() => logout());
+        } else if (role === "teacher") {
+            API.get("teacher/verify-teacher").then(res => {
+                if (res.data.success) {
+                    console.log("Verifying teacher",res.data.teacher);
+                    setUser(res.data.user);
+                    setUserIdentity(res.data.teacher);
+                    setToken(res.data.token);
+                    setIsLoggedIn(true);
+                    navigate("/teacher-dashboard");
+                } else {
+                    logout();
+                }
+            }).catch(() => logout());
+        } else if (role === "student") {
+            API.get("student/verify-student").then(res => {
+                if (res.data.success) {
+                    setUser(res.data.user);
+                    setUserIdentity(res.data.student);
+                    setToken(res.data.token);
+                    setIsLoggedIn(true);
+                    navigate("/student-dashboard");
+                } else {
+                    logout();
+                }
+            }).catch(() => logout());
+        }
     },[])
-    const value = { user, userIdentity, token, isAdminExists, login, logout, createAdmin };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, login, logout, createAdmin };
     return(
         <UserContext.Provider value={value}>
             {children}

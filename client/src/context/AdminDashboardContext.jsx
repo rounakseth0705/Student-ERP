@@ -234,6 +234,23 @@ const AdminDashboardProvider = ({children}) => {
             toast.error(error.message);
         }
     }
+    const updateSchedule = async (subjectName,subjectCode,courseId,semester,day,classTime) => {
+        try {
+            const response = await API.put("/subject/update-schedule", { subjectName, subjectCode, courseId, semester, day, classTime });
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                    navigate(`/admin-dashboard/courses/${courseId}`);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const createStudent = async (name,mobileNo,email,password,courseCode,rollNo,role) => {
         try {
             const response1 = await createUser(name,mobileNo,email,password,role);
@@ -258,7 +275,7 @@ const AdminDashboardProvider = ({children}) => {
             toast.error(error.message);
         }
     }
-    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, createTeacher, deleteTeacher, getTeachers, getSubjects, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, createStudent }
+    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, createTeacher, deleteTeacher, getTeachers, getSubjects, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}

@@ -123,10 +123,28 @@ export const scheduleClass = async (req,res) => {
         } else {
             subject.schedule.push({ day, classTime });
         }
-        console.log(subject.schedule[0]);
-        console.log(subject.schedule[1].classTime);
         await subject.save();
         return res.json({ success: true, message: "Subject scheduled" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const updateSchedule = async (req,res) => {
+    try {
+        const { subjectName, subjectCode, courseId, semester, day, classTime } = req.body;
+        if (!subjectName || !subjectCode || !courseId || !semester || !day || !classTime) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const subject = await Subject.findOne({ subjectName, subjectCode, courseId, semester });
+        if (!subject) {
+            return res.json({ success: false, message: "Invalid details" });
+        }
+        if (!subject.schedule) {
+            return res.json({ success: false, message: "Subject not scheduled yet" });
+        }
+        
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

@@ -1,5 +1,5 @@
 import express from "express";
-import { adminLogin, adminSignUp, deleteUser, getAdmins, updatePassword, UserCreation } from "../controllers/userControllers.js";
+import { adminLogin, adminSignUp, deleteUser, getAdmins, updatePassword, UserCreation, verifyAdmin } from "../controllers/userControllers.js";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
 
@@ -11,5 +11,6 @@ userRouter.post("/admin-login", adminLogin);
 userRouter.put("/update-password", authUser, updatePassword);
 userRouter.delete("/delete-user", authUser, verifyAccess("admin"), deleteUser);
 userRouter.get("/get-admins", getAdmins);
+userRouter.get("/user/verify-admin", authUser, verifyAdmin);
 
 export default userRouter;

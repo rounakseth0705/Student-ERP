@@ -71,7 +71,7 @@ export const teacherLogin = async (req,res) => {
         if (!teacherId || !password) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const teacher = await Teacher.findOne({ teacherId });
+        const teacher = await Teacher.findOne({ teacherId }).populate("courseId","courseName");
         if (!teacher) {
             return res.json({ success: false, message: "Invalid teacher id" });
         }
@@ -82,6 +82,23 @@ export const teacherLogin = async (req,res) => {
         }
         const token = jwt.sign({ id: isUser._id, role: isUser.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
         return res.json({ success: true, user: isUser, teacher, token, message: "Teacher successfully logged in" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const verifyTeacher = async (req,res) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.json({ success: false, message: "Not authenticated" });
+        }
+        const teacher = await Teacher.findOne({ userId: user._id }).populate("courseId","courseName");
+        if (!teacher) {
+            return res.json({ success: false, message: "Invalid access!" });
+        }
+        return res.json({ success: true, user, teacher, message: "Teacher details" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

@@ -81,3 +81,20 @@ export const studentLogin = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const verifyStudent = async (req,res) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.json({ success: false, message: "Not authenticated" });
+        }
+        const student = await Student.findOne({ userId: user._id });
+        if (!student) {
+            return res.json({ success: false, message: "Invalid access!" });
+        }
+        return res.json({ success: true, user, student, message: "Student details" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}

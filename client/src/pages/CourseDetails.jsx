@@ -12,219 +12,214 @@ import clockIcon from "../assets/clockIcon.svg";
 import { useState } from "react";
 
 const CourseDetails = () => {
-  const { course, subjects, deleteCourse, getCourse, getSubjects, deleteSubject, changeSubjectTeacher } = useContext(AdminDashboardContext);
-  const { courseId } = useParams();
-  const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
-  const [subjectCode, setSubjectCode] = useState("");
-  const [newTeacherId, setNewTeacherId] = useState("");
-  const [day, setDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
-    // const day = useRef(new Date().toLocaleString("en-US", { weekday: "long" }));
-  const [currentDate, setCurrentDate] = useState(new Date().getDate());
-  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
-  const [selectedDay, setSelectedDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
-  const handleGetCourse = async () => {
-    await getCourse(courseId);
-  }
-  const handleDeleteCourse = async () => {
-    await deleteCourse(course.courseCode);
-  }
-  const handleGetSubjects = async () => {
-    await getSubjects(courseId);
-  }
-  const handleDeleteSubject = async (subjectId) => {
-    await deleteSubject(subjectId);
-  }
-  const handleEditTeacherId = async (subjectCode,teacherId) => {
-    await changeSubjectTeacher(subjectCode,teacherId,newTeacherId);
-    setSubjectCode("");
-    setIsEditing(false);
-  }
-  const getCurrentClassTime = (index,minutesToAdd,isEndTime=false) => {
-    const date = new Date();
-    date.setHours(9,30,0,0);
-    date.setMinutes(date.getMinutes() + (minutesToAdd*index));
-    if (index > 3) {
-      date.setMinutes(date.getMinutes() + 60);
+    const { course, subjects, deleteCourse, getCourse, getSubjects, deleteSubject, changeSubjectTeacher } = useContext(AdminDashboardContext);
+    const { courseId } = useParams();
+    const navigate = useNavigate();
+    const [isEditing, setIsEditing] = useState(false);
+    const [subjectCode, setSubjectCode] = useState("");
+    const [newTeacherId, setNewTeacherId] = useState("");
+    const [day, setDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
+    const [currentDate, setCurrentDate] = useState(new Date().getDate());
+    const [selectedDate, setSelectedDate] = useState(new Date().getDate());
+    const [selectedDay, setSelectedDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
+    const handleGetCourse = async () => {
+        await getCourse(courseId);
     }
-    if (!isEndTime) {
-      return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+    const handleDeleteCourse = async () => {
+        await deleteCourse(course.courseCode);
     }
-    if (isEndTime) {
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+    const handleGetSubjects = async () => {
+        await getSubjects(courseId);
     }
-  }
-  const getDate = (index) => {
-    let dayToShow;
-    if (day === "Mon") {
-      dayToShow = currentDate - 0 + index;
-      if (dayToShow < 1) {
-                
-      }
-      return dayToShow;
-    } else if (day === "Tue") {
-      dayToShow = currentDate - 1 + index;
-      return dayToShow;
-    } else if (day === "Wed") {
-      dayToShow = currentDate - 2 + index;
-      return dayToShow;
-    } else if (day === "Thu") {
-      dayToShow = currentDate - 3 + index;
-      return dayToShow;
-    } else if (day === "Fri") {
-      dayToShow = currentDate - 4 + index;
-      return dayToShow;
+    const handleDeleteSubject = async (subjectId) => {
+        await deleteSubject(subjectId);
     }
-  }
-  const getSelectedDay = (index) => {
-    if (index === 0) {
-      return "Mon";
-    } else if (index === 1) {
-      return "Tue";
-    } else if (index === 2) {
-      return "Wed";
-    } else if (index === 3) {
-      return "Thu";
-    } else if (index === 4) {
-      return "Fri";
+    const handleEditTeacherId = async (subjectCode,teacherId) => {
+        await changeSubjectTeacher(subjectCode,teacherId,newTeacherId);
+        setSubjectCode("");
+        setIsEditing(false);
     }
-  }
-  const handleAssignSubject = (semester,classTime) => {
-    navigate(`/admin-dashboard/courses/${courseId}/${semester+1}/${selectedDay}/${classTime}`);
-  }
-  const setSelectedDayAndDate = (index) => {
-    setSelectedDate(getDate(index));
-    setSelectedDay(getSelectedDay(index));
-  }
-  useEffect(() => {
-    handleGetCourse();
-    handleGetSubjects();
-  },[]);
-  return(
-    <>
-      <h1 className="text-center text-blue-950 m-5 text-3xl font-semibold">Course Details</h1>
-      <div className="flex flex-col justify-center items-center gap-5">
-        <div className="flex flex-col justify-center bg-blue-400 text-white shadow-xl rounded px-8 py-3 sm:py-8 sm:text-3xl md:text-4xl md:p-10">
-          <h1 className="m-2 p-1 sm:p-2">Course name : {course.courseName}</h1>
-          <h1 className="m-2 p-1 sm:p-2">Course code : {course.courseCode}</h1>
-          <h1 className="m-2 p-1 sm:p-2">Course Duration : {course.duration} years</h1>
-          <h1 className="m-2 p-1 sm:p-2">Total Semesters : {course.semesters}</h1>
-        </div>
-        <div className="flex justify-center items-center">
-          <button onClick={handleDeleteCourse} className="bg-red-600 text-white rounded mt-2 py-2 px-5 cursor-pointer hover:bg-red-500 transition-all duration-400 ease-in-out sm:mt-5 sm:text-2xl">Delete course</button>
-        </div>
-      </div>
-      <div className="mt-5">
-        {
-          Array(course.semesters).fill("").map((_,semester) => (
-            <React.Fragment key={semester}>
-              <h1 className="text-white bg-blue-400 font-semibold text-3xl text-center p-3 my-3">{course.courseName} - Semester {semester+1}</h1>
-              <div className="flex justify-center items-center gap-250">
-                { subjects.length > 0 && <h1 className="text-blue-950 text-2xl font-semibold p-2 mx-5">Subjects List</h1>}
-                <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${course.courseCode}/${semester+1}/create-subject`)} className="flex justify-center items-center gap-1 bg-blue-600 text-white rounded cursor-pointer p-2 mx-5 hover:bg-blue-500 transition-all duration-400 ease-in-out">
-                  Add Subject
-                  <img src={plusIcon} alt="plusIcon" className="w-5 h-5"/>
-                </button>
-              </div>
-              <div className="mt-5 mx-10 bg-blue-50 text-blue-950 rounded shadow-lg">
-                <div className="grid grid-cols-5 font-semibold p-2">
-                  <h1 className="mx-18">S.NO.</h1>
-                  <h1 className="mx-18">SUBJECT NAME</h1>
-                  <h1 className="mx-18">SUBJECT CODE</h1>
-                  <h1 className="mx-18">TEACHER ID</h1>
-                  <h1 className="mx-18">ACTION</h1>
-                </div>
-                { subjects.length > 0 &&
-                  subjects.filter(subject => subject.semester === semester+1).map((subject,index) => (
-                    <React.Fragment key={index}>
-                      <hr/>
-                      <div className="grid grid-cols-5 p-2">
-                        <h1 className="mx-18">{index+1}.</h1>
-                        <h1 className="mx-18">{subject.subjectName}</h1>
-                        <h1 className="mx-18">{subject.subjectCode}</h1>
-                        <div className="flex gap-2">
-                          { isEditing && subject.subjectCode===subjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" placeholder="enter teacher id" className="border rounded px-1" /> : <h1 className="mx-18">{subject.teacherId.teacherId}</h1> }
-                          { (isEditing && subject.subjectCode===subjectCode) && <img onClick={() => handleEditTeacherId(subject.subjectCode,subject.teacherId.teacherId)} src={checkIcon} alt="checkIcon" className="w-5 h-5 cursor-pointer" /> }
-                        </div>
-                        <div className="flex gap-3 mx-18">
-                          <img onClick={() => {
-                            setIsEditing(true);
-                            setSubjectCode(subject.subjectCode);
-                          }} src={editIcon} alt="editIcon" className="w-5 h-5 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out" />
-                          <img onClick={() => handleDeleteSubject(subject._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out" />
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  ))
-                }
-              </div>
-              <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
-              <div className="flex justify-between items-center bg-blue-400 mt-5 text-white">
-                <img src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
-                <h1 className="my-5 text-2xl font-semibold">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
-                <img src={rightArrow} alt="rightArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
-              </div>
-              <div className="bg-blue-300 grid grid-cols-5 mt-1 mx-3 py-3 text-blue-950 sm:mx-10 md:mx-15 xl:px-3">
-                <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Mon</h1>
-                <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Tue</h1>
-                <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Wed</h1>
-                <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Thu</h1>
-                <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Fri</h1>
-              </div>
-              <div className="grid grid-cols-5 mx-3 py-3 shadow-lg sm:mx-10 md:mx-15 xl:px-3">
-                {
-                  Array(5).fill("").map((_,index) => (
-                    <h1 onClick={() => setSelectedDayAndDate(index)} key={index} className={`flex justify-center items-center font-semibold rounded-2xl cursor-pointer ${selectedDate === getDate(index) && "bg-amber-500 shadow-md text-white"} sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15`}>{getDate(index)}</h1>
-                  ))
-                }
-              </div>
-              <div className="my-2 mx-3 py-5 px-1 rounded-2xl shadow-lg sm:mx-10 sm:px-3 md:mx-15 md:px-4 lg:px-10">
-                {
-                  Array(6).fill("").map((_,classIndex) => {
-                    const currentClassStartTime = getCurrentClassTime(classIndex,55).replace(" am","").replace(" pm","");
-                    const currentClassEndTime = getCurrentClassTime(classIndex,55,true).replace(" am","").replace(" pm","");
-                    const filteredSubjects = subjects.filter(subject => subject.semester === semester+1);
-                    return(
-                      <div key={classIndex} className="flex justify-between border rounded my-2 mx-2 py-5 sm:mx-4">
-                        <div className="flex flex-col justify-center items-center gap-1 text-sm pl-3 sm:text-base md:flex-row md:gap-2 md:px-3 lg:px-5 lg:mx-8 xl:mx-20">
-                          <img src={clockIcon} alt="clockIcon" className="w-5 h-5"/>
-                          <h1>{currentClassStartTime}-{currentClassEndTime}</h1>
-                        </div>
-                        { filteredSubjects.length > 0 ?
-                          filteredSubjects.map((subject,index) => {
-                            const isAssigned = subject.schedule?.some(schedule => schedule.day === selectedDay && schedule.classTime === currentClassStartTime)
-                            return(
-                              <React.Fragment key={index}>
-                                { isAssigned ?
-                                  <div className="flex flex-col justify-center items-center gap-2 pr-5 sm:flex-row md:gap-3 md:px-3 lg:gap-5 lg:px-5 lg:mx-8 xl:mx-20">
-                                    <span className="flex flex-col justify-center items-center sm:inline">
-                                      <h1>{subject.subjectName}</h1>
-                                      <h1 className="text-sm sm:text-base">{subject.teacherId.name.toUpperCase()}</h1>
-                                    </span>
-                                    <button className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button>
-                                  </div> :
-                                  <button onClick={() => handleAssignSubject(semester,currentClassStartTime)} key={index} className="flex justify-center items-center gap-1 mx-4 px-2 py-2 rounded bg-blue-600 text-white cursor-pointer hover:bg-blue-500 transition-all duration-400 ease-in-out sm:px-5 sm:mx-8 md:mx-10 xl:mx-30">
-                                    Assign Subject
-                                    <img src={plusIcon} alt="plusIcon" className="w-5 h-5"/>
-                                  </button>
-                                }
-                              </React.Fragment>
-                            )
-                          }) :
-                          <div className="mx-6 sm:mx-10 md:mx-15 lg:mx-20 xl:mx-30">No Subject</div>
-                        }
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            </React.Fragment>
-          ))
+    const getCurrentClassTime = (index,minutesToAdd,isEndTime=false) => {
+        const date = new Date();
+        date.setHours(9,30,0,0);
+        date.setMinutes(date.getMinutes() + (minutesToAdd*index));
+        if (index > 3) {
+            date.setMinutes(date.getMinutes() + 60);
         }
-      </div>
-    </>
-  )
+        if (!isEndTime) {
+            return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+        }
+        if (isEndTime) {
+            date.setMinutes(date.getMinutes() + minutesToAdd);
+            return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+        }
+    }
+    const getDate = (index) => {
+        let dayToShow;
+        if (day === "Mon") {
+            dayToShow = currentDate - 0 + index;
+            if (dayToShow < 1) {
+                
+            }
+            return dayToShow;
+        } else if (day === "Tue") {
+            dayToShow = currentDate - 1 + index;
+            return dayToShow;
+        } else if (day === "Wed") {
+            dayToShow = currentDate - 2 + index;
+            return dayToShow;
+        } else if (day === "Thu") {
+            dayToShow = currentDate - 3 + index;
+            return dayToShow;
+        } else if (day === "Fri") {
+            dayToShow = currentDate - 4 + index;
+            return dayToShow;
+        }
+    }
+    const getSelectedDay = (index) => {
+        if (index === 0) {
+            return "Mon";
+        } else if (index === 1) {
+            return "Tue";
+        } else if (index === 2) {
+            return "Wed";
+        } else if (index === 3) {
+            return "Thu";
+        } else if (index === 4) {
+            return "Fri";
+        }
+    }
+    const setSelectedDayAndDate = (index) => {
+        setSelectedDate(getDate(index));
+        setSelectedDay(getSelectedDay(index));
+    }
+    useEffect(() => {
+        handleGetCourse();
+        handleGetSubjects();
+    },[]);
+    return(
+        <>
+            <h1 className="text-center text-blue-950 m-5 text-3xl font-semibold">Course Details</h1>
+            <div className="flex flex-col justify-center items-center gap-5">
+                <div className="flex flex-col justify-center bg-blue-400 text-white shadow-xl rounded px-8 py-3 sm:py-8 sm:text-3xl md:text-4xl md:p-10">
+                    <h1 className="m-2 p-1 sm:p-2">Course name : {course.courseName}</h1>
+                    <h1 className="m-2 p-1 sm:p-2">Course code : {course.courseCode}</h1>
+                    <h1 className="m-2 p-1 sm:p-2">Course Duration : {course.duration} years</h1>
+                    <h1 className="m-2 p-1 sm:p-2">Total Semesters : {course.semesters}</h1>
+                </div>
+                <div className="flex justify-center items-center">
+                    <button onClick={handleDeleteCourse} className="bg-red-600 text-white rounded mt-2 py-2 px-5 cursor-pointer hover:bg-red-500 transition-all duration-400 ease-in-out sm:mt-5 sm:text-2xl">Delete course</button>
+                </div>
+            </div>
+            <div className="mt-5">
+                {
+                    Array(course.semesters).fill("").map((_,semester) => {
+                        const filteredSubjects = subjects.filter(subject => subject.semester === semester+1);
+                        return(
+                            <React.Fragment key={semester}>
+                                <h1 className="text-white bg-blue-400 font-semibold text-3xl text-center p-3 my-3">{course.courseName} - Semester {semester+1}</h1>
+                                <div className="flex justify-center items-center gap-12 sm:gap-50 md:gap-80 lg:gap-150 xl:gap-200">
+                                    { filteredSubjects.length > 0 && <h1 className="text-blue-950 text-2xl font-semibold p-2 ml-2 sm:mx-5">Subjects List</h1> }
+                                    <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${course.courseCode}/${semester+1}/create-subject`)} className="flex justify-center items-center gap-1 bg-blue-600 text-white text-sm rounded cursor-pointer p-2 mr-2 hover:bg-blue-500 transition-all duration-400 ease-in-out sm:text-base sm:mx-5">Add Subject</button>
+                                </div>
+                                { filteredSubjects.length > 0 &&
+                                    <div className="mt-5 mx-3 bg-blue-50 text-blue-950 text-sm rounded shadow-lg sm:text-base sm:mx-5 md:mx-8 lg:mx-10">
+                                        <div className="grid grid-cols-4 font-semibold py-2 px-1 sm:px-2">
+                                            <h1 className="flex justify-center sm:mx-2 md:mx-5 lg:mx-15">SUBJECT NAME</h1>
+                                            <h1 className="flex justify-center sm:mx-2 md:mx-5 lg:mx-15">SUBJECT CODE</h1>
+                                            <h1 className="flex justify-center sm:mx-2 md:mx-5 lg:mx-15">TEACHER ID</h1>
+                                            <h1 className="flex justify-center sm:mx-2 md:mx-5 lg:mx-15">ACTION</h1>
+                                        </div>
+                                        { filteredSubjects.length > 0 &&
+                                            filteredSubjects.map((subject,index) => (
+                                                <React.Fragment key={index}>
+                                                    <hr/>
+                                                    <div className="grid grid-cols-4 p-2">
+                                                        <h1 className="flex justify-center sm:mx-2 md:mx-5 lg:mx-15">{subject.subjectName}</h1>
+                                                        <h1 className="flex justify-center sm:mx-2 md:mx-5 lg:mx-15">{subject.subjectCode}</h1>
+                                                        <div className="flex justify-center gap-1 sm:gap-2">
+                                                            { isEditing && subject.subjectCode===subjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" placeholder="enter teacher id" className="border rounded px-1" /> : <h1 className="sm:mx-2 md:mx-5 lg:mx-15">{subject.teacherId.teacherId}</h1> }
+                                                            { (isEditing && subject.subjectCode===subjectCode) && <img onClick={() => handleEditTeacherId(subject.subjectCode,subject.teacherId.teacherId)} src={checkIcon} alt="checkIcon" className="w-5 h-5 cursor-pointer" /> }
+                                                        </div>
+                                                        <div className="flex justify-center gap-1 sm:gap-2 sm:mx-2 md:gap-3 md:mx-5 lg:mx-15">
+                                                            <img onClick={() => {
+                                                                setIsEditing(true);
+                                                                setSubjectCode(subject.subjectCode);
+                                                            }} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out sm:w-5 sm:h-5" />
+                                                            <img onClick={() => handleDeleteSubject(subject._id)} src={removeIcon} alt="removeIcon" className="w-4 h-4 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out sm:w-5 sm:h-5" />
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                            ))
+                                        }
+                                    </div>
+                                }
+                                <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
+                                <div className="flex justify-between items-center bg-blue-400 mt-5 text-white">
+                                    <img src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
+                                    <h1 className="my-5 text-2xl font-semibold">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
+                                    <img src={rightArrow} alt="rightArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
+                                </div>
+                                <div className="bg-blue-300 grid grid-cols-5 mt-1 mx-3 py-3 text-blue-950 sm:mx-10 md:mx-15 xl:px-3">
+                                    <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Mon</h1>
+                                    <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Tue</h1>
+                                    <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Wed</h1>
+                                    <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Thu</h1>
+                                    <h1 className="flex justify-center items-center sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15">Fri</h1>
+                                </div>
+                                <div className="grid grid-cols-5 mx-3 py-3 shadow-lg sm:mx-10 md:mx-15 xl:px-3">
+                                    {
+                                        Array(5).fill("").map((_,index) => (
+                                            <h1 onClick={() => setSelectedDayAndDate(index)} key={index} className={`flex justify-center items-center font-semibold rounded-2xl cursor-pointer ${selectedDate === getDate(index) && "bg-amber-500 shadow-md text-white"} sm:mx-3 md:mx-6 lg:mx-10 xl:mx-15`}>{getDate(index)}</h1>
+                                        ))
+                                    }
+                                </div>
+                                <div className="my-2 mx-3 py-5 px-1 rounded-2xl shadow-lg sm:mx-10 sm:px-3 md:mx-15 md:px-4 lg:px-10">
+                                    {
+                                        Array(6).fill("").map((_,classIndex) => {
+                                            const currentClassStartTime = getCurrentClassTime(classIndex,55).replace(" am","").replace(" pm","");
+                                            const currentClassEndTime = getCurrentClassTime(classIndex,55,true).replace(" am","").replace(" pm","");
+                                            return(
+                                                <div key={classIndex} className="flex justify-between border rounded my-2 mx-2 py-5 sm:mx-4">
+                                                    <div className="flex flex-col justify-center items-center gap-1 text-sm pl-3 sm:text-base md:flex-row md:gap-2 md:px-3 lg:px-5 lg:mx-8 xl:mx-20">
+                                                        <img src={clockIcon} alt="clockIcon" className="w-5 h-5"/>
+                                                        <h1>{currentClassStartTime}-{currentClassEndTime}</h1>
+                                                    </div>
+                                                    { filteredSubjects.length > 0 ?
+                                                        filteredSubjects.map((subject,index) => {
+                                                            const isAssigned = subject.schedule?.some(schedule => schedule.day === selectedDay && schedule.classTime === currentClassStartTime);
+                                                            return(
+                                                                <React.Fragment key={index}>
+                                                                    { isAssigned ?
+                                                                        <div className="flex flex-col justify-center items-center gap-2 pr-5 sm:flex-row md:gap-3 md:px-3 lg:gap-5 lg:px-5 lg:mx-8 xl:mx-20">
+                                                                            <span className="flex flex-col justify-center items-center sm:inline">
+                                                                                <h1>{subject.subjectName}</h1>
+                                                                                <h1 className="text-blue-600 text-sm sm:text-base">{subject.teacherId.name.toUpperCase()}</h1>
+                                                                            </span>
+                                                                            <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester+1}/${selectedDay}/${currentClassStartTime}/updateSchedule`)} className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button>
+                                                                        </div> :
+                                                                        <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester+1}/${selectedDay}/${currentClassStartTime}/assignSchedule`)} key={index} className="flex justify-center items-center gap-1 mx-4 px-2 py-2 rounded bg-blue-600 text-white cursor-pointer hover:bg-blue-500 transition-all duration-400 ease-in-out sm:px-5 sm:mx-8 md:mx-10 xl:mx-30">
+                                                                            Assign Subject
+                                                                            <img src={plusIcon} alt="plusIcon" className="w-5 h-5"/>
+                                                                        </button>
+                                                                    }
+                                                                </React.Fragment>
+                                                            )
+                                                        }) :
+                                                        <div className="mx-6 sm:mx-10 md:mx-15 lg:mx-20 xl:mx-30">No Subject</div>
+                                                    }
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </React.Fragment>
+                        )
+                    })
+                }
+            </div>
+        </>
+    )
 }
 
 export default CourseDetails;

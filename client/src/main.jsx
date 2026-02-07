@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "admin-dashboard/courses/:courseId/:semester/:day/:classTime",
+        path: "admin-dashboard/courses/:courseId/:semester/:day/:classTime/:schedule",
         element: <ProtectedRoute>
           <AssignSubjectToLecture/>
         </ProtectedRoute>

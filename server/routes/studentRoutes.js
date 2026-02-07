@@ -1,5 +1,5 @@
 import express from "express";
-import { createStudent, getStudents, removeStudent, studentLogin } from "../controllers/studentControllers.js";
+import { createStudent, getStudents, removeStudent, studentLogin, verifyStudent } from "../controllers/studentControllers.js";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
 
@@ -9,5 +9,6 @@ studentRouter.post("/create-student", authUser, verifyAccess("admin"), createStu
 studentRouter.get("/get-students", authUser, verifyAccess("admin"), getStudents);
 studentRouter.delete("/delete-student", authUser, verifyAccess("admin"), removeStudent);
 studentRouter.post("/student-login", studentLogin);
+studentRouter.get("/student/verify-student", authUser, verifyStudent);
 
 export default studentRouter;
