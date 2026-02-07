@@ -6,7 +6,7 @@ export const authUser = async (req,res,next) => {
         req.user = null;
         let token;
         const authHeader = req.headers["authorization"];
-        if (!authHeader && !authHeader.startsWith("Bearer")) {
+        if (!authHeader || !authHeader.startsWith("Bearer")) {
             return res.json({ success: false, message: "User not logged in" });
         }
         token = authHeader.split(" ")[1];
@@ -19,6 +19,7 @@ export const authUser = async (req,res,next) => {
             return res.json({ success: false, message: "Invalid user" });
         }
         req.user = user;
+        req.role = role;
         next();
     } catch(error) {
         console.log(error.message);

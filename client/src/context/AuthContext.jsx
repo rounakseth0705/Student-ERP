@@ -110,6 +110,7 @@ const AuthProvider = ({children}) => {
             if (response) {
                 if (response.data.success) {
                     localStorage.setItem("token",response.data.token);
+                    localStorage.setItem("role",response.data.user.role);
                     setUser(response.data.user);
                     setToken(response.data.token);
                     setIsLoggedIn(true);
@@ -118,7 +119,7 @@ const AuthProvider = ({children}) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -128,7 +129,7 @@ const AuthProvider = ({children}) => {
         checkAdmin();
         const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
-        if (!token) {
+        if (!token || !role) {
             return;
         }
         if (role === "admin") {

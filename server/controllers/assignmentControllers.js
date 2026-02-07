@@ -1,19 +1,17 @@
 import Assignment from "../models/assignmentModel.js";
 import Subject from "../models/subjectModel.js";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
+import { nanoid } from "nanoid";
 
 export const createAssignment = async (req,res) => {
     try {
-        const { assignmentName, assignmentSubjectCode, assignmentCourseId, semester, assignmentSubmitDate } = req.body;
+        const { assignmentName, assignmentSubjectCode, assignmentSubmitDate } = req.body;
         const assignmentFile = req.file;
-        const assignmentcreaterId = req.user.userId;
-        if (!assignmentName || !assignmentSubjectCode || !assignmentCourseId || !semester || !assignmentSubmitDate || !assignmentFile) {
+        const assignmentCreaterId = req?.teacherId;
+        if (!assignmentName || !assignmentSubjectCode || !assignmentSubmitDate || !assignmentFile) {
             return res.json({ success: false, message: "Missing details" });
         }
-        if (semester > assignmentCourseId.semesters) {
-            return res.json({ success: false, message: "Invalid semester" });
-        }
-        const assignmentId = String(Math.floor(100000 + Math.random() * 900000));
+        const assignmentId = nanoid(8);
         const existingAssignment = await Assignment.findOne({ assignmentId });
         if (existingAssignment) {
             return res.json({ success: false, message: "Assignment Id already exists" });
@@ -24,7 +22,7 @@ export const createAssignment = async (req,res) => {
         }
         const result = await uploadToCloudinary(assignmentFile.buffer, "assignment", "teacher");
         const assignmentUploadDate = new Date().toDateString();
-        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId, semester, assignmentId, assignmentcreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
+        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);
