@@ -98,3 +98,24 @@ export const verifyStudent = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const getCourseStudents = async (req,res) => {
+    try {
+        const { courseId } = req.params;
+        if (!courseId) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.json({ success: false, message: "Invalid course!" });
+        }
+        const students = await Student.find({ courseId });
+        if (!students) {
+            return res.json({ success: false, message: "No students exists in this course" });
+        }
+        return res.json({ success: true, students, message: `List of students in ${course.courseName}` });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}

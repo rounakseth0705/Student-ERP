@@ -26,7 +26,7 @@ export const createAssignment = async (req,res) => {
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);
-        return res.json({ success: false, message: error.message });
+        return res.json({ success: false, message: `Assignment api, ${error.message}` });
     }
 }
 
@@ -51,7 +51,7 @@ export const updateAssignmentDate = async (req,res) => {
 export const getAssignmentsForTeacher = async (req,res) => {
     try {
         const { teacherId } = req.user;
-        const assignments = await Assignment.find({ assignmentProviderId: teacherId });
+        const assignments = await Assignment.find({ assignmentCreaterId: teacherId });
         return res.json({ success: true, assignments, message: "List of all assignments" });
     } catch(error) {
         console.log(error.message);

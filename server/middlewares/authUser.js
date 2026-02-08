@@ -19,10 +19,10 @@ export const authUser = async (req,res,next) => {
             return res.json({ success: false, message: "Invalid user" });
         }
         req.user = user;
-        req.role = role;
+        req.role = decoded.role;
         next();
     } catch(error) {
         console.log(error.message);
-        return res.json({ success: false, message: error.message });
+        return res.json({ success: false, message:`Auth user middlewareeeeeeeee${ error.message}` });
     }
 }

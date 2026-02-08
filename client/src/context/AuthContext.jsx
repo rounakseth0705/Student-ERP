@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import API from "../config/api.js";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [user, setUser] = useState(null);
     const [userIdentity, setUserIdentity] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token"));
@@ -14,6 +15,12 @@ const AuthProvider = ({children}) => {
     const [isAdminExists, setIsAdminExists] = useState(true);
     const login = async (userId,password,role) => {
         try {
+            if (isLoggedIn) {
+                toast.success("Already logged in");
+                const role = localStorage.getItem("role");
+                navigate(`/${role}-dashboard`);
+                return;
+            }
             let response;
             if (role == "admin") {
                 response = await API.post("/user/admin-login", { identifier: userId, password });
@@ -78,7 +85,6 @@ const AuthProvider = ({children}) => {
     }
     const logout = () => {
         try {
-            console.log("Logout function called");
             localStorage.clear();
             setUser(null);
             setToken("");
@@ -138,7 +144,7 @@ const AuthProvider = ({children}) => {
                     setUser(res.data.user);
                     setToken(res.data.token);
                     setIsLoggedIn(true);
-                    navigate("/admin-dashboard");
+                    navigate(location.pathname);
                 } else {
                     logout();
                 }
@@ -150,7 +156,7 @@ const AuthProvider = ({children}) => {
                     setUserIdentity(res.data.teacher);
                     setToken(res.data.token);
                     setIsLoggedIn(true);
-                    navigate("/teacher-dashboard");
+                    navigate(location.pathname);
                 } else {
                     logout();
                 }
@@ -162,7 +168,7 @@ const AuthProvider = ({children}) => {
                     setUserIdentity(res.data.student);
                     setToken(res.data.token);
                     setIsLoggedIn(true);
-                    navigate("/student-dashboard");
+                    navigate(location.pathname);
                 } else {
                     logout();
                 }
