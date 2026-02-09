@@ -7,7 +7,7 @@ import { useState } from "react";
 const Teachers = () => {
     const { teachers, getTeachers, deleteTeacher } = useContext(AdminDashboardContext);
     const [query, setQuery] = useState("");
-    const [result, setResult] = useState("");
+    const [result, setResult] = useState([]);
     const handleGetTeachers = async () => {
         await getTeachers();
     }

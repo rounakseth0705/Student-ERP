@@ -15,12 +15,6 @@ const AuthProvider = ({ children }) => {
     const [isAdminExists, setIsAdminExists] = useState(true);
     const login = async (userId,password,role) => {
         try {
-            if (isLoggedIn) {
-                toast.success("Already logged in");
-                const role = localStorage.getItem("role");
-                navigate(`/${role}-dashboard`);
-                return;
-            }
             let response;
             if (role == "admin") {
                 response = await API.post("/user/admin-login", { identifier: userId, password });
