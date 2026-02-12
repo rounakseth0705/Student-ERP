@@ -6,7 +6,6 @@ export const attachTeacher = async (req,res,next) => {
         if (role !== "teacher") {
             return next();
         }
-        console.log(req.user._id);
         const userId = req.user._id;
         const teacher = await Teacher.findOne({ userId });
         if (!teacher) {
@@ -16,6 +15,6 @@ export const attachTeacher = async (req,res,next) => {
         next();
     } catch(error) {
         console.log(error.message);
-        return res.json({ success: false, message: `Attach teacher middleware, ${error.message}` });
+        return res.json({ success: false, message: error.message });
     }
 }

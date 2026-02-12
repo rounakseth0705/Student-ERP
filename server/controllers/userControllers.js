@@ -119,7 +119,7 @@ export const updatePassword = async (req,res) => {
 
 export const deleteUser = async (req,res) => {
     try {
-        const { userId } = req.body;
+        const { userId } = req.params;
         if (!userId) {
             return res.json({ success: false, message: "Missing user id" });
         }

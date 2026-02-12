@@ -9,7 +9,7 @@ userRouter.post("/admin-signup", adminSignUp);
 userRouter.post("/create-user", authUser, verifyAccess("admin"), UserCreation);
 userRouter.post("/admin-login", adminLogin);
 userRouter.put("/update-password", authUser, updatePassword);
-userRouter.delete("/delete-user", authUser, verifyAccess("admin"), deleteUser);
+userRouter.delete("/delete-user/:userId", authUser, verifyAccess("admin"), deleteUser);
 userRouter.get("/get-admins", getAdmins);
 userRouter.get("/verify-admin", authUser, verifyAdmin);
 

@@ -34,7 +34,7 @@ export const createStudent = async (req,res) => {
 
 export const getStudents = async (req,res) => {
     try {
-        const students = await Student.find().select("-userId");
+        const students = await Student.find().populate("courseId","courseName").select("-userId");
         return res.json({ success: true, students, message: "List of all students" });
     } catch(error) {
         console.log(error.message);
@@ -44,7 +44,7 @@ export const getStudents = async (req,res) => {
 
 export const removeStudent = async (req,res) => {
     try {
-        const { studentId, rollNo } = req.body;
+        const { studentId, rollNo } = req.params;
         if (!studentId || !rollNo) {
             return res.json({ success: false, message: "Missing details" });
         }

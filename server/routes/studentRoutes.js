@@ -7,7 +7,7 @@ const studentRouter = express.Router();
 
 studentRouter.post("/create-student", authUser, verifyAccess("admin"), createStudent);
 studentRouter.get("/get-students", authUser, verifyAccess("admin"), getStudents);
-studentRouter.delete("/delete-student", authUser, verifyAccess("admin"), removeStudent);
+studentRouter.delete("/delete-student/:studentId/:rollNo", authUser, verifyAccess("admin"), removeStudent);
 studentRouter.post("/student-login", studentLogin);
 studentRouter.get("/verify-student", authUser, verifyStudent);
 studentRouter.get("/get-students/:courseId", authUser, verifyAccess("teacher"), getCourseStudents);
