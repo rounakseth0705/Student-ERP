@@ -1,6 +1,9 @@
 import { useState } from "react";
+import homeIcon from "../assets/homeIcon.svg";
+import { useNavigate } from "react-router-dom";
 
-const CreateTeacherAndStudent = ({role,createUser}) => {
+const CreateTeacherAndStudent = ({ role, createUser }) => {
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
     const [email, setEmail] = useState("");
@@ -13,6 +16,7 @@ const CreateTeacherAndStudent = ({role,createUser}) => {
     }
     return(
         <div className="h-screen w-screen flex flex-col items-center">
+            <img onClick={() => navigate("/admin-dashboard")} src={homeIcon} alt="homeIcon" className="fixed left-15 top-4 w-10 h-10 cursor-pointer"/>
             <h1 className="text-blue-900 text-3xl mt-5 font-semibold">Create {role}</h1>
             <form className="m-5 bg-blue-300 py-4 px-5 rounded-2xl sm:px-20 md:px-30">
                 <div>

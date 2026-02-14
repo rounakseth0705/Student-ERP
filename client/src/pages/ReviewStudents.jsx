@@ -2,10 +2,13 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../context/AuthContext.jsx";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import homeIcon from "../assets/homeIcon.svg";
 
 const ReviewStudents = () => {
     const { userIdentity } = useContext(UserContext);
     const { students, getCourseStudents } = useContext(TeacherDashboardContext);
+    const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [result, setResult] = useState([]);
     const handleGetCourseStudents = async () => {
@@ -20,6 +23,7 @@ const ReviewStudents = () => {
     },[query])
     return(
         <div className="flex flex-col justify-center items-center">
+            <img onClick={() => navigate("/teacher-dashboard")} src={homeIcon} alt="homeIcon" className="absolute left-10 top-6 w-8 h-8 cursor-pointer"/>
             <h1 className="mt-5 text-blue-950 text-2xl font-semibold sm:text-3xl md:text-4xl">List of Students in {userIdentity.courseId.courseName}</h1>
             <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search student" className="mt-5 py-3 px-5 bg-gray-300 rounded-full outline-0 w-80 md:py-5 sm:w-110 md:w-150"/>
             <div className="bg-blue-50 rounded shadow-2xl mt-5 w-[95vw] sm:w-[90vw]">

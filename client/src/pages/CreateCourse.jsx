@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import toast from "react-hot-toast";
+import homeIcon from "../assets/homeIcon.svg";
+import { useNavigate } from "react-router-dom";
 
 const CreateCourse = () => {
     const { createCourse } = useContext(AdminDashboardContext);
+    const navigate = useNavigate();
     const [courseName, setCourseName] = useState("");
     const [courseCode, setCourseCode] = useState("");
     const [courseDuration, setCourseDuration] = useState("");
@@ -18,6 +21,7 @@ const CreateCourse = () => {
     }
     return(
         <div className="flex flex-col justify-center items-center">
+            <img onClick={() => navigate("/admin-dashboard")} src={homeIcon} alt="homeIcon" className="fixed left-15 top-10 w-10 h-10 cursor-pointer"/>
             <h1 className="text-blue-900 text-4xl mt-5 p-5 font-bold">Create course</h1>
             <form className="flex flex-col justify-center items-center mt-4 p-3 w-70 bg-blue-400 rounded-2xl shadow-2xl sm:p-5 sm:w-120 md:w-150 lg:w-200">
                 <div className="flex flex-col justify-center items-center m-2">

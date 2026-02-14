@@ -9,6 +9,7 @@ import checkIcon from "../assets/checkIcon.svg";
 import leftArrow from "../assets/leftArrow.svg";
 import rightArrow from "../assets/rightArrow.svg";
 import clockIcon from "../assets/clockIcon.svg";
+import leftLongArrow from "../assets/leftLongArrow.svg";
 import { useState } from "react";
 
 const CourseDetails = () => {
@@ -57,29 +58,55 @@ const CourseDetails = () => {
     }
     const getDate = (index) => {
         let dayToShow;
+        let totalDays;
         if (day === "Mon") {
             dayToShow = currentDate - 0 + index;
             if (dayToShow < 1) {
-                
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Tue") {
             dayToShow = currentDate - 1 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
             return dayToShow;
         } else if (day === "Wed") {
             dayToShow = currentDate - 2 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
             return dayToShow;
         } else if (day === "Thu") {
             dayToShow = currentDate - 3 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
             return dayToShow;
         } else if (day === "Fri") {
             dayToShow = currentDate - 4 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
             return dayToShow;
         } else if (day === "Sat") {
             dayToShow = currentDate - 5 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
             return dayToShow;
         } else if (day === "Sun") {
             dayToShow = currentDate - 6 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
             return dayToShow;
         }
     }
@@ -104,12 +131,21 @@ const CourseDetails = () => {
         setSelectedDate(getDate(index));
         setSelectedDay(getSelectedDay(index));
     }
+    const handlePreviousWeek = () => {
+        // const sevenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 7));
+        // setCurrentDate(sevenDaysAgo.getDate());
+    }
+    const handleNextWeek = () => {
+        // const sevenDaysLater = new Date(new Date().setDate(new Date().getDate() + 7));
+        // setCurrentDate(sevenDaysLater.getDate());
+    }
     useEffect(() => {
         handleGetCourse();
         handleGetSubjects();
     },[]);
     return(
         <>
+            <img onClick={() => navigate("/admin-dashboard/courses")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center text-blue-950 m-5 text-3xl font-semibold">Course Details</h1>
             <div className="flex flex-col justify-center items-center gap-5">
                 <div className="flex flex-col justify-center bg-blue-400 text-white shadow-xl rounded px-8 py-3 sm:py-8 sm:text-3xl md:text-4xl md:p-10">
@@ -167,9 +203,9 @@ const CourseDetails = () => {
                                 }
                                 <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
                                 <div className="flex justify-between items-center bg-blue-400 mt-5 text-white">
-                                    <img src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
+                                    <img onClick={handlePreviousWeek} src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
                                     <h1 className="my-5 text-2xl font-semibold">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
-                                    <img src={rightArrow} alt="rightArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
+                                    <img onClick={handleNextWeek} src={rightArrow} alt="rightArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
                                 </div>
                                 <div className="bg-blue-300 grid grid-cols-7 mt-1 mx-3 py-3 text-blue-950 sm:mx-10 md:mx-15 xl:px-3">
                                     <h1 className="flex justify-center items-center text-sm sm:text-base sm:mx-3 md:mx-5 lg:mx-7 xl:mx-10">Mon</h1>

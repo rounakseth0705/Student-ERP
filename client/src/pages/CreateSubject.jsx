@@ -1,11 +1,13 @@
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AdminDashboardContext } from "../context/AdminDashboardContext";
 import { useState } from "react";
+import leftLongArrow from "../assets/leftLongArrow.svg";
 
 const CreateSubject = () => {
     const { courseId, courseCode, semester } = useParams();
     const { createSubject } = useContext(AdminDashboardContext);
+    const navigate = useNavigate();
     const [subjectName, setSubjectName] = useState("");
     const [subjectCode, setSubjectCode] = useState("");
     const [subjectTeacherId, setSubjectTeacherId] = useState("");
@@ -15,6 +17,7 @@ const CreateSubject = () => {
     }
     return(
         <div className="h-screen w-screen flex flex-col items-center">
+            <img onClick={() => navigate(`/admin-dashboard/courses/${courseId}`)} src={leftLongArrow} alt="leftArrow" className="fixed left-10 top-5 w-10 h-10 cursor-pointer"/>
             <h1 className="text-blue-900 text-4xl mt-20 font-semibold">Create Subject</h1>
             <h1 className="text-blue-900 text-3xl mt-1 font-semibold">{courseCode.split("-")[0]} (Semester-{semester})</h1>
             <form className="m-5 bg-blue-300 py-4 px-5 rounded-2xl sm:px-20 md:px-30">

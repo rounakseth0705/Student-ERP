@@ -2,10 +2,13 @@ import { useContext } from "react";
 import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import { useEffect } from "react";
 import removeIcon from "../assets/removeIcon.svg";
+import homeIcon from "../assets/homeIcon.svg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Teachers = () => {
     const { teachers, getTeachers, deleteTeacher } = useContext(AdminDashboardContext);
+    const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [result, setResult] = useState([]);
     const handleGetTeachers = async () => {
@@ -23,6 +26,7 @@ const Teachers = () => {
     },[query]);
     return(
         <>
+            <img onClick={() => navigate("/admin-dashboard")} src={homeIcon} alt="homeIcon" className="absolute left-15 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center text-4xl font-semibold mt-5">LIST OF TEACHERS</h1>
             <div className="flex flex-col items-center">
                 <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search teacher" className="m-5 px-5 py-3 bg-gray-300 outline-0 rounded-full w-80 sm:w-100 md:py-5 md:w-110 lg:w-150"/>

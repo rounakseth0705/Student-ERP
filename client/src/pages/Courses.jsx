@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
+import homeIconWhite from "../assets/homeIconWhite.svg";
 
 const Courses = () => {
     const { courses, getCourses } = useContext(AdminDashboardContext);
@@ -12,7 +13,8 @@ const Courses = () => {
         handleGetCourses();
     },[]);
     return(
-        <div>
+        <>
+            <img onClick={() => navigate("/admin-dashboard")} src={homeIconWhite} alt="homeIcon" className="absolute left-10 top-5 w-8 h-8 cursor-pointer"/>
             <h1 className="bg-blue-800 text-center p-5 text-white font-semibold text-2xl sm:text-3xl">List of all Courses</h1>
             <div className="grid gap-5 grid-cols-2 mx-10 my-10 sm:mx-20 md:mx-30 lg:mx-40 sm:grid-cols-3 md:grid-cols-4">
                 { courses.length > 0 &&
@@ -23,7 +25,7 @@ const Courses = () => {
                     ))
                 }
             </div>
-        </div>
+        </>
     )
 }
 
