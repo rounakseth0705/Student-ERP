@@ -7,13 +7,13 @@ import jwt from "jsonwebtoken";
 
 export const createTeacher = async (req,res) => {
     try {
-        const { userId, name, courseCode, employeeId } = req.body;
-        if (!userId || !name || !courseCode || !employeeId) {
+        const { userId, courseCode, employeeId } = req.body;
+        if (!userId || !courseCode || !employeeId) {
             return res.json({ success: false, message: "Missing details" });
         }
         const isUser = await User.findById(userId);
-        if (!isUser || isUser.name !== name || isUser.role !== "teacher") {
-            return res.json({ success: false, message: "Invalid user id or name" });
+        if (!isUser || isUser.role !== "teacher") {
+            return res.json({ success: false, message: "Invalid user id" });
         }
         const course = await Course.findOne({ courseCode });
         if (!course) {
@@ -25,7 +25,7 @@ export const createTeacher = async (req,res) => {
         if (existingTeacher) {
             return res.json({ success: false, message: "Teacher already exists" });
         }
-        const teacher = await Teacher.create({ userId, teacherId, name, courseId, employeeId });
+        const teacher = await Teacher.create({ userId, teacherId, courseId, employeeId });
         return res.json({ success: true, teacher, message: "Teacher successfully created" });
     } catch(error) {
         console.log(error.message);
@@ -35,7 +35,7 @@ export const createTeacher = async (req,res) => {
 
 export const getTeachers = async (req,res) => {
     try {
-        const teachers = await Teacher.find().populate("courseId","courseName").select("-userId");
+        const teachers = await Teacher.find().populate([{ path: "courseId", select:"courseName" },{ path: "userId", select: "name" }]);
         return res.json({ success: true, teachers, message: "List of all teachers" });
     } catch(error) {
         console.log(error.message);

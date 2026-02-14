@@ -6,13 +6,13 @@ import Course from "../models/courseModel.js";
 
 export const createStudent = async (req,res) => {
     try {
-        const { userId, name, courseCode, rollNo } = req.body;
-        if (!userId || !name || !courseCode || !rollNo) {
+        const { userId, courseCode, rollNo } = req.body;
+        if (!userId || !courseCode || !rollNo) {
             return res.json({ success: false, message: "Missing details" });
         }
         const isUser = await User.findById(userId);
-        if (!isUser || isUser.role !== "student" || isUser.name !== name) {
-            return res.json({ success: false, message: "Invalid user id or name" });
+        if (!isUser || isUser.role !== "student") {
+            return res.json({ success: false, message: "Invalid user id" });
         }
         const studentId = String(Math.floor(1000000 + Math.random() * 9000000));
         const existingStudent = await Student.findOne({ $or: [{ userId },{ studentId },{ rollNo }] });
@@ -24,7 +24,7 @@ export const createStudent = async (req,res) => {
             return res.json({ success: false, message: "Invalid course" });
         }
         const courseId = course._id;
-        const student = await Student.create({ userId, studentId, name, courseId, rollNo });
+        const student = await Student.create({ userId, studentId, courseId, rollNo });
         return res.json({ success: true, student, message: "Student successfully created" });
     } catch(error) {
         console.log(error.message);
@@ -34,7 +34,7 @@ export const createStudent = async (req,res) => {
 
 export const getStudents = async (req,res) => {
     try {
-        const students = await Student.find().populate("courseId","courseName").select("-userId");
+        const students = await Student.find().populate([{ path: "courseId", select: "courseName" },{ path: "userId", select: "name" }]);
         return res.json({ success: true, students, message: "List of all students" });
     } catch(error) {
         console.log(error.message);
@@ -110,7 +110,7 @@ export const getCourseStudents = async (req,res) => {
         if (!course) {
             return res.json({ success: false, message: "Invalid course!" });
         }
-        const students = await Student.find({ courseId });
+        const students = await Student.find({ courseId }).populate("userId","name");
         if (!students) {
             return res.json({ success: false, message: "No students exists in this course" });
         }

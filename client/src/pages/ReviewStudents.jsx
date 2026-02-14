@@ -18,7 +18,7 @@ const ReviewStudents = () => {
         handleGetCourseStudents();
     },[])
     useEffect(() => {
-        const filteredStudents = students.filter(student => student.name.toLowerCase().includes(query.trim()) || student.studentId.includes(query.trim()) || student.rollNo.includes(query.trim()));
+        const filteredStudents = students.filter(student => student.userId.name.toLowerCase().includes(query.trim().toLowerCase()) || student.studentId.includes(query.trim()) || student.rollNo.includes(query.trim()));
         setResult(filteredStudents);
     },[query])
     return(
@@ -38,7 +38,7 @@ const ReviewStudents = () => {
                 { query.trim() === "" && students.length > 0 ?
                     students.map(student => (
                         <div key={student._id} className="grid grid-cols-5 my-1 text-sm sm:text-base">
-                            <h1 className="flex justify-center items-center">{student.name}</h1>
+                            <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.studentId}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
                             <h1 className="flex justify-center items-center">{student.semester}</h1>
@@ -47,7 +47,7 @@ const ReviewStudents = () => {
                     )) : query.trim() !== "" && result.length > 0 ?
                     result.map(student => (
                         <div key={student._id} className="grid grid-cols-5 my-1 text-xs sm:text-base">
-                            <h1 className="flex justify-center items-center">{student.name}</h1>
+                            <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.studentId}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
                             <h1 className="flex justify-center items-center">{student.semester}</h1>

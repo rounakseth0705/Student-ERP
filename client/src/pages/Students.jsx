@@ -19,7 +19,7 @@ const Students = () => {
         handleGetStudents();
     },[]);
     useEffect(() => {
-        const filteredStudents = students.filter(student => student.name.toLowerCase().includes(query.trim().toLowerCase()) || student.studentId.includes(query.trim()) || student.rollNo.includes(query.trim()) || student.courseId.courseName.toLowerCase().includes(query.trim().toLowerCase()));
+        const filteredStudents = students.filter(student => student.userId.name.toLowerCase().includes(query.trim().toLowerCase()) || student.studentId.includes(query.trim()) || student.rollNo.includes(query.trim()) || student.courseId.courseName.toLowerCase().includes(query.trim().toLowerCase()));
         setResult(filteredStudents);
     },[query]);
     return(
@@ -40,28 +40,28 @@ const Students = () => {
                 <hr className="mb-3"/>
                 { students.length > 0 && query.trim() === "" ?
                     students.map(student => (
-                        <div className="grid grid-cols-7 my-1">
-                            <h1 className="flex justify-center items-center">{student.name}</h1>
+                        <div key={student.studentId} className="grid grid-cols-7 my-1">
+                            <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.studentId}</h1>
                             <h1 className="flex justify-center items-center">{student.courseId.courseName}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
                             <h1 className="flex justify-center items-center">{student.semester}</h1>
                             <h1 className="flex justify-center items-center">{student.attendence}%</h1>
                             <div className="flex justify-center items-center hover:opacity-60 cursor-pointer">
-                                <img src={removeIcon} alt="removeIcon" className="w-5 h-5"/>
+                                <img onClick={() => handleDeleteStudent(student.studentId,student.rollNo)} src={removeIcon} alt="removeIcon" className="w-5 h-5"/>
                             </div>
                         </div>
                     )) : result.length > 0 && query.trim() !== "" ?
                     result.map(student => (
-                        <div className="grid grid-cols-7 my-1">
-                            <h1 className="flex justify-center items-center">{student.name}</h1>
+                        <div key={student.studentId} className="grid grid-cols-7 my-1">
+                            <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.studentId}</h1>
                             <h1 className="flex justify-center items-center">{student.courseId.courseName}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
                             <h1 className="flex justify-center items-center">{student.semester}</h1>
                             <h1 className="flex justify-center items-center">{student.attendence}%</h1>
                             <div className="flex justify-center items-center hover:opacity-60 cursor-pointer">
-                                <img src={removeIcon} alt="removeIcon" className="w-5 h-5"/>
+                                <img onClick={() => handleDeleteStudent(student.studentId,student.rollNo)} src={removeIcon} alt="removeIcon" className="w-5 h-5"/>
                             </div>
                         </div>
                     )) : <div>No student found</div>

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import API from "../config/api.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -102,7 +102,7 @@ const AdminDashboardProvider = ({ children }) => {
             if (response1) {
                 if (response1.data.success) {
                     const userId = response1.data.userId;
-                    const response2 = await API.post("/teacher/create-teacher", { userId, name, courseCode, employeeId });
+                    const response2 = await API.post("/teacher/create-teacher", { userId, courseCode, employeeId });
                     if (response2) {
                         if (response2.data.success) {
                             setTeachers((prev) => [...prev,response2.data.teacher]);
@@ -274,7 +274,7 @@ const AdminDashboardProvider = ({ children }) => {
             if (response1) {
                 if (response1.data.success) {
                     const userId = response1.data.userId;
-                    const response2 = await API.post("/student/create-student", { userId, name, courseCode, rollNo });
+                    const response2 = await API.post("/student/create-student", { userId, courseCode, rollNo });
                     if (response2.data.success) {
                         setStudents((prev) => [...prev,response2.data.student]);
                         toast.success(response2.data.message);
