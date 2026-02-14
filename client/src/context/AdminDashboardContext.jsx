@@ -1,15 +1,16 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import API from "../config/api.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./AuthContext.jsx";
 
 export const AdminDashboardContext = createContext();
 
 const AdminDashboardProvider = ({ children }) => {
     const navigate = useNavigate();
+    const { setSubjects } = useContext(UserContext);
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);
-    // const [subjects, setSubjects] = useState([]);
     const [students, setStudents] = useState([]);
     const getCourses = async () => {
         try {

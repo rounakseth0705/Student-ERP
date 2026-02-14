@@ -1,7 +1,64 @@
+import { useContext } from "react";
 import leftArrow from "../assets/leftArrow.svg";
 import rightArrow from "../assets/rightArrow.svg";
+import { UserContext } from "../context/AuthContext.jsx";
 
-const CalendarHeader = ({ selectedDate, setSelectedDayAndDate, getDate }) => {
+const CalendarHeader = ({ setSelectedDayAndDate, getDate }) => {
+    const { selectedDate, day, currentDate } = useContext(UserContext);
+    // const getDate = (index) => {
+    //     let dayToShow;
+    //     let totalDays;
+    //     if (day === "Mon") {
+    //         dayToShow = currentDate - 0 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Tue") {
+    //         dayToShow = currentDate - 1 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Wed") {
+    //         dayToShow = currentDate - 2 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Thu") {
+    //         dayToShow = currentDate - 3 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Fri") {
+    //         dayToShow = currentDate - 4 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Sat") {
+    //         dayToShow = currentDate - 5 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Sun") {
+    //         dayToShow = currentDate - 6 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     }
+    // }
     return(
         <>
             <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
@@ -21,9 +78,12 @@ const CalendarHeader = ({ selectedDate, setSelectedDayAndDate, getDate }) => {
             </div>
             <div className="grid grid-cols-7 mx-3 py-3 shadow-lg sm:mx-10 md:mx-15 xl:px-3">
                 {
-                    Array(7).fill("").map((_,index) => (
-                        <h1 onClick={() => setSelectedDayAndDate(index)} key={index} className={`flex justify-center items-center font-semibold rounded-2xl cursor-pointer ${selectedDate === getDate(index) && "bg-amber-500 shadow-md text-white"} sm:mx-3 md:mx-5 lg:mx-7 xl:mx-10`}>{getDate(index)}</h1>
-                    ))
+                    Array(7).fill("").map((_,index) => {
+                        const date = getDate(index);
+                        return(
+                            <h1 onClick={() => setSelectedDayAndDate(index)} key={index} className={`flex justify-center items-center font-semibold rounded-2xl cursor-pointer ${selectedDate === date && "bg-amber-500 shadow-md text-white"} sm:mx-3 md:mx-5 lg:mx-7 xl:mx-10`}>{date}</h1>
+                        )
+                    })
                 }
             </div>
         </>

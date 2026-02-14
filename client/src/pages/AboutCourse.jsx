@@ -3,9 +3,11 @@ import { UserContext } from "../context/AuthContext.jsx";
 import homeIcon from "../assets/homeIcon.svg";
 import { useNavigate } from "react-router-dom";
 import CourseDetailsCard from "../components/CourseDetailsCard.jsx";
+import SemesterSubjectList from "../components/SemesterSubjectList.jsx";
+import CalendarHeader from "../components/CalendarHeader.jsx";
 
 const AboutCourse = () => {
-    const { course, getCourse, userIdentity } = useContext(UserContext);
+    const { course, getCourse, userIdentity, selectedDate, currentDate } = useContext(UserContext);
     const navigate = useNavigate();
     const handleGetCourse = async () => {
         await getCourse(userIdentity.courseId._id);
@@ -26,6 +28,8 @@ const AboutCourse = () => {
                         const filteredSubjects = subjects.filter(subject => subject.semester === semester+1);
                         <React.Fragment key={semester}>
                             <h1 className="text-white bg-blue-400 font-semibold text-3xl text-center p-3 my-3">Semester {semester+1}</h1>
+                            <SemesterSubjectList filteredSubjects={filteredSubjects} courseId={course._id} courseCode={course.courseCode} semester={semester+1}/>
+                            <CalendarHeader />
                         </React.Fragment>
                     })
                 }

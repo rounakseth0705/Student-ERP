@@ -12,7 +12,7 @@ const AssignSubjectToLecture = () => {
     const [subjectCode, setSubjectCode] = useState("");
     const handleAssignSubject = async (event) => {
         event.preventDefault();
-        if (schedule === "assignSubject") {
+        if (schedule === "assignSchedule") {
             await scheduleClass(subjectName,subjectCode,courseId,semester,day,classTime);
         } else if (schedule === "updateSchedule") {
             await updateSchedule(subjectName,subjectCode,courseId,semester,day,classTime);

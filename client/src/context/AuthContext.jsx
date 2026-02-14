@@ -17,6 +17,11 @@ const AuthProvider = ({ children }) => {
     const [subjects, setSubjects] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [newTeacherId, setNewTeacherId] = useState("");
+    const [temperarySubjectCode, setTemperarySubjectCode] = useState("");
+    const [selectedDate, setSelectedDate] = useState(new Date().getDate());
+    const [selectedDay, setSelectedDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
+    const [currentDate, setCurrentDate] = useState(new Date().getDate());
+    const [day, setDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
     const login = async (userId,password,role) => {
         try {
             let response;
@@ -161,6 +166,60 @@ const AuthProvider = ({ children }) => {
             console.log(error.message);
         }
     }
+    const getDate = (index) => {
+        let dayToShow;
+        let totalDays;
+        if (day === "Mon") {
+            dayToShow = currentDate - 0 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        } else if (day === "Tue") {
+            dayToShow = currentDate - 1 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        } else if (day === "Wed") {
+            dayToShow = currentDate - 2 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        } else if (day === "Thu") {
+            dayToShow = currentDate - 3 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        } else if (day === "Fri") {
+            dayToShow = currentDate - 4 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        } else if (day === "Sat") {
+            dayToShow = currentDate - 5 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        } else if (day === "Sun") {
+            dayToShow = currentDate - 6 + index;
+            if (dayToShow < 1) {
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                dayToShow = totalDays - dayToShow;
+            }
+            return dayToShow;
+        }
+    }
     useEffect(() => {
         checkAdmin();
         const token = localStorage.getItem("token");
@@ -205,7 +264,7 @@ const AuthProvider = ({ children }) => {
             }).catch(() => logout());
         }
     },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, setNewTeacherId, setIsEditing, login, logout, createAdmin, getCourse, getSubjects };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate };
     return(
         <UserContext.Provider value={value}>
             {children}
