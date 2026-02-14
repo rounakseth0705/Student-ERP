@@ -9,9 +9,8 @@ const AdminDashboardProvider = ({ children }) => {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);
-    const [subjects, setSubjects] = useState([]);
+    // const [subjects, setSubjects] = useState([]);
     const [students, setStudents] = useState([]);
-    const [course, setCourse] = useState({});
     const getCourses = async () => {
         try {
             const response = await API.get("/course/get-courses");
@@ -26,22 +25,6 @@ const AdminDashboardProvider = ({ children }) => {
             }
         } catch(error) {
             console.log(error.message);
-        }
-    }
-    const getCourse = async (courseId) => {
-        try {
-            const response = await API.get(`/course/get-course/${courseId}`);
-            if (response) {
-                if (response.data.success) {
-                    setCourse(response.data.course);
-                } else {
-                    toast.error(response.data.message);
-                }
-            } else {
-                toast.error("Something went wrong!");
-            }
-        } catch(error) {
-            toast.error(error.message);
         }
     }
     const createCourse = async (courseName,courseCode,duration) => {
@@ -165,22 +148,22 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const getSubjects = async (courseId) => {
-        try {
-            const response = await API.get(`/subject/fetch-subjects/${courseId}`);
-            if (response) {
-                if (response.data.success) {
-                    setSubjects(response.data.subjects);
-                } else {
-                    toast.error(response.data.message);
-                }
-            } else {
-                toast.error("Something went wrong!");
-            }
-        } catch(error) {
-            console.log(error.message);
-        }
-    }
+    // const getSubjects = async (courseId) => {
+    //     try {
+    //         const response = await API.get(`/subject/fetch-subjects/${courseId}`);
+    //         if (response) {
+    //             if (response.data.success) {
+    //                 setSubjects(response.data.subjects);
+    //             } else {
+    //                 toast.error(response.data.message);
+    //             }
+    //         } else {
+    //             toast.error("Something went wrong!");
+    //         }
+    //     } catch(error) {
+    //         console.log(error.message);
+    //     }
+    // }
     const createSubject = async (courseId,courseCode,subjectName,subjectCode,semester,teacherId) => {
         try {
             const response = await API.post("/subject/create-subject", { courseCode, subjectName, subjectCode, semester, teacherId });
@@ -335,7 +318,7 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { courses, course, teachers, students, subjects, createCourse, getCourses, getCourse, deleteCourse, createTeacher, deleteTeacher, getTeachers, getSubjects, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent, deleteStudent, getStudents }
+    const value = { courses, teachers, students, createCourse, getCourses, deleteCourse, createTeacher, deleteTeacher, getTeachers, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent, deleteStudent, getStudents }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}

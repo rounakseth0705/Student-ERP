@@ -6,19 +6,21 @@ import plusIcon from "../assets/plusIcon.svg";
 import removeIcon from "../assets/removeIcon.svg";
 import editIcon from "../assets/editIcon.svg";
 import checkIcon from "../assets/checkIcon.svg";
-import leftArrow from "../assets/leftArrow.svg";
-import rightArrow from "../assets/rightArrow.svg";
 import clockIcon from "../assets/clockIcon.svg";
 import leftLongArrow from "../assets/leftLongArrow.svg";
 import { useState } from "react";
+import CourseDetailsCard from "../components/CourseDetailsCard.jsx";
+import { UserContext } from "../context/AuthContext.jsx";
+import CalendarHeader from "../components/CalendarHeader.jsx";
 
 const CourseDetails = () => {
-    const { course, subjects, deleteCourse, getCourse, getSubjects, deleteSubject, changeSubjectTeacher } = useContext(AdminDashboardContext);
+    const { course, subjects, isEditing, setIsEditing, getCourse, getSubjects } = useContext(UserContext);
+    const { deleteCourse, deleteSubject, changeSubjectTeacher } = useContext(AdminDashboardContext);
     const { courseId } = useParams();
     const navigate = useNavigate();
-    const [isEditing, setIsEditing] = useState(false);
+    // const [isEditing, setIsEditing] = useState(false);
     const [subjectCode, setSubjectCode] = useState("");
-    const [newTeacherId, setNewTeacherId] = useState("");
+    // const [newTeacherId, setNewTeacherId] = useState("");
     const [day, setDay] = useState(new Date().toLocaleString("en-US", { weekday: "short" }));
     const [currentDate, setCurrentDate] = useState(new Date().getDate());
     const [selectedDate, setSelectedDate] = useState(new Date().getDate());
@@ -148,12 +150,7 @@ const CourseDetails = () => {
             <img onClick={() => navigate("/admin-dashboard/courses")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center text-blue-950 m-5 text-3xl font-semibold">Course Details</h1>
             <div className="flex flex-col justify-center items-center gap-5">
-                <div className="flex flex-col justify-center bg-blue-400 text-white shadow-xl rounded px-8 py-3 sm:py-8 sm:text-3xl md:text-4xl md:p-10">
-                    <h1 className="m-2 p-1 sm:p-2">Course name : {course.courseName}</h1>
-                    <h1 className="m-2 p-1 sm:p-2">Course code : {course.courseCode}</h1>
-                    <h1 className="m-2 p-1 sm:p-2">Course Duration : {course.duration} years</h1>
-                    <h1 className="m-2 p-1 sm:p-2">Total Semesters : {course.semesters}</h1>
-                </div>
+                <CourseDetailsCard courseName={course.courseName} courseCode={course.courseCode} duration={course.duration} semesters={course.semesters}/>
                 <div className="flex justify-center items-center">
                     <button onClick={handleDeleteCourse} className="bg-red-600 text-white rounded mt-2 py-2 px-5 cursor-pointer hover:bg-red-500 transition-all duration-400 ease-in-out sm:mt-5 sm:text-2xl">Delete course</button>
                 </div>
@@ -201,7 +198,7 @@ const CourseDetails = () => {
                                         }
                                     </div>
                                 }
-                                <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
+                                {/* <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
                                 <div className="flex justify-between items-center bg-blue-400 mt-5 text-white">
                                     <img onClick={handlePreviousWeek} src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
                                     <h1 className="my-5 text-2xl font-semibold">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
@@ -222,7 +219,8 @@ const CourseDetails = () => {
                                             <h1 onClick={() => setSelectedDayAndDate(index)} key={index} className={`flex justify-center items-center font-semibold rounded-2xl cursor-pointer ${selectedDate === getDate(index) && "bg-amber-500 shadow-md text-white"} sm:mx-3 md:mx-5 lg:mx-7 xl:mx-10`}>{getDate(index)}</h1>
                                         ))
                                     }
-                                </div>
+                                </div> */}
+                                <CalendarHeader selectedDate={selectedDate} setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate}/>
                                 <div className="my-2 mx-3 py-5 px-1 rounded-2xl shadow-lg sm:mx-10 sm:px-3 md:mx-15 md:px-4 lg:px-10">
                                     {
                                         Array(6).fill("").map((_,classIndex) => {

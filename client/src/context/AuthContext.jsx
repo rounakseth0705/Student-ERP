@@ -13,6 +13,10 @@ const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdminExists, setIsAdminExists] = useState(true);
+    const [course, setCourse] = useState({});
+    const [subjects, setSubjects] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [newTeacherId, setNewTeacherId] = useState("");
     const login = async (userId,password,role) => {
         try {
             let response;
@@ -125,6 +129,38 @@ const AuthProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const getCourse = async (courseId) => {
+        try {
+            const response = await API.get(`/course/get-course/${courseId}`);
+            if (response) {
+                if (response.data.success) {
+                    setCourse(response.data.course);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const getSubjects = async (courseId) => {
+        try {
+            const response = await API.get(`/subject/fetch-subjects/${courseId}`);
+            if (response) {
+                if (response.data.success) {
+                    setSubjects(response.data.subjects);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            console.log(error.message);
+        }
+    }
     useEffect(() => {
         checkAdmin();
         const token = localStorage.getItem("token");
@@ -169,7 +205,7 @@ const AuthProvider = ({ children }) => {
             }).catch(() => logout());
         }
     },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, login, logout, createAdmin };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, setNewTeacherId, setIsEditing, login, logout, createAdmin, getCourse, getSubjects };
     return(
         <UserContext.Provider value={value}>
             {children}
