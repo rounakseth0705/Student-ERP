@@ -21,7 +21,7 @@ const Assignments = () => {
             <div className="grid grid-cols-2 gap-10 mt-15 mx-50">
                 {
                     subjects.map((subject,index) => (
-                        <div key={index} onClick={() => navigate(subject._id)} className="flex flex-col justify-center items-center py-5 bg-blue-200 text-blue-950 font-semibold shadow-lg cursor-pointer hover:bg-blue-100 hover:text-blue-900 transition-all ease-in-out duration-400">
+                        <div key={index} onClick={() => navigate(`${subject._id}/${subject.subjectName}/${subject.subjectCode}`)} className="flex flex-col justify-center items-center py-5 bg-blue-200 text-blue-950 font-semibold shadow-lg cursor-pointer hover:bg-blue-100 hover:text-blue-900 transition-all ease-in-out duration-400">
                             <h1>Subject: {subject.subjectName}</h1>
                             <h1>Code: {subject.subjectCode}</h1>
                             <h1>Semester: {subject.semester}</h1>

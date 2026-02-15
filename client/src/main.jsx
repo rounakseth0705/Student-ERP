@@ -106,7 +106,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "teacher-dashboard/assignments/:subjectId",
+        path: "teacher-dashboard/assignments/:subjectId/:subjectName/:subjectCode",
         element: <ProtectedRoute>
           <SubjectAssignments/>
         </ProtectedRoute>

@@ -48,10 +48,11 @@ export const updateAssignmentDate = async (req,res) => {
     }
 }
 
-export const getAssignmentsForTeacher = async (req,res) => {
+export const getSubjectAssignmentsForTeacher = async (req,res) => {
     try {
         const { teacherId } = req.user;
-        const assignments = await Assignment.find({ assignmentCreaterId: teacherId });
+        const { subjectId } = req.params;
+        const assignments = await Assignment.find({ assignmentSubjectId: subjectId, assignmentCreaterId: teacherId });
         return res.json({ success: true, assignments, message: "List of all assignments" });
     } catch(error) {
         console.log(error.message);
