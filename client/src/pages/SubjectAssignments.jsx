@@ -19,6 +19,16 @@ const SubjectAssignments = () => {
         <div>
             <img onClick={() => navigate("/teacher-dashboard/assignments")} src={leftLongArrow} alt="leftArrow" className="absolute left-10 top-5 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center mt-5 text-3xl font-semibold text-blue-950">{subjectName} ({subjectCode})</h1>
+            <div>
+                {
+                    assignments.map((assignment,index) => (
+                        <div key={index}>
+                            <h1>{assignment.assignmentName}</h1>
+                            <h1></h1>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     )
 }

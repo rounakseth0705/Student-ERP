@@ -26,7 +26,7 @@ export const createAssignment = async (req,res) => {
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);
-        return res.json({ success: false, message: `Assignment api, ${error.message}` });
+        return res.json({ success: false, message: error.message });
     }
 }
 
