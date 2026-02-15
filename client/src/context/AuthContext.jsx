@@ -220,6 +220,38 @@ const AuthProvider = ({ children }) => {
             return dayToShow;
         }
     }
+    const getSelectedDay = (index) => {
+        if (index === 0) {
+            return "Mon";
+        } else if (index === 1) {
+            return "Tue";
+        } else if (index === 2) {
+            return "Wed";
+        } else if (index === 3) {
+            return "Thu";
+        } else if (index === 4) {
+            return "Fri";
+        } else if (index === 5) {
+            return "Sat";
+        } else if (index === 6) {
+            return "Sun";
+        }
+    }
+    const getCurrentClassTime = (index,minutesToAdd,isEndTime=false) => {
+        const date = new Date();
+        date.setHours(9,30,0,0);
+        date.setMinutes(date.getMinutes() + (minutesToAdd*index));
+        if (index > 3) {
+            date.setMinutes(date.getMinutes() + 60);
+        }
+        if (!isEndTime) {
+            return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+        }
+        if (isEndTime) {
+            date.setMinutes(date.getMinutes() + minutesToAdd);
+            return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+        }
+    }
     useEffect(() => {
         checkAdmin();
         const token = localStorage.getItem("token");
@@ -264,7 +296,7 @@ const AuthProvider = ({ children }) => {
             }).catch(() => logout());
         }
     },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime };
     return(
         <UserContext.Provider value={value}>
             {children}

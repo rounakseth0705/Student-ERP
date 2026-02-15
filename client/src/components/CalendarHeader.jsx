@@ -4,61 +4,7 @@ import rightArrow from "../assets/rightArrow.svg";
 import { UserContext } from "../context/AuthContext.jsx";
 
 const CalendarHeader = ({ setSelectedDayAndDate, getDate }) => {
-    const { selectedDate, day, currentDate } = useContext(UserContext);
-    // const getDate = (index) => {
-    //     let dayToShow;
-    //     let totalDays;
-    //     if (day === "Mon") {
-    //         dayToShow = currentDate - 0 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     } else if (day === "Tue") {
-    //         dayToShow = currentDate - 1 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     } else if (day === "Wed") {
-    //         dayToShow = currentDate - 2 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     } else if (day === "Thu") {
-    //         dayToShow = currentDate - 3 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     } else if (day === "Fri") {
-    //         dayToShow = currentDate - 4 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     } else if (day === "Sat") {
-    //         dayToShow = currentDate - 5 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     } else if (day === "Sun") {
-    //         dayToShow = currentDate - 6 + index;
-    //         if (dayToShow < 1) {
-    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    //             dayToShow = totalDays - dayToShow;
-    //         }
-    //         return dayToShow;
-    //     }
-    // }
+    const { selectedDate, } = useContext(UserContext);
     return(
         <>
             <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>

@@ -149,22 +149,6 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    // const getSubjects = async (courseId) => {
-    //     try {
-    //         const response = await API.get(`/subject/fetch-subjects/${courseId}`);
-    //         if (response) {
-    //             if (response.data.success) {
-    //                 setSubjects(response.data.subjects);
-    //             } else {
-    //                 toast.error(response.data.message);
-    //             }
-    //         } else {
-    //             toast.error("Something went wrong!");
-    //         }
-    //     } catch(error) {
-    //         console.log(error.message);
-    //     }
-    // }
     const createSubject = async (courseId,courseCode,subjectName,subjectCode,semester,teacherId) => {
         try {
             const response = await API.post("/subject/create-subject", { courseCode, subjectName, subjectCode, semester, teacherId });

@@ -96,7 +96,7 @@ export const fetchSubjectsByCourseId = async (req,res) => {
         if (!courseId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const subjects = await Subject.find({ courseId }).select("-courseId").populate("teacherId", "teacherId name");
+        const subjects = await Subject.find({ courseId }).select("-courseId").populate({ path: "teacherId", select: "teacherId", populate: { path: "userId", select: "name" } });
         return res.json({ success: true, subjects, message: "List of subjects" });
     } catch(error) {
         console.log(error.message);

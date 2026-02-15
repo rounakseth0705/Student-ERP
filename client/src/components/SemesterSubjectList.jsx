@@ -43,7 +43,7 @@ const SemesterSubjectList = ({ filteredSubjects, courseId, courseCode, semester 
                                     <h1 className="flex justify-center flex-wrap sm:mx-2 md:mx-2 lg:mx-7">{subject.subjectName}</h1>
                                     <h1 className="flex justify-center sm:mx-2 md:mx-2 lg:mx-7">{subject.subjectCode}</h1>
                                     <div className="flex justify-center gap-1 sm:gap-2">
-                                        { isEditing && subject.subjectCode===temperarySubjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" className="border rounded px-1 w-20 sm:w-25 md:w-30"/> : <h1 className="sm:mx-2 md:mx-2 lg:mx-7">{subject.teacherId.teacherId}</h1> }
+                                        { isEditing && subject.subjectCode===temperarySubjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" className="border rounded px-1 w-20 sm:w-25 md:w-30"/> : <h1 className="sm:mx-2 md:mx-2 lg:mx-7">{ userIdentity ? subject.teacherId.userId.name : subject.teacherId.teacherId }</h1> }
                                         { (isEditing && subject.subjectCode===temperarySubjectCode) && <img onClick={() => handleEditTeacherId(subject.subjectCode,subject.teacherId.teacherId)} src={checkIcon} alt="checkIcon" className="w-5 h-5 cursor-pointer" /> }
                                     </div>
                                     { !userIdentity &&

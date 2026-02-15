@@ -3,18 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import React from "react";
 import plusIcon from "../assets/plusIcon.svg";
-// import removeIcon from "../assets/removeIcon.svg";
-// import editIcon from "../assets/editIcon.svg";
 import clockIcon from "../assets/clockIcon.svg";
 import leftLongArrow from "../assets/leftLongArrow.svg";
-import { useState } from "react";
 import CourseDetailsCard from "../components/CourseDetailsCard.jsx";
 import { UserContext } from "../context/AuthContext.jsx";
 import CalendarHeader from "../components/CalendarHeader.jsx";
 import SemesterSubjectList from "../components/SemesterSubjectList.jsx";
+import Timetable from "../components/Timetable.jsx";
 
 const CourseDetails = () => {
-    const { course, subjects, getCourse, getSubjects, setSelectedDate, selectedDay, setSelectedDay, currentDate, day } = useContext(UserContext);
+    const { course, subjects, getCourse, getSubjects, setSelectedDate, selectedDay, setSelectedDay, currentDate, day, getDate, getSelectedDay, getCurrentClassTime } = useContext(UserContext);
     const { deleteCourse } = useContext(AdminDashboardContext);
     const { courseId } = useParams();
     const navigate = useNavigate();
@@ -34,92 +32,92 @@ const CourseDetails = () => {
     const handleGetSubjects = async () => {
         await getSubjects(courseId);
     }
-    const getCurrentClassTime = (index,minutesToAdd,isEndTime=false) => {
-        const date = new Date();
-        date.setHours(9,30,0,0);
-        date.setMinutes(date.getMinutes() + (minutesToAdd*index));
-        if (index > 3) {
-            date.setMinutes(date.getMinutes() + 60);
-        }
-        if (!isEndTime) {
-            return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
-        }
-        if (isEndTime) {
-            date.setMinutes(date.getMinutes() + minutesToAdd);
-            return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
-        }
-    }
-    const getDate = (index) => {
-        let dayToShow;
-        let totalDays;
-        if (day === "Mon") {
-            dayToShow = currentDate - 0 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        } else if (day === "Tue") {
-            dayToShow = currentDate - 1 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        } else if (day === "Wed") {
-            dayToShow = currentDate - 2 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        } else if (day === "Thu") {
-            dayToShow = currentDate - 3 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        } else if (day === "Fri") {
-            dayToShow = currentDate - 4 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        } else if (day === "Sat") {
-            dayToShow = currentDate - 5 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        } else if (day === "Sun") {
-            dayToShow = currentDate - 6 + index;
-            if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
-            }
-            return dayToShow;
-        }
-    }
-    const getSelectedDay = (index) => {
-        if (index === 0) {
-            return "Mon";
-        } else if (index === 1) {
-            return "Tue";
-        } else if (index === 2) {
-            return "Wed";
-        } else if (index === 3) {
-            return "Thu";
-        } else if (index === 4) {
-            return "Fri";
-        } else if (index === 5) {
-            return "Sat";
-        } else if (index === 6) {
-            return "Sun";
-        }
-    }
+    // const getCurrentClassTime = (index,minutesToAdd,isEndTime=false) => {
+    //     const date = new Date();
+    //     date.setHours(9,30,0,0);
+    //     date.setMinutes(date.getMinutes() + (minutesToAdd*index));
+    //     if (index > 3) {
+    //         date.setMinutes(date.getMinutes() + 60);
+    //     }
+    //     if (!isEndTime) {
+    //         return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+    //     }
+    //     if (isEndTime) {
+    //         date.setMinutes(date.getMinutes() + minutesToAdd);
+    //         return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+    //     }
+    // }
+    // const getDate = (index) => {
+    //     let dayToShow;
+    //     let totalDays;
+    //     if (day === "Mon") {
+    //         dayToShow = currentDate - 0 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Tue") {
+    //         dayToShow = currentDate - 1 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Wed") {
+    //         dayToShow = currentDate - 2 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Thu") {
+    //         dayToShow = currentDate - 3 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Fri") {
+    //         dayToShow = currentDate - 4 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Sat") {
+    //         dayToShow = currentDate - 5 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     } else if (day === "Sun") {
+    //         dayToShow = currentDate - 6 + index;
+    //         if (dayToShow < 1) {
+    //             totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    //             dayToShow = totalDays - dayToShow;
+    //         }
+    //         return dayToShow;
+    //     }
+    // }
+    // const getSelectedDay = (index) => {
+    //     if (index === 0) {
+    //         return "Mon";
+    //     } else if (index === 1) {
+    //         return "Tue";
+    //     } else if (index === 2) {
+    //         return "Wed";
+    //     } else if (index === 3) {
+    //         return "Thu";
+    //     } else if (index === 4) {
+    //         return "Fri";
+    //     } else if (index === 5) {
+    //         return "Sat";
+    //     } else if (index === 6) {
+    //         return "Sun";
+    //     }
+    // }
     const setSelectedDayAndDate = (index) => {
         setSelectedDate(getDate(index));
         setSelectedDay(getSelectedDay(index));
@@ -213,7 +211,7 @@ const CourseDetails = () => {
                                     }
                                 </div> */}
                                 <CalendarHeader setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate}/>
-                                <div className="my-2 mx-3 py-5 px-1 rounded-2xl shadow-lg sm:mx-10 sm:px-3 md:mx-15 md:px-4 lg:px-10">
+                                {/* <div className="my-2 mx-3 py-5 px-1 rounded-2xl shadow-lg sm:mx-10 sm:px-3 md:mx-15 md:px-4 lg:px-10">
                                     {
                                         Array(6).fill("").map((_,classIndex) => {
                                             const currentClassStartTime = getCurrentClassTime(classIndex,55).replace(" am","").replace(" pm","");
@@ -232,7 +230,7 @@ const CourseDetails = () => {
                                                                     <div className="flex flex-col justify-center items-center gap-2 pr-5 sm:flex-row md:gap-5 md:px-3 lg:gap-12 lg:px-5 lg:mx-8 xl:mx-20">
                                                                         <span className="flex flex-col justify-center items-center sm:inline">
                                                                             <h1>{assignedSubject.subjectName}</h1>
-                                                                            <h1 className="text-blue-600 text-sm sm:text-base">{assignedSubject.teacherId.name.toUpperCase()}</h1>
+                                                                            <h1 className="text-blue-600 text-sm sm:text-base">{assignedSubject.teacherId.userId.name.toUpperCase()}</h1>
                                                                         </span>
                                                                         <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester+1}/${selectedDay}/${currentClassStartTime}/updateSchedule`)} className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button>
                                                                     </div> :
@@ -248,7 +246,8 @@ const CourseDetails = () => {
                                             )
                                         })
                                     }
-                                </div>
+                                </div> */}
+                                <Timetable filteredSubjects={filteredSubjects} courseId={courseId} semester={semester+1}/>
                             </React.Fragment>
                         )
                     })
@@ -259,25 +258,3 @@ const CourseDetails = () => {
 }
 
 export default CourseDetails;
-
-
-// filteredSubjects.map((subject,index) => {
-//                                                                     const isAssigned = subject.schedule?.some(schedule => schedule.day === selectedDay && schedule.classTime === currentClassStartTime);
-//                                                                     return(
-//                                                                         <React.Fragment key={index}>
-//                                                                             { isAssigned ?
-//                                                                                 <div className="flex flex-col justify-center items-center gap-2 pr-5 sm:flex-row md:gap-5 md:px-3 lg:gap-12 lg:px-5 lg:mx-8 xl:mx-20">
-//                                                                                     <span className="flex flex-col justify-center items-center sm:inline">
-//                                                                                         <h1>{subject.subjectName}</h1>
-//                                                                                         <h1 className="text-blue-600 text-sm sm:text-base">{subject.teacherId.name.toUpperCase()}</h1>
-//                                                                                     </span>
-//                                                                                     <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester+1}/${selectedDay}/${currentClassStartTime}/updateSchedule`)} className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button>
-//                                                                                 </div> :
-//                                                                                 <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester+1}/${selectedDay}/${currentClassStartTime}/assignSchedule`)} key={index} className="flex justify-center items-center gap-1 mx-4 px-2 py-2 rounded bg-blue-600 text-white cursor-pointer hover:bg-blue-500 transition-all duration-400 ease-in-out sm:px-5 sm:mx-8 md:mx-10 xl:mx-30">
-//                                                                                     Assign Subject
-//                                                                                     <img src={plusIcon} alt="plusIcon" className="w-5 h-5"/>
-//                                                                                 </button>
-//                                                                             }
-//                                                                         </React.Fragment>
-//                                                                     )
-//                                                                 })
