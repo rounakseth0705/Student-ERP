@@ -150,3 +150,21 @@ export const updateSchedule = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const getSubjectsForTeacher = async (req,res) => {
+    try {
+        const { teacherId } = req.params;
+        if (!teacherId) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const teacher = await Teacher.findById(teacherId);
+        if (!teacher) {
+            return res.json({ success: false, message: "Teacher not found" });
+        }
+        const subjects = await Subject.find({ teacherId }).select("-schedule");
+        return res.json({ success: true, subjects, message: "Your subject list" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
