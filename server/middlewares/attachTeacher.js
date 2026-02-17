@@ -11,7 +11,7 @@ export const attachTeacher = async (req,res,next) => {
         if (!teacher) {
             return res.json({ success: false, message: "Teacher profile not found" });
         }
-        req.teacherId = teacher.teacherId;
+        req.teacherId = teacher._id;
         next();
     } catch(error) {
         console.log(error.message);

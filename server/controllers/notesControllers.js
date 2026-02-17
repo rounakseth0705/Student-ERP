@@ -28,3 +28,21 @@ export const createNotes = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const getSubjectNotes = async (req,res) => {
+    try {
+        const { courseId, subjectId } = req.params;
+        if (!courseId || !subjectId) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const subject = await Subject.findById(subjectId);
+        if (!subject || subject.courseId !== courseId) {
+            return res.json({ success: false, message: "Invalid details" });
+        }
+        const notes = await Notes.find({ notesCourseId: courseId, notesSubjectId: subjectId });
+        return res.json({ success: true, notes, message: "List of notes" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}

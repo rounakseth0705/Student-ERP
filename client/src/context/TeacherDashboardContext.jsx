@@ -59,7 +59,41 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments }
+    const updateAssignmentSubmitDate = async (assignmentId,assignmentUpdatedSubmitDate) => {
+        try {
+            const response = await API.put("/assignment/update-assignment-date", { assignmentId, assignmentUpdatedSubmitDate });
+            if (response) {
+                if (response.data.success) {
+                    setAssignments((prev) => prev.map(assignment => assignment.assignmentId === assignmentId ? { ...assignment, active: true } : assignment));
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const deleteAssignment = async (assignmentId) => {
+        try {
+            const response = await API.delete(`assignment/delete-assignment/${assignmentId}`);
+            if (response) {
+                if (response.data.success) {
+                    setAssignments(prev => prev.filter(assignment => assignment._id === assignmentId));
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, updateAssignmentSubmitDate, deleteAssignment }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}

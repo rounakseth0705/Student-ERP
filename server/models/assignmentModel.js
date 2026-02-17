@@ -6,10 +6,11 @@ const assignmentSchema = new mongoose.Schema({
     assignmentCourseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true  },
     semester: { type: Number, required: true },
     assignmentId: { type: String, required: true, unique: true },
-    assignmentCreaterId: { type: String, required: true },
+    assignmentCreaterId: { type: mongoose.Schema.Types.ObjectId, ref: "teacher", required: true },
     assignmentUploadDate: { type: Date, required: true },
     assignmentSubmitDate: { type: Date, required: true },
-    assignmentUrl: { type: String, required: true }
+    assignmentUrl: { type: String, required: true },
+    assignmentPublicId: { type: String, required: true }
 });
 
 const Assignment = mongoose.model("assignment", assignmentSchema);

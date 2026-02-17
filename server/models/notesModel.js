@@ -7,7 +7,8 @@ const notesSchema = new mongoose.Schema({
     semester: { type: Number, required: true },
     notesId: { type: String, required: true, unique: true },
     notesProviderId: { type: String, required: true },
-    notesUrl: { type: String, required: true }
+    notesUrl: { type: String, required: true },
+    notesPublicId: { type: String, required: true }
 },{ timestamps: true });
 
 const Notes = mongoose.model("notes", notesSchema);

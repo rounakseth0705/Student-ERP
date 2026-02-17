@@ -1,5 +1,6 @@
 import Assignment from "../models/assignmentModel.js";
 import Subject from "../models/subjectModel.js";
+import deleteFromCloudinary from "../utils/cloudinaryDelete.js";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 import { nanoid } from "nanoid";
 
@@ -8,7 +9,7 @@ export const createAssignment = async (req,res) => {
         const { assignmentName, assignmentSubjectCode, assignmentSubmitDate } = req.body;
         const assignmentFile = req.file;
         const assignmentCreaterId = req?.teacherId;
-        if (!assignmentName || !assignmentSubjectCode || !assignmentSubmitDate || !assignmentFile) {
+        if (!assignmentName || !assignmentSubjectCode || !assignmentSubmitDate || !assignmentFile || !assignmentCreaterId) {
             return res.json({ success: false, message: "Missing details" });
         }
         const assignmentId = nanoid(8);
@@ -22,7 +23,7 @@ export const createAssignment = async (req,res) => {
         }
         const result = await uploadToCloudinary(assignmentFile.buffer, "assignment", "teacher");
         const assignmentUploadDate = new Date().toDateString();
-        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url });
+        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId: result.public_id });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);
@@ -32,12 +33,12 @@ export const createAssignment = async (req,res) => {
 
 export const updateAssignmentDate = async (req,res) => {
     try {
-        const { assignmentId, assignmentUpdatedUploadDate } = req.body;
-        const assignmentcreaterId = req.user.userId;
-        if (!assignmentId || !assignmentUpdatedUploadDate || !assignmentcreaterId) {
+        const { assignmentId, assignmentUpdatedSubmitDate } = req.body;
+        const assignmentcreaterId = req?.teacherId;
+        if (!assignmentId || !assignmentUpdatedSubmitDate || !assignmentcreaterId) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const assignment = await Assignment.findOneAndUpdate({ assignmentId, assignmentcreaterId },{ assignmentSubmitDate: assignmentUpdatedUploadDate },{ new: true });
+        const assignment = await Assignment.findByIdAndUpdate(assignmentId, { assignmentSubmitDate: assignmentUpdatedSubmitDate },{ new: true });
         if (!assignment) {
             return res.json({ success: false, message: "Something went wrong" });
         }
@@ -86,8 +87,15 @@ export const getAssignmentsForAdmin = async (req,res) => {
 
 export const deleteAssignment = async (req,res) => {
     try {
-        const { assignmentId } = req.body;
-        const result = await Assignment.deleteOne({ assignmentId });
+        const { assignmentId } = req.params;
+        const deletedAssignment = await Assignment.findByIdAndDelete(assignmentId);
+        if (!deletedAssignment) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const response = await deleteFromCloudinary(deleteAssignment.assignmentPublicId);
+        if (response.result !== "ok") {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
         return res.json({ success: true, message: "Assignment deleted" });
     } catch(error) {
         console.log(error.message);
