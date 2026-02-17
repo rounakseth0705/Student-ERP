@@ -50,9 +50,12 @@ export const updateAssignmentDate = async (req,res) => {
 
 export const getSubjectAssignmentsForTeacher = async (req,res) => {
     try {
-        const { teacherId } = req.user;
-        const { subjectId } = req.params;
-        const assignments = await Assignment.find({ assignmentSubjectId: subjectId, assignmentCreaterId: teacherId });
+        const teacherId = req?.teacherId;
+        const { courseId, subjectId } = req.params;
+        if (!teacherId || !courseId || !subjectId) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const assignments = await Assignment.find({ assignmentSubjectId: subjectId, assignmentCourseId: courseId, assignmentCreaterId: teacherId });
         return res.json({ success: true, assignments, message: "List of all assignments" });
     } catch(error) {
         console.log(error.message);

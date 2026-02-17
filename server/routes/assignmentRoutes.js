@@ -9,7 +9,7 @@ const assignmentRouter = express.Router();
 
 assignmentRouter.post("/create-assignment", upload.single("assignmentFile"), authUser, verifyAccess("teacher"), attachTeacher, createAssignment);
 assignmentRouter.put("/update-assignment-date", authUser, verifyAccess("teacher"), updateAssignmentDate);
-assignmentRouter.get("/get-assignments-teacher/:subjectId", authUser, verifyAccess("teacher"), getSubjectAssignmentsForTeacher);
+assignmentRouter.get("/get-assignments-teacher/:courseId/:subjectId", authUser, verifyAccess("teacher"), attachTeacher, getSubjectAssignmentsForTeacher);
 assignmentRouter.get("/get-assignments-student", authUser, verifyAccess("student"), getAssignmetsForStudent);
 assignmentRouter.get("/get-assignments-admin", authUser, verifyAccess("admin"), getAssignmentsForAdmin);
 assignmentRouter.delete("/delete-assignment", authUser, verifyAccess("teacher"), deleteAssignment);

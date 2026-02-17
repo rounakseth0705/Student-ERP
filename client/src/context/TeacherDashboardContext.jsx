@@ -42,9 +42,9 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const getSubjectAssignments = async (subjectId) => {
+    const getSubjectAssignments = async (courseId,subjectId) => {
         try {
-            const response = await API.get(`/assignment/get-assignments-teacher/${subjectId}`);
+            const response = await API.get(`/assignment/get-assignments-teacher/${courseId}/${subjectId}`);
             if (response) {
                 if (response.data.success) {
                     setAssignments(response.data.assignments);
