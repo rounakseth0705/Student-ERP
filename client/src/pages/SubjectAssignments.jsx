@@ -55,7 +55,7 @@ const SubjectAssignments = () => {
                                     <img onClick={() => handleArrowOpen(index)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
                                 </span>
                                 <h1 className="px-7">{assignment.assignmentName}</h1>
-                                <h1 className="px-7">{new Date(assignment.assignmentUploadDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                                <h1 className="px-7">{new Date(assignment.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                                 <span className="flex justify-center items-center gap-3 px-7">
                                     { isEditing && activeIndex === index ?
                                         <input onChange={(event) => setAssignmentUpdatedSubmitDate(event.target.value)} value={assignmentUpdatedSubmitDate} type="text" className="w-27 rounded bg-gray-200 outline-0"/> :
@@ -70,10 +70,12 @@ const SubjectAssignments = () => {
                                     <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
                                 </span>
                                 <span className="px-7 cursor-pointer">
-                                    <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                    <a href={assignment.assignmentUrl} download>
+                                        <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                    </a>
                                 </span>
                                 <span className="px-7 cursor-pointer">
-                                    <img onClick={() => handleDeleteAssignment(assignment._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5"/>
+                                    <img onClick={() => handleDeleteAssignment(assignment._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 hover:opacity-60"/>
                                 </span>
                             </div>
                             { isOpen &&

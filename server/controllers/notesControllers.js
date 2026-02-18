@@ -1,7 +1,7 @@
 import Notes from "../models/notesModel.js";
 import Subject from "../models/subjectModel.js";
 import { nanoid } from "nanoid";
-import uploadToCloudinary from "../utils/cloudinaryUpload.js";
+import { uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createNotes = async (req,res) => {
     try {

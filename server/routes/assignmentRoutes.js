@@ -13,5 +13,6 @@ assignmentRouter.get("/get-assignments-teacher/:courseId/:subjectId", authUser, 
 assignmentRouter.get("/get-assignments-student", authUser, verifyAccess("student"), getAssignmetsForStudent);
 assignmentRouter.get("/get-assignments-admin", authUser, verifyAccess("admin"), getAssignmentsForAdmin);
 assignmentRouter.delete("/delete-assignment/:assignmentId", authUser, verifyAccess("teacher"), deleteAssignment);
+// assignmentRouter.get("/download-assignment/:courseId/:subjectId", authUser, verifyAccess("teacher"), downloadAssignment);
 
 export default assignmentRouter;

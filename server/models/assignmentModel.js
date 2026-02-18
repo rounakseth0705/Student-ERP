@@ -7,11 +7,10 @@ const assignmentSchema = new mongoose.Schema({
     semester: { type: Number, required: true },
     assignmentId: { type: String, required: true, unique: true },
     assignmentCreaterId: { type: mongoose.Schema.Types.ObjectId, ref: "teacher", required: true },
-    assignmentUploadDate: { type: Date, required: true },
     assignmentSubmitDate: { type: Date, required: true },
     assignmentUrl: { type: String, required: true },
     assignmentPublicId: { type: String, required: true }
-});
+},{ timestamps: true });
 
 const Assignment = mongoose.model("assignment", assignmentSchema);
 

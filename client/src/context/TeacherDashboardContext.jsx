@@ -93,6 +93,22 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    // const downloadAssignment = async (courseId,subjectId) => {
+    //     try {
+    //         const response = await API.get(`/download-assignment/${courseId}/${subjectId}`);
+    //         if (response) {
+    //             if (response.data.success) {
+                    
+    //             } else {
+    //                 toast.error(response.data.message);
+    //             }
+    //         } else {
+    //             toast.error("Something went wrong!");
+    //         }
+    //     } catch(error) {
+    //         toast.error(error.message);
+    //     }
+    // }
     const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, updateAssignmentSubmitDate, deleteAssignment }
     return(
         <TeacherDashboardContext.Provider value={value}>

@@ -1,8 +1,7 @@
 import Assignment from "../models/assignmentModel.js";
 import Subject from "../models/subjectModel.js";
-import deleteFromCloudinary from "../utils/cloudinaryDelete.js";
-import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 import { nanoid } from "nanoid";
+import { cloudinaryDownloadUrl, deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createAssignment = async (req,res) => {
     try {
@@ -22,8 +21,10 @@ export const createAssignment = async (req,res) => {
             return res.json({ success: false, message: "Invalid subject Code" });
         }
         const result = await uploadToCloudinary(assignmentFile.buffer, "assignment", "teacher");
-        const assignmentUploadDate = new Date().toDateString();
-        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentUploadDate, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId: result.public_id });
+        const assignment = await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId: result.public_id });
+        if (!assignment) {
+            await deleteFromCloudinary(result.public_id);
+        }
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         console.log(error.message);
@@ -102,3 +103,24 @@ export const deleteAssignment = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+// export const downloadAssignment = async (req,res) => {
+//     try {
+//         const { courseId, subjectId } = req.params;
+//         if (!courseId || !subjectId) {
+//             return res.json({ success: false, message: "Something went wrong!" });
+//         }
+//         const assignments = await Assignment.find({ assignmentSubjectId: subjectId, assignmentCourseId: courseId });
+//         if (!assignments) {
+//             return res.json({ success: false, message: "Something went wrong!" });
+//         }
+//         let downloadUrls = [];
+//         for (let assignment=0; assignment<assignments.length; assignment++) {
+//             downloadUrls.push(cloudinaryDownloadUrl(assignment.assignmentPublicId));
+//         }
+//         return res.json({ success: true, downloadUrls, message: "Assignment download" });
+//     } catch(error) {
+//         console.log(error.message);
+//         return res.json({ success: false, message: error.message });
+//     }
+// }
