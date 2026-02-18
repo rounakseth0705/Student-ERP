@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
-import AssignmentsAndNotesHeader from "../components/AssignmentsAndNotesHeader.jsx";
 import { UserContext } from "../context/AuthContext.jsx";
 import TeacherSubjects from "../components/TeacherSubjects.jsx";
+import TeacherFeaturesHeader from "../components/TeacherFeaturesHeader.jsx";
 
 const Notes = () => {
     const { userIdentity } = useContext(UserContext);
@@ -15,7 +15,7 @@ const Notes = () => {
     },[]);
     return(
         <>
-            <AssignmentsAndNotesHeader toDisplay="Notes"/>
+            <TeacherFeaturesHeader toDisplay="Notes"/>
             <TeacherSubjects/>
         </>
     )

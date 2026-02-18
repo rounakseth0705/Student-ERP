@@ -1,8 +1,12 @@
+import TeacherFeaturesHeader from "../components/TeacherFeaturesHeader.jsx";
+import TeacherSubjects from "../components/TeacherSubjects";
+
 const MarkAttendence = () => {
     return(
-        <div>
-            <h1>Mark Attendence</h1>
-        </div>
+        <>
+            <TeacherFeaturesHeader toDisplay="Mark Attendence"/>
+            <TeacherSubjects/>
+        </>
     )
 }
 

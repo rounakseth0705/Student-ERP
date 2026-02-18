@@ -9,6 +9,7 @@ import rightArrowBlack from "../assets/rightArrowBlack.svg";
 import editIcon from "../assets/editIcon.svg";
 import checkIcon from "../assets/checkIcon.svg";
 import removeIcon from "../assets/removeIcon.svg";
+import TeacherCreateButton from "../components/TeacherCreateButton.jsx";
 
 const SubjectAssignments = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
@@ -18,6 +19,7 @@ const SubjectAssignments = () => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [assignmentUpdatedSubmitDate, setAssignmentUpdatedSubmitDate] = useState("");
+    const [isUploading, setIsUploading] = useState(false);
     const navigate = useNavigate();
     const handleGetSubjectAssignments = async () => {
         await getSubjectAssignments(userIdentity.courseId._id,subjectId);
@@ -81,6 +83,10 @@ const SubjectAssignments = () => {
                             { isOpen &&
                                 <div className="my-2"></div>
                             }
+                            { isUploading &&
+                                <div className="flex justify-between items-center bg-blue-300"></div>
+                            }
+                            <TeacherCreateButton create="Assignment" isUploading={isUploading}/>
                         </>
                     ))
                 }

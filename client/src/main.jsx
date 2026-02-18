@@ -23,6 +23,7 @@ import MarkAttendence from './pages/MarkAttendence.jsx';
 import ReviewStudents from './pages/ReviewStudents.jsx';
 import AttendenceHistory from './pages/AttendenceHistory.jsx';
 import SubjectAssignments from './pages/SubjectAssignments.jsx';
+import SubjectNotes from './pages/SubjectNotes.jsx';
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,12 @@ const router = createBrowserRouter([
         path: "teacher-dashboard/notes",
         element: <ProtectedRoute>
           <Notes/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/notes/:subjectId/:subjectName/:subjectCode",
+        element: <ProtectedRoute>
+          <SubjectNotes/>
         </ProtectedRoute>
       },
       {

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import homeIcon from "../assets/homeIconWhite.svg";
 
-const AssignmentsAndNotesHeader = ({ toDisplay }) => {
+const TeacherFeaturesHeader = ({ toDisplay }) => {
     const navigate = useNavigate();
     return(
         <>
@@ -11,4 +11,4 @@ const AssignmentsAndNotesHeader = ({ toDisplay }) => {
     )
 }
 
-export default AssignmentsAndNotesHeader;
+export default TeacherFeaturesHeader;
