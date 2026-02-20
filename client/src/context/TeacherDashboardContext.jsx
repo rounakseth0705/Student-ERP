@@ -8,6 +8,7 @@ const TeacherDashboardProvider = ({ children }) => {
     const [students, setStudents] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [assignments, setAssignments] = useState([]);
+    const [notes, setNotes] = useState([]);
     const getCourseStudents = async (courseId) => {
         try {
             const response = await API.get(`/student/get-students/${courseId}`);
@@ -61,7 +62,28 @@ const TeacherDashboardProvider = ({ children }) => {
     }
     const createAssignment = async (assignmentName,assignmentSubjectCode,assignmentSubmitDate,assignmentFile) => {
         try {
-            const response = await API.post("/assignment/create-assignment", { assignmentName, assignmentSubjectCode, assignmentSubmitDate, assignmentFile });
+            const formData = new FormData();
+            formData.append("assignmentName",assignmentName);
+            formData.append("assignmentSubjectCode",assignmentSubjectCode);
+            formData.append("assignmentSubmitDate",assignmentSubmitDate);
+            formData.append("assignmentFile",assignmentFile);
+            const response = await API.post("/assignment/create-assignment",formData);
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const updateAssignmentName = async (assignmentId,assignmentUpdatedName) => {
+        try {
+            const response = await API.put("/assignment/update-assignment-name", { assignmentId, assignmentUpdatedName });
             if (response) {
                 if (response.data.success) {
                     toast.success(response.data.message);
@@ -109,6 +131,23 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const getSubjectNotes = async (courseId,subjectId) => {
+        try {
+            const response = await API.get(`/notes/get-notes-teacher/${courseId}/${subjectId}`);
+            if (response) {
+                if (response.data.success) {
+                    setNotes(response.data.notes);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     // const downloadAssignment = async (courseId,subjectId) => {
     //     try {
     //         const response = await API.get(`/download-assignment/${courseId}/${subjectId}`);
@@ -125,7 +164,7 @@ const TeacherDashboardProvider = ({ children }) => {
     //         toast.error(error.message);
     //     }
     // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, updateAssignmentSubmitDate, deleteAssignment, createAssignment }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}

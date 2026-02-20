@@ -1,12 +1,10 @@
 import Assignment from "../models/assignmentModel.js";
 import Subject from "../models/subjectModel.js";
 import { nanoid } from "nanoid";
-import { cloudinaryDownloadUrl, deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
+import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createAssignment = async (req,res) => {
     try {
-        console.log(req.body);
-        console.log(req.file);
         const { assignmentName, assignmentSubjectCode, assignmentSubmitDate } = req.body;
         const assignmentFile = req.file;
         const assignmentCreaterId = req?.teacherId;
@@ -34,11 +32,27 @@ export const createAssignment = async (req,res) => {
     }
 }
 
+export const updateAssignmentName = async (req,res) => {
+    try {
+        const { assignmentId, assignmentUpdatedName } = req.body;
+        if (!assignmentId || !assignmentUpdatedName) {
+            return res.json({ success: false, message: "Missing details" });
+        }
+        const assignment = await Assignment.findByIdAndUpdate(assignmentId, { assignmentName: assignmentUpdatedName },{ new: true });
+        if (!assignment) {
+            return res.json({ success: false, message: "Sommething went wrong!" });
+        }
+        return res.json({ success: true, message: "Assignment name updated" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
 export const updateAssignmentDate = async (req,res) => {
     try {
         const { assignmentId, assignmentUpdatedSubmitDate } = req.body;
-        const assignmentcreaterId = req?.teacherId;
-        if (!assignmentId || !assignmentUpdatedSubmitDate || !assignmentcreaterId) {
+        if (!assignmentId || !assignmentUpdatedSubmitDate) {
             return res.json({ success: false, message: "Missing details" });
         }
         const assignment = await Assignment.findByIdAndUpdate(assignmentId, { assignmentSubmitDate: assignmentUpdatedSubmitDate },{ new: true });
@@ -97,6 +111,7 @@ export const deleteAssignment = async (req,res) => {
         }
         const response = await deleteFromCloudinary(deleteAssignment.assignmentPublicId);
         if (response.result !== "ok") {
+            console.log("It was deleted");
             return res.json({ success: false, message: "Something went wrong!" });
         }
         return res.json({ success: true, message: "Assignment deleted" });

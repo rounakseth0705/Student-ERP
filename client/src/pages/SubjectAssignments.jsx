@@ -14,10 +14,12 @@ import TeacherCreateButton from "../components/TeacherCreateButton.jsx";
 const SubjectAssignments = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
     const { userIdentity } = useContext(UserContext);
-    const { assignments, getSubjectAssignments, updateAssignmentSubmitDate, deleteAssignment } = useContext(TeacherDashboardContext);
+    const { assignments, getSubjectAssignments, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment } = useContext(TeacherDashboardContext);
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isNameEditing, setIsNameEditing] = useState(false);
+    const [isSubmitDateEditing, setIsSubmitDateEditing] = useState("");
+    const [assignmentUpdatedName, setAssignmentUpdatedName] = useState("");
     const [assignmentUpdatedSubmitDate, setAssignmentUpdatedSubmitDate] = useState("");
     const [isUploading, setIsUploading] = useState(false);
     const [assignmentName, setAssignmentName] = useState("");
@@ -31,13 +33,23 @@ const SubjectAssignments = () => {
         setActiveIndex(index);
         setIsOpen(prev => !prev);
     }
-    const handleInputBoxOpening = (index) => {
+    const handleAssignmentNameInputBoxOpening = (index) => {
         setActiveIndex(index);
-        setIsEditing(true);
+        setIsNameEditing(true);
     }
-    const handleInputBoxClosing = async (assignmentId) => {
+    const handleAssignmentSubmitDateInputBoxOpening = (index) => {
+        setActiveIndex(index);
+        setIsSubmitDateEditing(true);
+    }
+    const handleAssignmentNameInputBoxClosing = async (assignmentId) => {
         setActiveIndex(null);
-        setIsEditing(false);
+        setIsNameEditing(false);
+        setAssignmentUpdatedName("");
+        await updateAssignmentName(assignmentId,assignmentUpdatedName);
+    }
+    const handleAssignmentSubmitDateInputBoxClosing = async (assignmentId) => {
+        setActiveIndex(null);
+        setIsSubmitDateEditing(false);
         setAssignmentUpdatedSubmitDate("");
         await updateAssignmentSubmitDate(assignmentId,assignmentUpdatedSubmitDate);
     }
@@ -48,7 +60,7 @@ const SubjectAssignments = () => {
         handleGetSubjectAssignments();
     },[])
     return(
-        <div>
+        <>
             <img onClick={() => navigate("/teacher-dashboard/assignments")} src={leftLongArrow} alt="leftArrow" className="absolute left-10 top-4 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center mt-5 text-3xl font-semibold text-blue-950">{subjectName} ({subjectCode})</h1>
             <div className="mt-10 mx-30">
@@ -59,16 +71,25 @@ const SubjectAssignments = () => {
                                 <span className="cursor-pointer px-7">
                                     <img onClick={() => handleArrowOpen(index)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
                                 </span>
-                                <h1 className="px-7">{assignment.assignmentName}</h1>
+                                <span className="flex justify-center items-center gap-3 px-7">
+                                    { isNameEditing && activeIndex === index ?
+                                        <input onChange={(event) => setAssignmentUpdatedName(event.target.value)} value={assignmentUpdatedName} type="text" className="w-27 rounded bg-gray-200 outline-0"/>
+                                        : <h1>{assignment.assignmentName}</h1>
+                                    }
+                                    { isNameEditing && activeIndex === index ?
+                                        <img onClick={() => handleAssignmentNameInputBoxClosing(assignment._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
+                                        <img onClick={() => handleAssignmentNameInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
+                                    }
+                                </span>
                                 <h1 className="px-7">{new Date(assignment.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                                 <span className="flex justify-center items-center gap-3 px-7">
-                                    { isEditing && activeIndex === index ?
-                                        <input onChange={(event) => setAssignmentUpdatedSubmitDate(event.target.value)} value={assignmentUpdatedSubmitDate} type="text" className="w-27 rounded bg-gray-200 outline-0"/> :
-                                        <h1 className="">{new Date(assignment.assignmentSubmitDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                                    { isSubmitDateEditing && activeIndex === index ?
+                                        <input onChange={(event) => setAssignmentUpdatedSubmitDate(event.target.value)} value={assignmentUpdatedSubmitDate} type="date" className="w-35 px-2 rounded bg-gray-200 outline-0"/> :
+                                        <h1>{new Date(assignment.assignmentSubmitDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                                     }
-                                    { isEditing && activeIndex === index ?
-                                        <img onClick={() => handleInputBoxClosing(assignment._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
-                                        <img onClick={() => handleInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
+                                    { isSubmitDateEditing && activeIndex === index ?
+                                        <img onClick={() => handleAssignmentSubmitDateInputBoxClosing(assignment._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
+                                        <img onClick={() => handleAssignmentSubmitDateInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
                                     }
                                 </span>
                                 <span className="px-7 cursor-pointer">
@@ -96,9 +117,9 @@ const SubjectAssignments = () => {
                         <input onChange={(event) => setAssignmentFile(event.target.files[0])} type="file" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
                     </div>
                 }
-                <TeacherCreateButton create="Assignment" isUploading={isUploading} setIsUploading={setIsUploading} assignmentName={assignmentName} assignmentSubjectCode={subjectCode} assignmentSubmitDate={assignmentUpdatedSubmitDate} assignmentFile={assignmentFile}/>
+                <TeacherCreateButton create="Assignment" isUploading={isUploading} setIsUploading={setIsUploading} assignmentName={assignmentName} assignmentSubjectCode={subjectCode} assignmentSubmitDate={assignmentSubmitDate} assignmentFile={assignmentFile}/>
             </div>
-        </div>
+        </>
     )
 }
 
