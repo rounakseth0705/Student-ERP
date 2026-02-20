@@ -5,6 +5,8 @@ import { cloudinaryDownloadUrl, deleteFromCloudinary, uploadToCloudinary } from 
 
 export const createAssignment = async (req,res) => {
     try {
+        console.log(req.body);
+        console.log(req.file);
         const { assignmentName, assignmentSubjectCode, assignmentSubmitDate } = req.body;
         const assignmentFile = req.file;
         const assignmentCreaterId = req?.teacherId;

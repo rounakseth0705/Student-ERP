@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/AuthContext.jsx";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
@@ -20,6 +20,9 @@ const SubjectAssignments = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [assignmentUpdatedSubmitDate, setAssignmentUpdatedSubmitDate] = useState("");
     const [isUploading, setIsUploading] = useState(false);
+    const [assignmentName, setAssignmentName] = useState("");
+    const [assignmentSubmitDate, setAssignmentSubmitDate] = useState("");
+    const [assignmentFile, setAssignmentFile] = useState(null);
     const navigate = useNavigate();
     const handleGetSubjectAssignments = async () => {
         await getSubjectAssignments(userIdentity.courseId._id,subjectId);
@@ -51,8 +54,8 @@ const SubjectAssignments = () => {
             <div className="mt-10 mx-30">
                 {
                     assignments.map((assignment,index) => (
-                        <>
-                            <div key={index} className="flex justify-between items-center my-5 py-3 bg-blue-200 rounded shadow-lg">
+                        <React.Fragment key={index}>
+                            <div className="flex justify-between items-center my-5 py-3 bg-blue-200 rounded shadow-lg">
                                 <span className="cursor-pointer px-7">
                                     <img onClick={() => handleArrowOpen(index)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
                                 </span>
@@ -83,13 +86,17 @@ const SubjectAssignments = () => {
                             { isOpen &&
                                 <div className="my-2"></div>
                             }
-                            { isUploading &&
-                                <div className="flex justify-between items-center bg-blue-300"></div>
-                            }
-                            <TeacherCreateButton create="Assignment" isUploading={isUploading}/>
-                        </>
+                        </React.Fragment>
                     ))
                 }
+                { isUploading &&
+                    <div className="flex justify-between items-center bg-blue-300 py-3 rounded shadow-lg">
+                        <input onChange={(event) => setAssignmentName(event.target.value)} value={assignmentName} type="text" placeholder="enter assignment name" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
+                        <input onChange={(event) => setAssignmentSubmitDate(event.target.value)} value={assignmentSubmitDate} type="date" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
+                        <input onChange={(event) => setAssignmentFile(event.target.files[0])} type="file" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
+                    </div>
+                }
+                <TeacherCreateButton create="Assignment" isUploading={isUploading} setIsUploading={setIsUploading} assignmentName={assignmentName} assignmentSubjectCode={subjectCode} assignmentSubmitDate={assignmentUpdatedSubmitDate} assignmentFile={assignmentFile}/>
             </div>
         </div>
     )

@@ -59,6 +59,22 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const createAssignment = async (assignmentName,assignmentSubjectCode,assignmentSubmitDate,assignmentFile) => {
+        try {
+            const response = await API.post("/assignment/create-assignment", { assignmentName, assignmentSubjectCode, assignmentSubmitDate, assignmentFile });
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const updateAssignmentSubmitDate = async (assignmentId,assignmentUpdatedSubmitDate) => {
         try {
             const response = await API.put("/assignment/update-assignment-date", { assignmentId, assignmentUpdatedSubmitDate });
@@ -109,7 +125,7 @@ const TeacherDashboardProvider = ({ children }) => {
     //         toast.error(error.message);
     //     }
     // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, updateAssignmentSubmitDate, deleteAssignment }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, updateAssignmentSubmitDate, deleteAssignment, createAssignment }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}
