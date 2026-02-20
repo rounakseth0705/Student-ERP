@@ -1,6 +1,6 @@
 import Notes from "../models/notesModel.js";
 import Subject from "../models/subjectModel.js";
-import { uploadToCloudinary } from "../utils/cloudinaryUtils.js";
+import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createNotes = async (req,res) => {
     try {
@@ -8,7 +8,7 @@ export const createNotes = async (req,res) => {
         const notesFile = req?.file;
         const notesProviderId = req?.teacherId;
         if (!notesName || !notesSubjectCode) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Details missing" });
         }
         const subject = await Subject.findOne({ subjectCode: notesSubjectCode });
         if (!subject) {
@@ -28,10 +28,32 @@ export const getSubjectNotesForTeacher = async (req,res) => {
         const teacherId = req?.teacherId;
         const { courseId, subjectId } = req.params;
         if (!courseId || !subjectId || !teacherId) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Details missing" });
         }
         const notes = await Notes.find({ notesCourseId: courseId, notesSubjectId: subjectId, notesProviderId: teacherId });
         return res.json({ success: true, notes, message: "List of notes" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteNotes = async (req,res) => {
+    try {
+        const { notesId } = req.params;
+        if (!notesId) {
+            return res.json({ success: false, message: "Details missing" });
+        }
+        const notes = await Notes.findById(notesId);
+        if (!notes) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const result = await deleteFromCloudinary(notes.notesPublicId);
+        if (result !== "ok") {
+            return res.json({ success: false, message: "Can't delete it!" });
+        }
+        await notes.deleteOne();
+        return res.json({ success: true, message: "Notes successfully deleted" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

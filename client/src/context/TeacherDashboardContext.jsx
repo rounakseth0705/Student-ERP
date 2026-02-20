@@ -148,6 +148,23 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const deleteNotes = async (notesId) => {
+        try {
+            const response = await API.delete(`/notes/delete-notes/${notesId}`);
+            if (response) {
+                if (response.data.success) {
+                    setNotes(prev => prev.filter(note => note._id !== notesId));
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     // const downloadAssignment = async (courseId,subjectId) => {
     //     try {
     //         const response = await API.get(`/download-assignment/${courseId}/${subjectId}`);
@@ -164,7 +181,7 @@ const TeacherDashboardProvider = ({ children }) => {
     //         toast.error(error.message);
     //     }
     // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes, deleteNotes }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}

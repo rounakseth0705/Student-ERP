@@ -111,7 +111,6 @@ export const deleteAssignment = async (req,res) => {
         }
         const response = await deleteFromCloudinary(deleteAssignment.assignmentPublicId);
         if (response.result !== "ok") {
-            console.log("It was deleted");
             return res.json({ success: false, message: "Something went wrong!" });
         }
         return res.json({ success: true, message: "Assignment deleted" });
