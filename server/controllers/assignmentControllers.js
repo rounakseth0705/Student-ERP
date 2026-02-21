@@ -9,7 +9,7 @@ export const createAssignment = async (req,res) => {
         const assignmentFile = req.file;
         const assignmentCreaterId = req?.teacherId;
         if (!assignmentName || !assignmentSubjectCode || !assignmentSubmitDate || !assignmentFile || !assignmentCreaterId) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Details missing" });
         }
         const assignmentId = nanoid(8);
         const existingAssignment = await Assignment.findOne({ assignmentId });
@@ -36,7 +36,7 @@ export const updateAssignmentName = async (req,res) => {
     try {
         const { assignmentId, assignmentUpdatedName } = req.body;
         if (!assignmentId || !assignmentUpdatedName) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Details missing" });
         }
         const assignment = await Assignment.findByIdAndUpdate(assignmentId, { assignmentName: assignmentUpdatedName },{ new: true });
         if (!assignment) {
@@ -53,7 +53,7 @@ export const updateAssignmentDate = async (req,res) => {
     try {
         const { assignmentId, assignmentUpdatedSubmitDate } = req.body;
         if (!assignmentId || !assignmentUpdatedSubmitDate) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Details missing" });
         }
         const assignment = await Assignment.findByIdAndUpdate(assignmentId, { assignmentSubmitDate: assignmentUpdatedSubmitDate },{ new: true });
         if (!assignment) {

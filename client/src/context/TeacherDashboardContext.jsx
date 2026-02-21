@@ -148,6 +148,22 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const updateNotesName = async () => {
+        try {
+            const response = await API.put("/notes/", {});
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const deleteNotes = async (notesId) => {
         try {
             const response = await API.delete(`/notes/delete-notes/${notesId}`);
@@ -160,6 +176,26 @@ const TeacherDashboardProvider = ({ children }) => {
                 }
             } else {
                 toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const createNotes = async (notesName,noteSubjectCode,notesFile) => {
+        try {
+            const formData = new FormData();
+            formData.append("notesName",notesName);
+            formData.append("notesSubjectCode",noteSubjectCode);
+            formData.append("notesFile",notesFile);
+            const response = await API.post("/notes/create-notes",formData);
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error(response.data.message);
             }
         } catch(error) {
             toast.error(error.message);
@@ -181,7 +217,7 @@ const TeacherDashboardProvider = ({ children }) => {
     //         toast.error(error.message);
     //     }
     // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes, deleteNotes }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes, updateNotesName, deleteNotes, createNotes }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}

@@ -117,7 +117,7 @@ const SubjectAssignments = () => {
                         <input onChange={(event) => setAssignmentFile(event.target.files[0])} type="file" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
                     </div>
                 }
-                <TeacherCreateButton create="Assignment" isUploading={isUploading} setIsUploading={setIsUploading} assignmentName={assignmentName} assignmentSubjectCode={subjectCode} assignmentSubmitDate={assignmentSubmitDate} assignmentFile={assignmentFile}/>
+                <TeacherCreateButton create="Assignment" isUploading={isUploading} setIsUploading={setIsUploading} name={assignmentName} setName={setAssignmentName} subjectCode={subjectCode} submitDate={assignmentSubmitDate} setSubmitDate={setAssignmentSubmitDate} file={assignmentFile}/>
             </div>
         </>
     )

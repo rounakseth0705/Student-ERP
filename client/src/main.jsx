@@ -24,6 +24,12 @@ import ReviewStudents from './pages/ReviewStudents.jsx';
 import AttendenceHistory from './pages/AttendenceHistory.jsx';
 import SubjectAssignments from './pages/SubjectAssignments.jsx';
 import SubjectNotes from './pages/SubjectNotes.jsx';
+import Attendence from './pages/Attendence.jsx';
+import StudentTimetable from './pages/StudentTimetable.jsx';
+import StudentAssignments from './pages/StudentAssignments.jsx';
+import StudentNotes from './pages/StudentNotes.jsx';
+import StudentSubjects from './pages/StudentSubjects.jsx';
+import StudentTeachers from './pages/StudentTeachers.jsx';
 
 const router = createBrowserRouter([
   {
@@ -154,6 +160,42 @@ const router = createBrowserRouter([
           <StudentDashboard/>
         </ProtectedRoute>
       },
+      {
+        path: "student-dashboard/attendence",
+        element: <ProtectedRoute>
+          <Attendence/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/timetable",
+        element: <ProtectedRoute>
+          <StudentTimetable/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/assignments",
+        element: <ProtectedRoute>
+          <StudentAssignments/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/notes",
+        element: <ProtectedRoute>
+          <StudentNotes/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/subjects",
+        element: <ProtectedRoute>
+          <StudentSubjects/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/teachers",
+        element: <ProtectedRoute>
+          <StudentTeachers/>
+        </ProtectedRoute>
+      }
     ]
   }
 ]);
