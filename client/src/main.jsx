@@ -144,7 +144,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "teacher-dashboard/mark-attendence/:subjectId",
+        path: "teacher-dashboard/mark-attendence/:subjectId/:subjectName/:subjectCode",
         element: <ProtectedRoute>
           <MarkSubjectAttendence/>
         </ProtectedRoute>

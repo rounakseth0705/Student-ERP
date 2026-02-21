@@ -1,4 +1,5 @@
 import Course from "../models/courseModel.js";
+import Student from "../models/studentModel.js";
 import Subject from "../models/subjectModel.js";
 import Teacher from "../models/teacherModel.js";
 import User from "../models/userModel.js";
@@ -99,6 +100,24 @@ export const verifyTeacher = async (req,res) => {
             return res.json({ success: false, message: "Invalid access!" });
         }
         return res.json({ success: true, user, teacher, message: "Teacher details" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getStudentsForAttendence = async (req,res) =>{
+    try {
+        const { subjectId } = req.params;
+        if (!subjectId) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const subject = await Subject.findById(subjectId);
+        if (!subject) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const students = await Student.find({ courseId: subject.courseId, semester: subject.semester }).populate("userId","name");
+        return res.json({ success: true, students, message: "List of students" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

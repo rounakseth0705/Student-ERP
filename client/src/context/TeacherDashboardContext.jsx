@@ -9,6 +9,7 @@ const TeacherDashboardProvider = ({ children }) => {
     const [subjects, setSubjects] = useState([]);
     const [assignments, setAssignments] = useState([]);
     const [notes, setNotes] = useState([]);
+    const [studentsForAttendence, setStudentsForAttendence] = useState([]);
     const getCourseStudents = async (courseId) => {
         try {
             const response = await API.get(`/student/get-students/${courseId}`);
@@ -201,6 +202,23 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const getStudentsForAttendence = async (subjectId) => {
+        try {
+            const response = await API.get(`/teacher/get-students-attendence/${subjectId}`);
+            if (response) {
+                if (response.data.success) {
+                    setStudentsForAttendence(response.data.students);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     // const downloadAssignment = async (courseId,subjectId) => {
     //     try {
     //         const response = await API.get(`/download-assignment/${courseId}/${subjectId}`);
@@ -217,7 +235,7 @@ const TeacherDashboardProvider = ({ children }) => {
     //         toast.error(error.message);
     //     }
     // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes, updateNotesName, deleteNotes, createNotes }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes, updateNotesName, deleteNotes, createNotes, getStudentsForAttendence, studentsForAttendence }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}

@@ -16,7 +16,7 @@ const MarkAttendence = () => {
     return(
         <>
             <TeacherFeaturesHeader toDisplay="Mark Attendence"/>
-            <TeacherSubjects isAttendencePage={true}/>
+            <TeacherSubjects/>
         </>
     )
 }

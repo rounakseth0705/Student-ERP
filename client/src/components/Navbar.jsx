@@ -32,7 +32,7 @@ const Navbar = ({setIsMenuClicked}) => {
                 <span className="flex justify-center items-center gap-5">
                     <img src={graduationCapIcon} alt="graduationCap" className="w-10 h-10 cursor-pointer"/>
                     <span className="text-white">
-                        <h1>Good {blessingWord}!</h1>
+                        <h1>Good {blessingWord}</h1>
                         <h1>{user.name.split(" ")[0].toUpperCase()}</h1>
                     </span>
                 </span>
