@@ -1,14 +1,21 @@
 import { useNavigate, useParams } from "react-router-dom";
 import leftLongArrow from "../assets/leftLongArrow.svg";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
 
 const MarkSubjectAttendence = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
-    const { getStudentsForAttendence, studentsForAttendence } = useContext(TeacherDashboardContext);
+    const { getStudentsForAttendence, studentsForAttendence, markAttendence } = useContext(TeacherDashboardContext);
     const navigate = useNavigate();
+    const [studentIds, setStudentIds] = useState([]);
+    const [isChecked, setIsChecked] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [day, setDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }));
     const handleGetStudentsForAttendence = async () => {
         await getStudentsForAttendence(subjectId);
+    }
+    const handleMarkAttendence = async () => {
+        await markAttendence(subjectId,studentIds,day);
     }
     useEffect(() => {
         handleGetStudentsForAttendence();
@@ -29,12 +36,16 @@ const MarkSubjectAttendence = () => {
                         <div key={index} className="grid grid-cols-3 mt-2">
                             <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
-                            <input type="checkbox" className="flex justify-center items-center"/>
+                            <input checked={activeIndex === index && isChecked} onChange={(event) => {
+                                setIsChecked(event.target.checked);
+                                setActiveIndex(index);
+                                isChecked && setStudentIds(prev => [...prev,student._id]);
+                            }} type="checkbox" className="flex justify-center items-center"/>
                         </div>
                     ))
                 }
             </div>
-            <button className="bg-red-500 w-42 text-white rounded py-2 px-4 mt-6 cursor-pointer hover:bg-red-400 transition-all duration-400 ease-in-out">Submit Attendence</button>
+            <button onClick={handleMarkAttendence} className="bg-red-500 w-42 text-white rounded py-2 px-4 mt-6 cursor-pointer hover:bg-red-400 transition-all duration-400 ease-in-out">Submit Attendence</button>
         </div>
     )
 }

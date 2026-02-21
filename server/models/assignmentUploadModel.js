@@ -9,6 +9,6 @@ const assignmentUploadSchema = new mongoose.Schema({
     assignmentUploadUrl: { type: String, required: true }
 });
 
-const AssignmentUpload = mongoose.Model("assignmentUpload", assignmentUploadSchema);
+const AssignmentUpload = mongoose.model("assignmentUpload", assignmentUploadSchema);
 
 export default AssignmentUpload;

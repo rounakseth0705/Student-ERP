@@ -105,7 +105,9 @@ const SubjectAssignments = () => {
                                 </span>
                             </div>
                             { isOpen &&
-                                <div className="my-2"></div>
+                                <div className="my-2">
+                                    
+                                </div>
                             }
                         </React.Fragment>
                     ))

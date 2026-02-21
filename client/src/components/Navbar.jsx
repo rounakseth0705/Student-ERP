@@ -16,7 +16,7 @@ const Navbar = ({setIsMenuClicked}) => {
             setBlessingWord("Morning");
         } else if (time >= 12 && time < 16) {
             setBlessingWord("Afternoon");
-        } else if (time >= 16) {
+        } else {
             setBlessingWord("Evening");
         }
     }
@@ -29,10 +29,10 @@ const Navbar = ({setIsMenuClicked}) => {
                 <img src={menuIcon} alt="menuIcon" className="w-10 h-10  cursor-pointer"/>
             </span>
             <span className="p-1">
-                <span className="flex justify-center items-center gap-5">
+                <span className="flex justify-center items-center gap-3 text-sm sm:gap-4 sm:text-base md:gap-5">
                     <img src={graduationCapIcon} alt="graduationCap" className="w-10 h-10 cursor-pointer"/>
                     <span className="text-white">
-                        <h1>Good {blessingWord}</h1>
+                        <h1 className="">Good {blessingWord}</h1>
                         <h1>{user.name.split(" ")[0].toUpperCase()}</h1>
                     </span>
                 </span>

@@ -7,6 +7,6 @@ const attendenceSchema = new mongoose.Schema({
     studentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "student", required: true }]
 },{ timestamps: true });
 
-const Attendence = mongoose.Model("attendence",attendenceSchema);
+const Attendence = mongoose.model("attendence",attendenceSchema);
 
 export default Attendence;
