@@ -30,6 +30,7 @@ import StudentAssignments from './pages/StudentAssignments.jsx';
 import StudentNotes from './pages/StudentNotes.jsx';
 import StudentSubjects from './pages/StudentSubjects.jsx';
 import StudentTeachers from './pages/StudentTeachers.jsx';
+import MarkSubjectAttendence from './pages/MarkSubjectAttendence.jsx';
 
 const router = createBrowserRouter([
   {
@@ -140,6 +141,12 @@ const router = createBrowserRouter([
         path: "teacher-dashboard/mark-attendence",
         element: <ProtectedRoute>
           <MarkAttendence/>
+        </ProtectedRoute>
+      },
+      {
+        path: "teacher-dashboard/mark-attendence/:subjectId",
+        element: <ProtectedRoute>
+          <MarkSubjectAttendence/>
         </ProtectedRoute>
       },
       {

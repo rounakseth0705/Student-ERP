@@ -80,7 +80,7 @@ const SubjectNotes = () => {
                         <input onChange={(event) => setNotesFile(event.target.files[0])} type="file" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
                     </div>
                 }
-                <TeacherCreateButton create="Notes" isUploading={isUploading} setIsUploading={setIsUploading} name={notesName} subjectCode={subjectCode} file={notesFile}/>
+                <TeacherCreateButton create="Notes" isUploading={isUploading} setIsUploading={setIsUploading} name={notesName} subjectId={subjectId} file={notesFile}/>
             </div>
         </>
     )

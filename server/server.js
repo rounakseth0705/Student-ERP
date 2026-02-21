@@ -9,6 +9,7 @@ import subjectRouter from "./routes/subjectRoutes.js";
 import assignmentRouter from "./routes/assignmentRoutes.js";
 import teacherRouter from "./routes/teacherRoutes.js";
 import notesRouter from "./routes/notesRoutes.js";
+import attendenceRouter from "./routes/attendenceRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -21,6 +22,7 @@ app.use("/api/course", courseRouter);
 app.use("/api/teacher", teacherRouter);
 app.use("/api/subject", subjectRouter);
 app.use("/api/student", studentRouter);
+app.use("/api/attendence", attendenceRouter);
 app.use("/api/assignment", assignmentRouter);
 app.use("/api/notes", notesRouter);
 app.get("/test", (req,res) => res.send("Server is live"));

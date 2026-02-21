@@ -60,11 +60,11 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const createAssignment = async (assignmentName,assignmentSubjectCode,assignmentSubmitDate,assignmentFile) => {
+    const createAssignment = async (assignmentName,assignmentSubjectId,assignmentSubmitDate,assignmentFile) => {
         try {
             const formData = new FormData();
             formData.append("assignmentName",assignmentName);
-            formData.append("assignmentSubjectCode",assignmentSubjectCode);
+            formData.append("assignmentSubjectId",assignmentSubjectId);
             formData.append("assignmentSubmitDate",assignmentSubmitDate);
             formData.append("assignmentFile",assignmentFile);
             const response = await API.post("/assignment/create-assignment",formData);
@@ -181,11 +181,11 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const createNotes = async (notesName,noteSubjectCode,notesFile) => {
+    const createNotes = async (notesName,noteSubjectId,notesFile) => {
         try {
             const formData = new FormData();
             formData.append("notesName",notesName);
-            formData.append("notesSubjectCode",noteSubjectCode);
+            formData.append("notesSubjectId",noteSubjectId);
             formData.append("notesFile",notesFile);
             const response = await API.post("/notes/create-notes",formData);
             if (response) {

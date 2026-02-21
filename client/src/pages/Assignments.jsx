@@ -12,7 +12,7 @@ const Assignments = () => {
     }
     useEffect(() => {
         handleGetSubjects();
-    },[])
+    },[]);
     return(
         <>
             <TeacherFeaturesHeader toDisplay="Assignments"/>

@@ -12,11 +12,11 @@ const Navbar = ({setIsMenuClicked}) => {
     }
     const getBlessingWord = () => {
         const time = new Date().getHours();
-        if (time >= 5 && time < 12) {
+        if (time >= 4 && time < 12) {
             setBlessingWord("Morning");
         } else if (time >= 12 && time < 16) {
             setBlessingWord("Afternoon");
-        } else if (time < 5) {
+        } else if (time >= 16) {
             setBlessingWord("Evening");
         }
     }

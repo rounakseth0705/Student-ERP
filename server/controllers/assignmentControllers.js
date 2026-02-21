@@ -5,10 +5,10 @@ import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUti
 
 export const createAssignment = async (req,res) => {
     try {
-        const { assignmentName, assignmentSubjectCode, assignmentSubmitDate } = req.body;
+        const { assignmentName, assignmentSubjectId, assignmentSubmitDate } = req.body;
         const assignmentFile = req.file;
         const assignmentCreaterId = req?.teacherId;
-        if (!assignmentName || !assignmentSubjectCode || !assignmentSubmitDate || !assignmentFile || !assignmentCreaterId) {
+        if (!assignmentName || !assignmentSubjectId || !assignmentSubmitDate || !assignmentFile || !assignmentCreaterId) {
             return res.json({ success: false, message: "Details missing" });
         }
         const assignmentId = nanoid(8);
@@ -16,7 +16,7 @@ export const createAssignment = async (req,res) => {
         if (existingAssignment) {
             return res.json({ success: false, message: "Assignment Id already exists" });
         }
-        const subject = await Subject.findOne({ subjectCode: assignmentSubjectCode });
+        const subject = await Subject.findById(assignmentSubjectId);
         if (!subject) { 
             return res.json({ success: false, message: "Invalid subject Code" });
         }

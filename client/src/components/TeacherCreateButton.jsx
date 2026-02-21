@@ -1,16 +1,16 @@
 import { useContext, useState } from "react";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
 
-const TeacherCreateButton = ({ create, isUploading, setIsUploading, name, setName, subjectCode, submitDate="", setSubmitDate, file }) => {
+const TeacherCreateButton = ({ create, isUploading, setIsUploading, name, setName, subjectId, submitDate="", setSubmitDate, file }) => {
     const { createAssignment, createNotes } = useContext(TeacherDashboardContext);
     const [isCreating, setIsCreating] = useState(false);
     const handleCreateAssignment = async () => {
         if (isUploading) {
             setIsCreating(true);
-            if (create === "assignment") {
-                await createAssignment(name,subjectCode,submitDate,file);
+            if (create === "Assignment") {
+                await createAssignment(name,subjectId,submitDate,file);
             } else {
-                await createNotes(name,subjectCode,file);
+                await createNotes(name,subjectId,file);
             }
             setName("");
             setSubmitDate("");

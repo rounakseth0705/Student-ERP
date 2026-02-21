@@ -4,13 +4,13 @@ import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUti
 
 export const createNotes = async (req,res) => {
     try {
-        const { notesName, notesSubjectCode } = req.body;
+        const { notesName, notesSubjectId } = req.body;
         const notesFile = req?.file;
         const notesProviderId = req?.teacherId;
-        if (!notesName || !notesSubjectCode) {
+        if (!notesName || !notesSubjectId) {
             return res.json({ success: false, message: "Details missing" });
         }
-        const subject = await Subject.findOne({ subjectCode: notesSubjectCode });
+        const subject = await Subject.findById(notesSubjectId);
         if (!subject) {
             return res.json({ success: false, message: "Invalid subject code" });
         }
