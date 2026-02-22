@@ -3,6 +3,7 @@ import Subject from "../models/subjectModel.js";
 import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createNotes = async (req,res) => {
+    let notesPublicId = null;
     try {
         const { notesName, notesSubjectId } = req.body;
         const notesFile = req?.file;
@@ -15,9 +16,16 @@ export const createNotes = async (req,res) => {
             return res.json({ success: false, message: "Invalid subject code" });
         }
         const result = await uploadToCloudinary(notesFile.buffer, "notes", "teacher");
-        await Notes.create({ notesName, notesSubjectId: subject._id, notesCourseId: subject.courseId, semester: subject.semester, notesProviderId, notesUrl: result.secure_url, notesPublicId: result.public_id });
+        if (!result || !result.public_id) {
+            return res.json({ success: false, message: "Notes upload failed!" });
+        }
+        notesPublicId = result.public_id;
+        await Notes.create({ notesName, notesSubjectId: subject._id, notesCourseId: subject.courseId, semester: subject.semester, notesProviderId, notesUrl: result.secure_url, notesPublicId });
         return res.json({ success: true, message: "Notes successfully uploaded" });
     } catch(error) {
+        if (notesPublicId) {
+            await deleteFromCloudinary(notesPublicId);
+        }
         console.log(error.message);
         return res.json({ success: false, message: error.message });
     }
@@ -48,8 +56,8 @@ export const deleteNotes = async (req,res) => {
         if (!notes) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const result = await deleteFromCloudinary(notes.notesPublicId);
-        if (result !== "ok") {
+        const response = await deleteFromCloudinary(notes.notesPublicId);
+        if (response.result !== "ok") {
             return res.json({ success: false, message: "Can't delete it!" });
         }
         await notes.deleteOne();

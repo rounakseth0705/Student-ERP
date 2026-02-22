@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createAssignment = async (req,res) => {
+    let assignmentPublicId = null;
     try {
         const { assignmentName, assignmentSubjectId, assignmentSubmitDate } = req.body;
         const assignmentFile = req.file;
@@ -21,12 +22,16 @@ export const createAssignment = async (req,res) => {
             return res.json({ success: false, message: "Invalid subject Code" });
         }
         const result = await uploadToCloudinary(assignmentFile.buffer, "assignment", "teacher");
-        const assignment = await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId: result.public_id });
-        if (!assignment) {
-            await deleteFromCloudinary(result.public_id);
+        if (!result || !result.public_id) {
+            return res.json({ success: false, message: "Assignment upload failed!" });
         }
+        assignmentPublicId = result.public_id;
+        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
+        if (assignmentPublicId) {
+            await deleteFromCloudinary(assignmentPublicId);
+        }
         console.log(error.message);
         return res.json({ success: false, message: error.message });
     }
@@ -105,15 +110,19 @@ export const getAssignmentsForAdmin = async (req,res) => {
 export const deleteAssignment = async (req,res) => {
     try {
         const { assignmentId } = req.params;
-        const deletedAssignment = await Assignment.findByIdAndDelete(assignmentId);
-        if (!deletedAssignment) {
+        if (!assignmentId) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const response = await deleteFromCloudinary(deleteAssignment.assignmentPublicId);
+        const assignment = await Assignment.findById(assignmentId);
+        if (!assignment) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const response = await deleteFromCloudinary(assignment.assignmentPublicId);
         if (response.result !== "ok") {
-            return res.json({ success: false, message: "Something went wrong!" });
+            throw new Error("Can't delete assignment");
         }
-        return res.json({ success: true, message: "Assignment deleted" });
+        await assignment.deleteOne();
+        return res.json({ success: true, message: "Assignment successfully deleted" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
