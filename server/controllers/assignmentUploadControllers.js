@@ -35,11 +35,11 @@ export const getSubjectAssignmentUploads = async (req,res) => {
         if (!assignmentId) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const assignments = await AssignmentUpload.find({ assignmentId });
-        if (!assignments) {
+        const assignmentUploads = await AssignmentUpload.find({ assignmentId }).populate("studentId","name rollNo");
+        if (!assignmentUploads) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        return res.json({ success: true, assignments, message: "List of assignment uploads" });
+        return res.json({ success: true, assignmentUploads, message: "List of assignment uploads" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

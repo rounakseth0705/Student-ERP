@@ -106,7 +106,7 @@ export const verifyTeacher = async (req,res) => {
     }
 }
 
-export const getStudentsForAttendence = async (req,res) =>{
+export const getStudentsForAttendence = async (req,res) => {
     try {
         const { subjectId } = req.params;
         if (!subjectId) {
@@ -116,7 +116,7 @@ export const getStudentsForAttendence = async (req,res) =>{
         if (!subject) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const students = await Student.find({ courseId: subject.courseId, semester: subject.semester }).populate("userId","name");
+        const students = await Student.find({ courseId: subject.courseId }).populate("userId","name");
         return res.json({ success: true, students, message: "List of students" });
     } catch(error) {
         console.log(error.message);

@@ -14,7 +14,7 @@ import TeacherCreateButton from "../components/TeacherCreateButton.jsx";
 const SubjectAssignments = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
     const { userIdentity } = useContext(UserContext);
-    const { assignments, getSubjectAssignments, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment } = useContext(TeacherDashboardContext);
+    const { assignments, getSubjectAssignments, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, getAssignmentUploads, assignmentUploads } = useContext(TeacherDashboardContext);
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(null);
     const [isNameEditing, setIsNameEditing] = useState(false);
@@ -29,9 +29,12 @@ const SubjectAssignments = () => {
     const handleGetSubjectAssignments = async () => {
         await getSubjectAssignments(userIdentity.courseId._id,subjectId);
     }
-    const handleArrowOpen = (index) => {
+    const handleArrowOpen = async (index,assignmentId) => {
         setActiveIndex(index);
         setIsOpen(prev => !prev);
+        if (!isOpen) {
+            await getAssignmentUploads(assignmentId);
+        }
     }
     const handleAssignmentNameInputBoxOpening = (index) => {
         setActiveIndex(index);
@@ -69,7 +72,7 @@ const SubjectAssignments = () => {
                         <React.Fragment key={index}>
                             <div className="flex justify-between items-center my-5 py-3 bg-blue-200 rounded shadow-lg">
                                 <span className="cursor-pointer px-7">
-                                    <img onClick={() => handleArrowOpen(index)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
+                                    <img onClick={() => handleArrowOpen(index,assignment._id)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
                                 </span>
                                 <span className="flex justify-center items-center gap-3 px-7">
                                     { isNameEditing && activeIndex === index ?
@@ -104,10 +107,23 @@ const SubjectAssignments = () => {
                                     <img onClick={() => handleDeleteAssignment(assignment._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 hover:opacity-60"/>
                                 </span>
                             </div>
-                            { isOpen &&
-                                <div className="my-2">
-                                    
-                                </div>
+                            { (isOpen && activeIndex === index) &&
+                                    <div className="bg-blue-300 py-5 rounded">
+                                        { assignmentUploads.length > 0 ?
+                                            assignmentUploads.map((assignmentUpload,index) => (
+                                                <div className="flex justify-evenly items-center py-2">
+                                                    <h1>{assignmentUpload.studentId.name}</h1>
+                                                    <h1>{assignmentUpload.studentId.rollNo}</h1>
+                                                    <span className="px-7 cursor-pointer">
+                                                        <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
+                                                    </span>
+                                                    <span className="px-7 cursor-pointer">
+                                                        <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                                    </span>
+                                                </div>
+                                            )) : <div className="text-center">No Assignment Uploads</div>
+                                        }
+                                    </div>
                             }
                         </React.Fragment>
                     ))

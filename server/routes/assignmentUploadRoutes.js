@@ -7,6 +7,6 @@ import { attachStudent } from "../middlewares/attachStudent.js";
 const assignmentUploadRouter = express.Router();
 
 assignmentUploadRouter.post("/upload-assignment", authUser, verifyAccess("student"), attachStudent, uploadAssignment);
-assignmentUploadRouter.get("/get-assignment-uploads", authUser, verifyAccess("teacher"), getSubjectAssignmentUploads);
+assignmentUploadRouter.get("/get-assignment-uploads/:assignmentId", authUser, verifyAccess("teacher"), getSubjectAssignmentUploads);
 
 export default assignmentUploadRouter;

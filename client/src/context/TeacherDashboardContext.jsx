@@ -10,6 +10,7 @@ const TeacherDashboardProvider = ({ children }) => {
     const [students, setStudents] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [assignments, setAssignments] = useState([]);
+    const [assignmentUploads, setAssignmentUploads] = useState([]);
     const [notes, setNotes] = useState([]);
     const [studentsForAttendence, setStudentsForAttendence] = useState([]);
     const getCourseStudents = async (courseId) => {
@@ -123,6 +124,23 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setAssignments(prev => prev.filter(assignment => assignment._id === assignmentId));
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const getAssignmentUploads = async (assignmentId) => {
+        try {
+            const response = await API.get(`/assignmentUploads/get-assignment-uploads/${assignmentId}`);
+            if (response) {
+                if (response.data.success) {
+                    setAssignmentUploads(response.data.assignmentUploads);
                     toast.success(response.data.message);
                 } else {
                     toast.error(response.data.message);
@@ -254,7 +272,7 @@ const TeacherDashboardProvider = ({ children }) => {
     //         toast.error(error.message);
     //     }
     // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getSubjectNotes, updateNotesName, deleteNotes, createNotes, getStudentsForAttendence, studentsForAttendence, markAttendence }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getAssignmentUploads, getSubjectNotes, updateNotesName, deleteNotes, createNotes, getStudentsForAttendence, studentsForAttendence, markAttendence, assignmentUploads }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}
