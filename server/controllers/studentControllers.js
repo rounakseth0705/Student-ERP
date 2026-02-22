@@ -104,7 +104,7 @@ export const getCourseStudents = async (req,res) => {
         const { courseId } = req.params;
         console.log(courseId);
         if (!courseId) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Something went wrong!" });
         }
         const course = await Course.findById(courseId);
         if (!course) {

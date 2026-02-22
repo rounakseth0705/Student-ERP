@@ -9,7 +9,7 @@ const StudentDashboard = () => {
         <>
             <Navbar setIsMenuClicked={setIsMenuClicked}/>
             <ProfileSidebar isMenuClicked={isMenuClicked} setIsMenuClicked={setIsMenuClicked}/>
-            <UserDashboard option1="Attendence" option2="timetable" option3="Assignments" option4="Notes" option5="Subjects" option6="Teachers" dashboard="student-dashboard" navigate1="attendence" navigate2="timetable" navigate3="assignments" navigate4="notes" navigate5="subjects" navigate6="teachers"/>
+            <UserDashboard option1="Attendence" option2="Timetable" option3="Assignments" option4="Notes" option5="Subjects" option6="Teachers" dashboard="student-dashboard" navigate1="attendence" navigate2="timetable" navigate3="assignments" navigate4="notes" navigate5="subjects" navigate6="teachers"/>
         </>
     )
 }

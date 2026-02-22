@@ -28,7 +28,7 @@ const SemesterSubjectList = ({ filteredSubjects, courseId, courseCode, semester 
                 }
             </div>
             { filteredSubjects.length > 0 &&
-                <div className="mt-5 mx-2 bg-blue-50 text-blue-950 text-sm rounded shadow-lg sm:text-base sm:mx-3 md:mx-5 lg:mx-10">
+                <div className="mt-5 mb-10 mx-2 bg-blue-50 text-blue-950 text-sm rounded shadow-lg sm:text-base sm:mx-3 md:mx-5 lg:mx-10">
                     <div className={`grid ${userIdentity ? "grid-cols-3" : "grid-cols-4"} font-semibold py-2 sm:px-2`}>
                         <h1 className="flex justify-center sm:mx-2 md:mx-2 lg:mx-7">NAME</h1>
                         <h1 className="flex justify-center sm:mx-2 md:mx-2 lg:mx-7">CODE</h1>

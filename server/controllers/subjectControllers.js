@@ -168,3 +168,20 @@ export const getSubjectsForTeacher = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const getSemesterSubjects = async (req,res) => {
+    try {
+        const { courseId, semester } = req.params;
+        if (!courseId || !semester) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const subjects = await Subject.find({ courseId, semester }).populate({ path: "teacherId", select: "teacherId", populate: { path: "userId", select: "name" } });
+        if (!subjects) {
+            return res.json({ success: false, message: "Can't fetch subjects" });
+        }
+        return res.json({ success: true, subjects, message: "List of subjects" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}

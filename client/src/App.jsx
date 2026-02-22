@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
 import AdminDashboardProvider from "./context/AdminDashboardContext";
 import TeacherDashboardProvider from "./context/TeacherDashboardContext";
+import StudentDashboardProvider from "./context/StudentDashboardContext";
 
 const App = () => {
     return(
@@ -10,8 +11,10 @@ const App = () => {
             <AuthProvider>
                 <AdminDashboardProvider>
                     <TeacherDashboardProvider>
-                        <Toaster/>
-                        <Outlet/>
+                        <StudentDashboardProvider>
+                            <Toaster/>
+                            <Outlet/>
+                        </StudentDashboardProvider>
                     </TeacherDashboardProvider>
                 </AdminDashboardProvider>
             </AuthProvider>

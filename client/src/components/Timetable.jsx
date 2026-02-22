@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../context/AuthContext.jsx";
 import clockIcon from "../assets/clockIcon.svg";
 import plusIcon from "../assets/plusIcon.svg";
@@ -27,7 +27,7 @@ const Timetable = ({ filteredSubjects, courseId, semester }) => {
                                             <div className="flex flex-col justify-center items-center gap-2 pr-5 sm:flex-row md:gap-5 md:px-3 lg:gap-12 lg:px-5 lg:mx-8 xl:mx-20">
                                                 <span className="flex flex-col justify-center items-center sm:inline">
                                                     <h1>{assignedSubject.subjectName}</h1>
-                                                    <h1 className="text-blue-600 text-sm sm:text-base">{assignedSubject.teacherId.userId.name.toUpperCase()}</h1>
+                                                    <h1 className="text-blue-600 text-sm sm:text-base">{assignedSubject.teacherId.userId?.name.toUpperCase()}</h1>
                                                 </span>
                                                 { !userIdentity && <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester}/${selectedDay}/${currentClassStartTime}/updateSchedule`)} className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button> }
                                             </div> :

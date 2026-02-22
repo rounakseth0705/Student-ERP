@@ -7,7 +7,7 @@ const CalendarHeader = ({ setSelectedDayAndDate, getDate }) => {
     const { selectedDate, } = useContext(UserContext);
     return(
         <>
-            <h1 className="text-center mt-15 text-4xl font-semibold text-blue-950">Timetable</h1>
+            <h1 className="text-center mt-5 text-4xl font-semibold text-blue-950">Timetable</h1>
             <div className="flex justify-between items-center bg-blue-400 mt-5 text-white">
                 <img src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
                 <h1 className="my-5 text-2xl font-semibold">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
