@@ -11,7 +11,8 @@ const subjectSchema = new mongoose.Schema({
     subjectCode: { type: String, required: true },
     semester: { type: Number, required: true },
     teacherId: { type: mongoose.Schema.Types.ObjectId, ref: "teacher", required: true },
-    schedule: { type: [scheduleSchema], required: false, default: undefined }
+    schedule: { type: [scheduleSchema], required: false, default: undefined },
+    classesDelivered: { type: Number, required: true, default: 0 }
 });
 
 subjectSchema.index({ courseId: 1, subjectCode: 1 }, { unique: true });

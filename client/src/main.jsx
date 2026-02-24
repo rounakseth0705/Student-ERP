@@ -31,6 +31,8 @@ import StudentNotes from './pages/StudentNotes.jsx';
 import StudentSubjects from './pages/StudentSubjects.jsx';
 import StudentTeachers from './pages/StudentTeachers.jsx';
 import MarkSubjectAttendence from './pages/MarkSubjectAttendence.jsx';
+import DayWiseAttendence from './pages/DayWiseAttendence.jsx';
+import SubjectWiseAttendence from './pages/SubjectWiseAttendence.jsx';
 
 const router = createBrowserRouter([
   {
@@ -171,6 +173,18 @@ const router = createBrowserRouter([
         path: "student-dashboard/attendence",
         element: <ProtectedRoute>
           <Attendence/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/attendence/day-wise",
+        element: <ProtectedRoute>
+          <DayWiseAttendence/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/attendence/subject-wise",
+        element: <ProtectedRoute>
+          <SubjectWiseAttendence/>
         </ProtectedRoute>
       },
       {

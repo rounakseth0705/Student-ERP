@@ -5,6 +5,7 @@ const studentSchema = new mongoose.Schema({
     studentId: { type: String, required: true, unique: true },
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
     rollNo: { type: String, required: true, unique: true },
+    classesAttended: { type: Number, required: true, default: 0 },
     attendence: { type: Number, required: true, default: 0 }
 },{ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 

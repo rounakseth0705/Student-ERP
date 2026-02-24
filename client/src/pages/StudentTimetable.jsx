@@ -23,7 +23,7 @@ const StudentTimetable = () => {
     return(
         <>
             <img onClick={() => navigate("/student-dashboard")} src={homeIcon} alt="homeIcon" className="absolute left-10 top-5 w-8 h-8 cursor-pointer"/>
-            <CalendarHeader setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate}/>
+            <CalendarHeader setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate} toShow="Timetable"/>
             <Timetable filteredSubjects={subjects}/>
         </>
     )

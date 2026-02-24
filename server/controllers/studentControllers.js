@@ -65,7 +65,7 @@ export const studentLogin = async (req,res) => {
         if (!studentId || !password) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const student = await Student.findOne({ studentId });
+        const student = await Student.findOne({ studentId }).populate("courseId","classesDelivered");
         if (!student) {
             return res.json({ success: false, message: "Invalid student id" });
         }
