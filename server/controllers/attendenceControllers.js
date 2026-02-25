@@ -14,13 +14,13 @@ export const markAttendence = async (req,res) => {
         if (!subject) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const classTime = subject.schedule.find(schedule => schedule.day === day);
-        if (!classTime) {
+        const time = subject.schedule.find(schedule => schedule.day === day);
+        if (!time) {
             return res.json({ success: false, message: "Can't mark attendence" });
         }
         const semester = subject.semester;
         const courseId = subject.courseId;
-        const attendence = await Attendence.create({ teacherId, subjectId, courseId, semester, studentIds, classTime });
+        const attendence = await Attendence.create({ teacherId, subjectId, courseId, semester, studentIds, time });
         if (!attendence) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
@@ -32,31 +32,36 @@ export const markAttendence = async (req,res) => {
     }
 }
 
-// const updateClassesDelivered = async (subjectId,courseId,semester) => {
-//     const course = await Course.findById(courseId);
-//     const subject = await Subject.findById(subjectId);
-//     course.classesDelivered[semester-1] = course.classesDelivered[semester-1] + 1;
-//     subject.classesDelivered = course.classesDelivered + 1;
-//     await course.save();
-//     await subject.save();
-// }
-
 const updateAttendence = async (studentId,subjectId,courseId,semester) => {
     const student = await Student.findById(studentId);
     const subject = await Subject.findById(subjectId);
     const course = await Course.findById(courseId);
     subject.classesDelivered = subject.classesDelivered + 1;
     await subject.save();
-    // console.log("TOtal classed delivered in course", course.classesDelivered[semester-1]);
     course.classesDelivered[semester-1] = course.classesDelivered[semester-1] + 1;
     await course.save();
     const totalClassesDelivered = course.classesDelivered[semester-1];
-    // console.log("Total classes delivered",totalClassesDelivered);
-    // console.log("Total classes attended prev",student.classesAttended);
     const totalClassesAttended = student.classesAttended + 1;
-    // console.log("Total class attended", totalClassesAttended);
     student.classesAttended = totalClassesAttended;
-    student.attendence = (totalClassesAttended / totalClassesDelivered ) * 100;
-    // console.log(student.attendence);
+    student.attendence = (totalClassesAttended / totalClassesDelivered) * 100;
     await student.save();
+}
+
+export const getDayWiseAttendence = async (req,res) => {
+    try {
+        const { day, month, year, courseId, semester } = req.params;
+        if (!day || !month || !year || !courseId || !semester) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const start = new Date(year,month,day,0,0,0);
+        const end = new Date(year,month,day,23,59,59,999);
+        const attendences = await Attendence.find({ courseId, semester, createdAt: { $gte: start, $lte: end } }).populate("subjectId","subjectName");
+        if (!attendences) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        return res.json({ success: true, attendences, message: "Day wise attendence" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
 }

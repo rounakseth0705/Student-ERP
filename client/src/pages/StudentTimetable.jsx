@@ -11,7 +11,7 @@ const StudentTimetable = () => {
     const { subjects, getSubjects } = useContext(StudentDashboardContext);
     const navigate = useNavigate();
     const handleGetSubjects = async () => {
-        await getSubjects(userIdentity.courseId,userIdentity.semester);
+        await getSubjects(userIdentity.courseId._id,userIdentity.semester);
     }
     const setSelectedDayAndDate = (index) => {
         setSelectedDate(getDate(index));
