@@ -16,7 +16,7 @@ export const markAttendence = async (req,res) => {
         }
         const time = subject.schedule.find(schedule => schedule.day === day);
         if (!time) {
-            return res.json({ success: false, message: "Can't mark attendence" });
+            return res.json({ success: false, message: "Can't mark attendance" });
         }
         const semester = subject.semester;
         const courseId = subject.courseId;
@@ -25,7 +25,7 @@ export const markAttendence = async (req,res) => {
             return res.json({ success: false, message: "Something went wrong!" });
         }
         await Promise.all(studentIds.map(studentId => updateAttendence(studentId,subjectId,courseId,semester)));
-        return res.json({ success: true, message: "Attendence marked" });
+        return res.json({ success: true, message: "Attendance marked" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
@@ -44,6 +44,12 @@ const updateAttendence = async (studentId,subjectId,courseId,semester) => {
     const totalClassesAttended = student.classesAttended + 1;
     student.classesAttended = totalClassesAttended;
     student.attendence = (totalClassesAttended / totalClassesDelivered) * 100;
+    const subjectWiseAttendance = student.subjectWiseAttendance?.find(subjectWiseAttendance => subjectWiseAttendance.subjectId.equals(subjectId));
+    if (subjectWiseAttendance) {
+        subjectWiseAttendance.classesAttended = subjectWiseAttendance.classesAttended + 1;
+    } else {
+        student.subjectWiseAttendance?.push({ subjectId, classesAttended: 1 });
+    }
     await student.save();
 }
 
@@ -55,11 +61,48 @@ export const getDayWiseAttendence = async (req,res) => {
         }
         const start = new Date(year,month,day,0,0,0);
         const end = new Date(year,month,day,23,59,59,999);
-        const attendences = await Attendence.find({ courseId, semester, createdAt: { $gte: start, $lte: end } }).populate("subjectId","subjectName");
-        if (!attendences) {
+        const attendances = await Attendence.find({ courseId, semester, createdAt: { $gte: start, $lte: end } }).populate("subjectId","subjectName");
+        if (!attendances) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        return res.json({ success: true, attendences, message: "Day wise attendence" });
+        return res.json({ success: true, attendances, message: "Day wise attendance" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getSubjectWiseAttendance = async (req,res) => {
+    try {
+        const subjectIds = req.params.subjectIds.split(",");
+        const studentId = req?.studentId;
+        if (!subjectIds) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const attendances = await Attendence.find({ subjectId: { $in: subjectIds } });
+        if (!attendances) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        let classAttendances = [];
+        attendances.forEach(attendance => {
+            subjectIds.map(subjectId => {
+                if (subjectId === attendance.subjectId) {
+                    if (attendance.studentIds.includes(studentId)) {
+                        if (classAttendances.length === 0) {
+                            classAttendances.push({ subjectId: subjectId, classAttended: 1 });
+                        } else if (classAttendances.some(classAttended => classAttended.subjectId === subjectId)) {
+                            const classAttendance = classAttendances.find(classAttendance => classAttendance.subjectId === subjectId);
+                            if (classAttendance) {
+                                classAttendance.classAttended = classAttendance.classAttended + 1;
+                            }
+                        } else {
+                            classAttendances.push({ subjectId: subjectId, classAttended: 1 });
+                        }
+                    }
+                }
+            });
+        });
+        return res.json({ success: true, classAttendances, message: "Subject wise attendance" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

@@ -21,37 +21,41 @@ const DayWiseAttendence = () => {
     }
     useEffect(() => {
         handleGetTodayAttendence();
-        console.log(todayAttendence);
-    },[]);
+    },[selectedDate]);
     return(
-        <div>
+        <>
             <img onClick={() => navigate("/student-dashboard/attendence")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
             <CalendarHeader setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate} toShow="Day Wise Attendence"/>
-            <div className="mt-10 mx-20 pb-5 bg-gray-50 shadow-lg rounded">
+            <div className="mt-10 mx-60 pb-5 bg-gray-50 shadow-lg rounded">
                 { selectedDay !== "Sat" && selectedDay !== "Sun" ?
                     Array(6).fill("").map((_,index) => {
                         const currentClassStartTime = getCurrentClassTime(index,55).replace(" am","").replace(" pm","");
                         const currentClassEndTime = getCurrentClassTime(index,55,true).replace(" am","").replace(" pm","");
-                        const attendence = todayAttendence.find(attendence => attendence.time.classTime === currentClassStartTime);
-                        const isPresent = attendence?.studentIds.some(studentId => studentId === userIdentity._id);
-                        return todayAttendence.length > 0 && (
-                        <div key={index} className="flex justify-evenly items-center py-3 border-b">
-                            <span className="flex justify-between items-center gap-3">
-                                <img src={clockIcon} alt="clockIcon" className="w-5 h-5"/>
-                                <h1>{currentClassStartTime}-{currentClassEndTime}</h1>
-                            </span>
-                            <span className="flex justify-between items-center gap-3">
-                                { isPresent ?
-                                    <h1 className="bg-blue-400 text-white px-1">P</h1> :
-                                    <h1 className="bg-red-400 text-white px-1">A</h1>
-                                }
-                                <h1>{attendence?.subjectId?.subjectName}</h1>
-                            </span>
-                        </div>
-                    )}) : <div className="text-center">No Attendence available</div>
+                        const attendance = todayAttendence?.find(attendence => attendence.time.day === selectedDay && attendence.time.classTime === currentClassStartTime);
+                        let isPresent;
+                        if (attendance) {
+                            isPresent = attendance?.studentIds.some(studentId => studentId === userIdentity._id);
+                        }
+                        return todayAttendence?.length > 0 && (
+                            <div key={index} className="flex justify-evenly items-center py-3 border-b">
+                                <span className="flex justify-between items-center gap-3">
+                                    <img src={clockIcon} alt="clockIcon" className="w-5 h-5"/>
+                                    <h1>{currentClassStartTime}-{currentClassEndTime}</h1>
+                                </span>
+                                <span className="flex justify-between items-center gap-3">
+                                    { attendance && isPresent ?
+                                        <h1 className="bg-blue-400 text-white px-1">P</h1> : attendance && !isPresent ?
+                                        <h1 className="bg-red-400 text-white px-1">A</h1> :
+                                        <h1>Attendance not yet marked</h1>
+                                    }
+                                    <h1>{attendance?.subjectId?.subjectName}</h1>
+                                </span>
+                            </div>
+                        )
+                    }) : <h1 className="text-center font-semibold">No Attendance available</h1>
                 }
             </div>
-        </div>
+        </>
     )
 }
 

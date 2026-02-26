@@ -1,12 +1,18 @@
 import mongoose from "mongoose";
 
+const subjectWiseAttendanceSchema = new mongoose.Schema({
+    subjectId: { type: mongoose.Schema.Types.ObjectId, ref: "subject", required: true },
+    classesAttended: { type: Number, required: true, default: 0 }
+});
+
 const studentSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true, unique: true },
     studentId: { type: String, required: true, unique: true },
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
     rollNo: { type: String, required: true, unique: true },
     classesAttended: { type: Number, required: true, default: 0 },
-    attendence: { type: Number, required: true, default: 0 }
+    subjectWiseAttendance: { type: [subjectWiseAttendanceSchema], required: false, default: undefined },
+    attendence: { type: Number, required: true, default: 0 },
 },{ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 studentSchema.virtual("semester").get(function () {

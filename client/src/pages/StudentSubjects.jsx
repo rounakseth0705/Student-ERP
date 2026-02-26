@@ -1,6 +1,12 @@
+import StudentFeaturesHeader from "../components/StudentFeaturesHeader";
+import StudentSubjectList from "../components/StudentSubjectList";
+
 const StudentSubjects = () => {
     return(
-        <div>Subjects</div>
+        <>
+            <StudentFeaturesHeader toDisplay="Subjects"/>
+            <StudentSubjectList />
+        </>
     )
 }
 

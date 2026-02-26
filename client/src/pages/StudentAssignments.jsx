@@ -1,6 +1,12 @@
+import StudentFeaturesHeader from "../components/StudentFeaturesHeader";
+import StudentSubjectList from "../components/StudentSubjectList";
+
 const StudentAssignments = () => {
     return(
-        <div>Assignments</div>
+        <>
+            <StudentFeaturesHeader toDisplay="Assignments"/>
+            <StudentSubjectList isNavigate={true}/>
+        </>
     )
 }
 

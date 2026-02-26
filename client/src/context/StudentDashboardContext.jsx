@@ -29,7 +29,6 @@ const StudentDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setTodayAttendence(response.data.attendences);
-                    toast.success(response.data.message);
                 } else {
                     toast.error(response.data.message);
                 }
@@ -40,7 +39,23 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence };
+    const getSubjectWiseAttendance = async (subjectIds) => {
+        try {
+            const response = await API.get(`attendance/get-subject-wise-attendance/${subjectIds}`);
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.success);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance };
     return(
         <StudentDashboardContext.Provider value={value}>
             {children}

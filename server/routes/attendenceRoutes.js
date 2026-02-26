@@ -2,11 +2,13 @@ import express from "express";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
 import { attachTeacher } from "../middlewares/attachTeacher.js";
-import { getDayWiseAttendence, markAttendence } from "../controllers/attendenceControllers.js";
+import { getDayWiseAttendence, getSubjectWiseAttendance, markAttendence } from "../controllers/attendenceControllers.js";
+import { attachStudent } from "../middlewares/attachStudent.js";
 
-const attendenceRouter = express.Router();
+const attendanceRouter = express.Router();
 
-attendenceRouter.post("/mark-attendence", authUser, verifyAccess("teacher"), attachTeacher, markAttendence);
-attendenceRouter.get("/get-day-wise-attendence/:day/:month/:year/:courseId/:semester", authUser, verifyAccess("student"), getDayWiseAttendence);
+attendanceRouter.post("/mark-attendence", authUser, verifyAccess("teacher"), attachTeacher, markAttendence);
+attendanceRouter.get("/get-day-wise-attendence/:day/:month/:year/:courseId/:semester", authUser, verifyAccess("student"), getDayWiseAttendence);
+attendanceRouter.get("/get-subject-wise-attendance/:subjectIds", authUser, verifyAccess("student"), attachStudent, getSubjectWiseAttendance);
 
-export default attendenceRouter;
+export default attendanceRouter;
