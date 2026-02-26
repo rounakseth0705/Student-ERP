@@ -9,7 +9,8 @@ const assignmentSchema = new mongoose.Schema({
     assignmentCreaterId: { type: mongoose.Schema.Types.ObjectId, ref: "teacher", required: true },
     assignmentSubmitDate: { type: Date, required: true },
     assignmentUrl: { type: String, required: true },
-    assignmentPublicId: { type: String, required: true }
+    assignmentPublicId: { type: String, required: true },
+    assignmentDownloadUrl: { type: String, required: true }
 },{ timestamps: true });
 
 const Assignment = mongoose.model("assignment", assignmentSchema);

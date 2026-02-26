@@ -25,7 +25,7 @@ const SubjectWiseAttendence = () => {
     },[]);
     return(
         <>
-            <img onClick={() => navigate("/student-dashboard/attendence")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
+            <img onClick={() => navigate("/student-dashboard/attendance")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center mt-5 text-blue-950 text-4xl font-semibold">Subject Wise Attendance</h1>
             <div className="mt-5 mx-30">
                 {

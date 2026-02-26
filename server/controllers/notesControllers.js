@@ -1,6 +1,6 @@
 import Notes from "../models/notesModel.js";
 import Subject from "../models/subjectModel.js";
-import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
+import { cloudinaryDownloadUrl, deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createNotes = async (req,res) => {
     let notesPublicId = null;
@@ -20,7 +20,8 @@ export const createNotes = async (req,res) => {
             return res.json({ success: false, message: "Notes upload failed!" });
         }
         notesPublicId = result.public_id;
-        await Notes.create({ notesName, notesSubjectId: subject._id, notesCourseId: subject.courseId, semester: subject.semester, notesProviderId, notesUrl: result.secure_url, notesPublicId });
+        const notesDownloadUrl = cloudinaryDownloadUrl(notesPublicId);
+        await Notes.create({ notesName, notesSubjectId: subject._id, notesCourseId: subject.courseId, semester: subject.semester, notesProviderId, notesUrl: result.secure_url, notesPublicId, notesDownloadUrl });
         return res.json({ success: true, message: "Notes successfully uploaded" });
     } catch(error) {
         if (notesPublicId) {

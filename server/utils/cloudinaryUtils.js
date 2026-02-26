@@ -4,7 +4,7 @@ import streamifier from "streamifier";
 export const uploadToCloudinary = (buffer,uploadType,role) => {
     return new Promise((resolve,reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: `${uploadType}/${role}`, resource_type: "auto" },
+            { folder: `${uploadType}/${role}`, resource_type: "raw" },
             (error,result) => {
                 if (error) {
                     return reject(error);
@@ -17,12 +17,11 @@ export const uploadToCloudinary = (buffer,uploadType,role) => {
 }
 
 export const deleteFromCloudinary = async (publicId) => {
-    return await cloudinary.uploader.destroy(publicId);
+    return await cloudinary.uploader.destroy(publicId, { resource_type: "raw" });
 }
 
 export const cloudinaryDownloadUrl = (publicId) => {
-    console.log(publicId);
-    cloudinary.url(publicId, {
+    return cloudinary.url(publicId, {
         resource_type: "raw",
         flags: "attachment"
     });

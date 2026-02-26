@@ -32,7 +32,7 @@ const StudentSubjectNotes = () => {
                                 <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
                             </span>
                             <span className="px-20 cursor-pointer">
-                                <a href={note.noteUrl} download>
+                                <a href={note.notesDownloadUrl} download>
                                     <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
                                 </a>
                             </span>

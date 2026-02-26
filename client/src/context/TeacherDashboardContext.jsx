@@ -141,7 +141,9 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setAssignmentUploads(response.data.assignmentUploads);
-                    toast.success(response.data.message);
+                    if (response.data.assignmentUploads.length > 0) {
+                        toast.success(response.data.message);
+                    }
                 } else {
                     toast.error(response.data.message);
                 }

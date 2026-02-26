@@ -24,8 +24,8 @@ const DayWiseAttendence = () => {
     },[selectedDate]);
     return(
         <>
-            <img onClick={() => navigate("/student-dashboard/attendence")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
-            <CalendarHeader setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate} toShow="Day Wise Attendence"/>
+            <img onClick={() => navigate("/student-dashboard/attendance")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
+            <CalendarHeader setSelectedDayAndDate={setSelectedDayAndDate} getDate={getDate} toShow="Day Wise Attendance"/>
             <div className="mt-10 mx-60 pb-5 bg-gray-50 shadow-lg rounded">
                 { selectedDay !== "Sat" && selectedDay !== "Sun" ?
                     Array(6).fill("").map((_,index) => {

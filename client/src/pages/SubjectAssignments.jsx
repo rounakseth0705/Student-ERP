@@ -99,7 +99,7 @@ const SubjectAssignments = () => {
                                     <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
                                 </span>
                                 <span className="px-7 cursor-pointer">
-                                    <a href={assignment.assignmentUrl} download>
+                                    <a href={assignment.assignmentDownloadUrl} download>
                                         <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
                                     </a>
                                 </span>

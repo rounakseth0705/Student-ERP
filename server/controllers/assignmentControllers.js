@@ -1,7 +1,7 @@
 import Assignment from "../models/assignmentModel.js";
 import Subject from "../models/subjectModel.js";
 import { nanoid } from "nanoid";
-import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
+import { cloudinaryDownloadUrl, deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const createAssignment = async (req,res) => {
     let assignmentPublicId = null;
@@ -26,7 +26,8 @@ export const createAssignment = async (req,res) => {
             return res.json({ success: false, message: "Assignment upload failed!" });
         }
         assignmentPublicId = result.public_id;
-        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId });
+        const assignmentDownloadUrl = cloudinaryDownloadUrl(assignmentPublicId);
+        await Assignment.create({ assignmentName, assignmentSubjectId: subject._id, assignmentCourseId: subject.courseId, semester: subject.semester, assignmentId, assignmentCreaterId, assignmentSubmitDate, assignmentUrl: result.secure_url, assignmentPublicId, assignmentDownloadUrl });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
         if (assignmentPublicId) {
@@ -134,24 +135,3 @@ export const deleteAssignment = async (req,res) => {
         return res.json({ success: false, message: error.message });
     }
 }
-
-// export const downloadAssignment = async (req,res) => {
-//     try {
-//         const { courseId, subjectId } = req.params;
-//         if (!courseId || !subjectId) {
-//             return res.json({ success: false, message: "Something went wrong!" });
-//         }
-//         const assignments = await Assignment.find({ assignmentSubjectId: subjectId, assignmentCourseId: courseId });
-//         if (!assignments) {
-//             return res.json({ success: false, message: "Something went wrong!" });
-//         }
-//         let downloadUrls = [];
-//         for (let assignment=0; assignment<assignments.length; assignment++) {
-//             downloadUrls.push(cloudinaryDownloadUrl(assignment.assignmentPublicId));
-//         }
-//         return res.json({ success: true, downloadUrls, message: "Assignment download" });
-//     } catch(error) {
-//         console.log(error.message);
-//         return res.json({ success: false, message: error.message });
-//     }
-// }
