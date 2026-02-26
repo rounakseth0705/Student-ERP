@@ -1,6 +1,10 @@
+import StudentFeaturesHeader from "../components/StudentFeaturesHeader";
+
 const StudentTeachers = () => {
     return(
-        <div>Teachers</div>
+        <>
+            <StudentFeaturesHeader toDisplay="Teachers"/>
+        </>
     )
 }
 

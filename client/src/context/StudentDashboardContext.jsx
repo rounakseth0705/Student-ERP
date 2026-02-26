@@ -7,6 +7,7 @@ export const StudentDashboardContext = createContext();
 const StudentDashboardProvider = ({ children }) => {
     const [subjects, setSubjects] = useState([]);
     const [todayAttendence, setTodayAttendence] = useState([]);
+    const [assignments, setAssignments] = useState([]);
     const [notes, setNotes] = useState([]);
     const getSubjects = async (courseId,semester) => {
         try {
@@ -56,13 +57,34 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const getAssignments = async (assignmentsSubjectId,assignmentsCourseId,semester) => {
+        try {
+            const response = await API.get(`/assignment/get-assignments-student/${assignmentsSubjectId}/${assignmentsCourseId}/${semester}`);
+            if (response) {
+                if (response.data.success) {
+                    setAssignments(response.data.assignments);
+                    if (response.data.assignments.length > 0) {
+                        toast.success(response.data.message);
+                    }
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const getNotes = async (notesSubjectId,notesCourseId,semester) => {
         try {
             const response = await API.get(`/notes/get-notes-student/${notesSubjectId}/${notesCourseId}/${semester}`);
             if (response) {
                 if (response.data.success) {
                     setNotes(response.data.notes);
-                    toast.success(response.data.message);
+                    if (response.data.notes.length > 0) {
+                        toast.success(response.data.message);
+                    }
                 } else {
                     toast.error(response.data.message);
                 }
@@ -73,7 +95,7 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes };
+    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes, assignments, getAssignments };
     return(
         <StudentDashboardContext.Provider value={value}>
             {children}

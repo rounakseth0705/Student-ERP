@@ -88,8 +88,14 @@ export const getSubjectAssignmentsForTeacher = async (req,res) => {
 
 export const getAssignmetsForStudent = async (req,res) => {
     try {
-        const { courseId, semester } = req.user;
-        const assignments = await Assignment.find({ courseId, semester });
+        const { assignmentSubjectId, assignmentCourseId, semester } = req.params;
+        if (!assignmentSubjectId || !assignmentCourseId || !semester) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const assignments = await Assignment.find({ assignmentSubjectId, assignmentCourseId, semester });
+        if (!assignments) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
         return res.json({ success: true, assignments, message: "List of all assignments" });
     } catch(error) {
         console.log(error.message);
