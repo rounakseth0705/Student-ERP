@@ -169,9 +169,9 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const updateNotesName = async () => {
+    const updateNotesName = async (notesId,notesUpdatedName) => {
         try {
-            const response = await API.put("/notes/", {});
+            const response = await API.put("/notes/update-notes-name", { notesId, notesUpdatedName });
             if (response) {
                 if (response.data.success) {
                     toast.success(response.data.message);

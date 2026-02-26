@@ -1,5 +1,5 @@
-import StudentFeaturesHeader from "../components/StudentFeaturesHeader";
-import StudentSubjectList from "../components/StudentSubjectList";
+import StudentFeaturesHeader from "../components/StudentFeaturesHeader.jsx";
+import StudentSubjectList from "../components/StudentSubjectList.jsx";
 
 const StudentNotes = () => {
     return(

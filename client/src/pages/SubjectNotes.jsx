@@ -31,10 +31,10 @@ const SubjectNotes = () => {
         setIsEditing(true);
         setActiveIndex(index);
     }
-    const handleInputBoxClosing = async () => {
+    const handleInputBoxClosing = async (notesId) => {
         setIsEditing(false);
         setActiveIndex(null);
-        await updateNotesName();
+        await updateNotesName(notesId,notesUpdatedName);
     }
     useEffect(() => {
         handleGetNotes();
@@ -50,11 +50,11 @@ const SubjectNotes = () => {
                             <div className="flex justify-between items-center my-5 py-3 bg-blue-200 rounded shadow-lg">
                                 <span className="flex justify-center items-center gap-3 px-20">
                                     { isEditing && activeIndex === index ?
-                                        <input onChange={(event) => setNotesUpdatedName(event.target.value)} value={notesUpdatedName} type="text" className="w-27 rounded shadow-lg outline-0 bg-gray-200"/> :
+                                        <input onChange={(event) => setNotesUpdatedName(event.target.value)} value={notesUpdatedName} type="text" className="w-27 rounded shadow-lg outline-0 bg-gray-200 px-1"/> :
                                         <h1>{note.notesName}</h1>
                                     }
                                     { isEditing && activeIndex === index ?
-                                        <img onClick={handleInputBoxClosing} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
+                                        <img onClick={() => handleInputBoxClosing(note._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
                                         <img onClick={() => handleInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
                                     }
                                 </span>

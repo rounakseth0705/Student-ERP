@@ -39,6 +39,26 @@ export const getSubjectNotesForTeacher = async (req,res) => {
             return res.json({ success: false, message: "Details missing" });
         }
         const notes = await Notes.find({ notesCourseId: courseId, notesSubjectId: subjectId, notesProviderId: teacherId });
+        if (!notes) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        return res.json({ success: true, notes, message: "List of notes" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getNotesForStudent = async (req,res) => {
+    try {
+        const { notesSubjectId, notesCourseId, semester } = req.params;
+        if (!notesSubjectId || !notesCourseId || !semester) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const notes = await Notes.find({ notesSubjectId, notesCourseId, semester });
+        if (!notes) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
         return res.json({ success: true, notes, message: "List of notes" });
     } catch(error) {
         console.log(error.message);
@@ -62,6 +82,23 @@ export const deleteNotes = async (req,res) => {
         }
         await notes.deleteOne();
         return res.json({ success: true, message: "Notes successfully deleted" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const updateNotesName = async (req,res) => {
+    try {
+        const { notesId, notesUpdatedName } = req.body;
+        if (!notesId || !notesUpdatedName) {
+            return res.json({ success: false, message: "Details missing" });
+        }
+        const notes = await Notes.findByIdAndUpdate(notesId, { notesName: notesUpdatedName },{ new: true });
+        if (!notes) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        return res.json({ success: true, message: "Notes name updated" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

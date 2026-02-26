@@ -7,6 +7,7 @@ export const StudentDashboardContext = createContext();
 const StudentDashboardProvider = ({ children }) => {
     const [subjects, setSubjects] = useState([]);
     const [todayAttendence, setTodayAttendence] = useState([]);
+    const [notes, setNotes] = useState([]);
     const getSubjects = async (courseId,semester) => {
         try {
             const response = await API.get(`/subject/get-semester-subjects/${courseId}/${semester}`);
@@ -55,7 +56,24 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance };
+    const getNotes = async (notesSubjectId,notesCourseId,semester) => {
+        try {
+            const response = await API.get(`/notes/get-notes-student/${notesSubjectId}/${notesCourseId}/${semester}`);
+            if (response) {
+                if (response.data.success) {
+                    setNotes(response.data.notes);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!")
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes };
     return(
         <StudentDashboardContext.Provider value={value}>
             {children}
