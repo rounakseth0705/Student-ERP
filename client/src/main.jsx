@@ -35,6 +35,9 @@ import DayWiseAttendence from './pages/DayWiseAttendence.jsx';
 import SubjectWiseAttendence from './pages/SubjectWiseAttendence.jsx';
 import StudentSubjectNotes from './pages/StudentSubjectNotes.jsx';
 import StudentSubjectAssignments from './pages/StudentSubjectAssignments.jsx';
+import AdminProfile from './pages/AdminProfile.jsx';
+import TeacherProfile from './pages/TeacherProfile.jsx';
+import StudentProfile from './pages/StudentProfile.jsx';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +52,12 @@ const router = createBrowserRouter([
         path: "admin-dashboard",
         element: <ProtectedRoute>
           <AdminDashboard/>
+        </ProtectedRoute>
+      },
+      {
+        path: "admin-dashboard/:userId",
+        element: <ProtectedRoute>
+          <AdminProfile/>
         </ProtectedRoute>
       },
       {
@@ -112,6 +121,12 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
+        path: "teacher-dashboard/:userId",
+        element: <ProtectedRoute>
+          <TeacherProfile/>
+        </ProtectedRoute>
+      },
+      {
         path: "teacher-dashboard/assignments",
         element: <ProtectedRoute>
           <Assignments/>
@@ -169,6 +184,12 @@ const router = createBrowserRouter([
         path: "student-dashboard",
         element: <ProtectedRoute>
           <StudentDashboard/>
+        </ProtectedRoute>
+      },
+      {
+        path: "student-dashboard/:userId",
+        element: <ProtectedRoute>
+          <StudentProfile/>
         </ProtectedRoute>
       },
       {

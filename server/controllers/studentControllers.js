@@ -65,7 +65,7 @@ export const studentLogin = async (req,res) => {
         if (!studentId || !password) {
             return res.json({ success: false, message: "Missing details" });
         }
-        const student = await Student.findOne({ studentId }).populate("courseId","classesDelivered");
+        const student = await Student.findOne({ studentId }).populate("courseId","courseName classesDelivered");
         if (!student) {
             return res.json({ success: false, message: "Invalid student id" });
         }
@@ -88,7 +88,7 @@ export const verifyStudent = async (req,res) => {
         if (!user) {
             return res.json({ success: false, message: "Not authenticated" });
         }
-        const student = await Student.findOne({ userId: user._id }).populate("courseId","classesDelivered");
+        const student = await Student.findOne({ userId: user._id }).populate("courseId","courseName classesDelivered");
         if (!student) {
             return res.json({ success: false, message: "Invalid access!" });
         }

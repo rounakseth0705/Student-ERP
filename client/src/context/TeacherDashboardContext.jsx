@@ -41,7 +41,7 @@ const TeacherDashboardProvider = ({ children }) => {
                     toast.error(response.data.message);
                 }
             } else {
-                toast.error("Something went wrong!")
+                toast.error("Something went wrong!");
             }
         } catch(error) {
             toast.error(error.message);
@@ -53,7 +53,9 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setAssignments(response.data.assignments);
-                    toast.success(response.data.message);
+                    if (response.data.assignments.length > 0) {
+                        toast.success(response.data.message);
+                    }
                 } else {
                     toast.error(response.data.message);
                 }
