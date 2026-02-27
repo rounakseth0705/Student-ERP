@@ -16,8 +16,11 @@ const ProfileSidebar = ({ isMenuClicked,setIsMenuClicked }) => {
                 <img src={userAvatarIcon} alt="userAvatarIcon" className="h-25 w-25"/>
             </span>
             <h1 className="text-blue-950 mt-2 font-semibold">{user.name}</h1>
-            <h1 className="text-blue-950">{userIdentity.courseId.courseName}</h1>
-            <button onClick={() => navigate(user._id)} className="bg-white my-3 text-blue-950 px-3 py-1 rounded cursor-pointer shadow-lg">View Profile Details</button>
+            { userIdentity && <h1 className="text-blue-950">{userIdentity.courseId.courseName}</h1> }
+            <button onClick={() => navigate("view-profile")} className="bg-white my-3 text-blue-950 px-3 py-1 rounded cursor-pointer shadow-lg">View Profile Details</button>
+            { user.role === "admin" &&
+                <button onClick={() => navigate("create-admin")} className="mt-20 bg-white text-blue-950 px-3 py-1 rounded-2xl cursor-pointer shadow-lg">Create Admin</button>
+            }
         </div>
     )
 }

@@ -38,6 +38,7 @@ import StudentSubjectAssignments from './pages/StudentSubjectAssignments.jsx';
 import AdminProfile from './pages/AdminProfile.jsx';
 import TeacherProfile from './pages/TeacherProfile.jsx';
 import StudentProfile from './pages/StudentProfile.jsx';
+import CreateAdmin from './pages/CreateAdmin.jsx';
 
 const router = createBrowserRouter([
   {
@@ -55,9 +56,15 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "admin-dashboard/:userId",
+        path: "admin-dashboard/view-profile",
         element: <ProtectedRoute>
           <AdminProfile/>
+        </ProtectedRoute>
+      },
+      {
+        path: "admin-dashboard/create-admin",
+        element: <ProtectedRoute>
+          <CreateAdmin/>
         </ProtectedRoute>
       },
       {
@@ -121,7 +128,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "teacher-dashboard/:userId",
+        path: "teacher-dashboard/view-profile",
         element: <ProtectedRoute>
           <TeacherProfile/>
         </ProtectedRoute>
@@ -187,7 +194,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "student-dashboard/:userId",
+        path: "student-dashboard/view-profile",
         element: <ProtectedRoute>
           <StudentProfile/>
         </ProtectedRoute>
