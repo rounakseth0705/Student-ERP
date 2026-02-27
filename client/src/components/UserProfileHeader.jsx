@@ -16,7 +16,7 @@ const UserProfileHeader = () => {
                     <img src={userAvatarIcon} alt="userAvatarIcon" className="h-20 w-20"/>
                 </span>
                 <h1 className="mt-2 text-2xl text-white font-semibold">{user.name}</h1>
-                <h1 className="text-2xl text-white font-semibold">{user.role}</h1>
+                <h1 className="text-white font-semibold">{user.role}</h1>
             </div>
         </div>
     )

@@ -97,7 +97,7 @@ export const updatePassword = async (req,res) => {
             return res.json({ success: false, message: "Missing details" });
         }
         if (currentPassword === newPassword) {
-            return res.json({ success: false, message: "Old password and new password cannot be same" });
+            return res.json({ success: false, message: "Old and new password cannot be same" });
         }
         const existingUser = await User.findById(userId);
         if (!existingUser) {
@@ -106,6 +106,30 @@ export const updatePassword = async (req,res) => {
         const isMatch = await bcrypt.compare(currentPassword, existingUser.password);
         if (!isMatch) {
             return res.json({ success: false, message: "Invalid password" });
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        existingUser.password = hashedPassword;
+        await existingUser.save();
+        return res.json({ success: true, message: "Password updated" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const updatePasswordWithIdentifier = async (req,res) => {
+    try {
+        const { identifier, newPassword } = req.body;
+        if (!identifier || !newPassword) {
+            return res.json({ success: false, message: "Details missing" });
+        }
+        const existingUser = await User.findOne({ $or: [{ mobileNo: identifier },{ email: identifier }] });
+        if (!existingUser) {
+            return res.json({ success: false, message: "Invalid email or mobile" });
+        }
+        const isSame = await bcrypt.compare(newPassword, existingUser.password);
+        if (isSame) {
+            return res.json({ success: false, message: "Old and new password cannot be same" });
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         existingUser.password = hashedPassword;

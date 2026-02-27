@@ -112,6 +112,38 @@ const AuthProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const updatePassword = async (currentPassword,newPassword) => {
+        try {
+            const response = await API.put("/user/update-password", { currentPassword, newPassword });
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const updatePasswordWithIdentifier = async (identifier,newPassword) => {
+        try {
+            const response = await API.put("/user/update-password-identifier", { identifier, newPassword });
+            if (response) {
+                if (response.data.message) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const createAdmin = async (name,mobileNo,email,password,role,adminSecret) => {
         try {
             const response = await API.post("/user/admin-signup", { name, mobileNo, email, password, role, adminSecret });
@@ -296,7 +328,7 @@ const AuthProvider = ({ children }) => {
             }).catch(() => logout());
         }
     },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime };
     return(
         <UserContext.Provider value={value}>
             {children}
