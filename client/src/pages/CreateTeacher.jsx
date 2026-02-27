@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AdminDashboardContext } from "../context/AdminDashboardContext";
 import CreateTeacherAndStudent from "../components/CreateTeacherAndStudent";
 

@@ -80,6 +80,23 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const createAdmin = async (name,mobileNo,email,password,role) => {
+        try {
+            const response = await createUser(name,mobileNo,email,password,role);
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                    navigate("/admin-dashboard");
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const createTeacher = async (name,mobileNo,email,password,courseCode,employeeId,role) => {
         try {
             const response1 = await createUser(name,mobileNo,email,password,role);
@@ -303,7 +320,7 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { courses, teachers, students, createCourse, getCourses, deleteCourse, createTeacher, deleteTeacher, getTeachers, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent, deleteStudent, getStudents }
+    const value = { courses, teachers, students, createCourse, getCourses, deleteCourse, createAdmin, createTeacher, deleteTeacher, getTeachers, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent, deleteStudent, getStudents }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}

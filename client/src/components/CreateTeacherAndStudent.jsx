@@ -12,7 +12,7 @@ const CreateTeacherAndStudent = ({ role, createUser }) => {
     const [uniqueId, setUniqueId] = useState("");
     const handleCreateStudent = async (event) => {
         event.preventDefault();
-        await createUser(name,mobileNumber,email,password,courseCode,uniqueId,role);
+        role !== "admin" ? await createUser(name,mobileNumber,email,password,courseCode,uniqueId,role) : await createUser(name,mobileNumber,email,password,role);
     }
     return(
         <div className="h-screen w-screen flex flex-col items-center">
@@ -35,14 +35,18 @@ const CreateTeacherAndStudent = ({ role, createUser }) => {
                     <h1 className="p-1">Password</h1>
                     <input onChange={(event) => setPassword(event.target.value)} value={password} type="password" placeholder="enter password" className="bg-gray-300 w-60 outline-0 rounded-full py-2 px-5 sm:w-80" required/>
                 </div>
-                <div className="m-2">
-                    <h1 className="p-1">Course code</h1>
-                    <input onChange={(event) => setCourseCode(event.target.value)} value={courseCode} type="text" placeholder="enter course code" className="bg-gray-300 w-60 outline-0 rounded-full py-2 px-5 sm:w-80" required/>
-                </div>
-                <div className="m-2">
-                    <h1 className="p-1">{role==="student" ? "Roll no." : "Employee Id"}</h1>
-                    <input onChange={(event) => setUniqueId(event.target.value)} value={uniqueId} type="text" placeholder={role==="student" ? "enter roll no." : "enter employee id"} className="bg-gray-300 w-60 outline-0 rounded-full py-2 px-5 sm:w-80" required/>
-                </div>
+                { role !== "admin" &&
+                    <div className="m-2">
+                        <h1 className="p-1">Course code</h1>
+                        <input onChange={(event) => setCourseCode(event.target.value)} value={courseCode} type="text" placeholder="enter course code" className="bg-gray-300 w-60 outline-0 rounded-full py-2 px-5 sm:w-80" required/>
+                    </div>
+                }
+                { role !== "admin" &&
+                    <div className="m-2">
+                        <h1 className="p-1">{role==="student" ? "Roll no." : "Employee Id"}</h1>
+                        <input onChange={(event) => setUniqueId(event.target.value)} value={uniqueId} type="text" placeholder={role==="student" ? "enter roll no." : "enter employee id"} className="bg-gray-300 w-60 outline-0 rounded-full py-2 px-5 sm:w-80" required/>
+                    </div>
+                }
                 <button onClick={(event) => handleCreateStudent(event)} className="py-2 px-5 my-3 rounded-full bg-white text-blue-950 cursor-pointer">Create {role}</button>
             </form>
         </div>
