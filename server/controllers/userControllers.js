@@ -91,17 +91,17 @@ export const adminLogin = async (req,res) => {
 
 export const updatePassword = async (req,res) => {
     try {
-        const { identifier, currentPassword, newPassword } = req.body;
-        if (!identifier || !currentPassword || !newPassword) {
+        const { currentPassword, newPassword } = req.body;
+        const userId = req.user._id;
+        if (!currentPassword || !newPassword || !userId) {
             return res.json({ success: false, message: "Missing details" });
         }
         if (currentPassword === newPassword) {
             return res.json({ success: false, message: "Old password and new password cannot be same" });
         }
-        const userId = req.user._id;
-        const existingUser = await User.findOne({ _id: userId, $or: [{ mobileNo: identifier },{ email: identifier }] });
+        const existingUser = await User.findById(userId);
         if (!existingUser) {
-            return res.json({ success: false, message: "Invalid email or mobile no." });
+            return res.json({ success: false, message: "Something went wrong!" });
         }
         const isMatch = await bcrypt.compare(currentPassword, existingUser.password);
         if (!isMatch) {
