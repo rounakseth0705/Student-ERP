@@ -11,7 +11,7 @@ const TeacherDashboard = () => {
         <>
             <Navbar setIsMenuClicked={setIsMenuClicked}/>
             <ProfileSidebar isMenuClicked={isMenuClicked} setIsMenuClicked={setIsMenuClicked}/>
-            <UserDashboard option1="Asignments" option2={`About ${userIdentity.courseId.courseName}`} option3="Notes" option4="Mark Attendence" option5="Review Students" option6="Attendence History" dashboard="teacher-dashboard" navigate1="assignments" navigate2={`about-${userIdentity.courseId.courseName.toLowerCase()}`} navigate3="notes" navigate4="mark-attendence" navigate5="review-students" navigate6="attendence-history"/>
+            <UserDashboard option1="Asignments" option2={`About ${userIdentity.courseId.courseName}`} option3="Notes" option4="Mark Attendence" option5="Review Students" option6="Attendence History" dashboard="teacher-dashboard" navigate1="assignments" navigate2={`about-${userIdentity.courseId.courseName.toLowerCase()}`} navigate3="notes" navigate4="mark-attendence" navigate5="review-students" navigate6="attendance-history"/>
         </>
     )
 }

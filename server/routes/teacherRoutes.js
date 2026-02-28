@@ -1,7 +1,7 @@
 import express from "express";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
-import { createTeacher, getStudentsForAttendence, getTeachers, removeTeacher, teacherLogin, verifyTeacher } from "../controllers/teacherControllers.js";
+import { createTeacher, getAttendances, getStudentsForAttendence, getTeachers, removeTeacher, teacherLogin, verifyTeacher } from "../controllers/teacherControllers.js";
 
 const teacherRouter = express.Router();
 
@@ -11,5 +11,6 @@ teacherRouter.delete("/delete-teacher/:teacherId/:employeeId", authUser, verifyA
 teacherRouter.post("/teacher-login", teacherLogin);
 teacherRouter.get("/verify-teacher", authUser, verifyTeacher);
 teacherRouter.get("/get-students-attendence/:subjectId", authUser, verifyAccess("teacher"), getStudentsForAttendence);
+teacherRouter.get("/get-attendances/:teacherId", authUser, verifyAccess("teacher"), getAttendances);
 
 export default teacherRouter;

@@ -13,6 +13,7 @@ const TeacherDashboardProvider = ({ children }) => {
     const [assignmentUploads, setAssignmentUploads] = useState([]);
     const [notes, setNotes] = useState([]);
     const [studentsForAttendence, setStudentsForAttendence] = useState([]);
+    const [attendances, setAttendances] = useState([]);
     const getCourseStudents = async (courseId) => {
         try {
             const response = await API.get(`/student/get-students/${courseId}`);
@@ -260,23 +261,26 @@ const TeacherDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    // const downloadAssignment = async (courseId,subjectId) => {
-    //     try {
-    //         const response = await API.get(`/download-assignment/${courseId}/${subjectId}`);
-    //         if (response) {
-    //             if (response.data.success) {
-                    
-    //             } else {
-    //                 toast.error(response.data.message);
-    //             }
-    //         } else {
-    //             toast.error("Something went wrong!");
-    //         }
-    //     } catch(error) {
-    //         toast.error(error.message);
-    //     }
-    // }
-    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getAssignmentUploads, getSubjectNotes, updateNotesName, deleteNotes, createNotes, getStudentsForAttendence, studentsForAttendence, markAttendence, assignmentUploads }
+    const attendanceHistory = async (teacherId) => {
+        try {
+            const response = await API.get(`/teacher/attendance-history/${teacherId}`);
+            if (response) {
+                if (response.data.success) {
+                    setAttendances(response.data.attendances);
+                    if (response.data.attendances.length > 0) {
+                        toast.success(response.data.message);
+                    }
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message)
+        }
+    }
+    const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getAssignmentUploads, getSubjectNotes, updateNotesName, deleteNotes, createNotes, getStudentsForAttendence, studentsForAttendence, markAttendence, assignmentUploads, attendanceHistory, attendances }
     return(
         <TeacherDashboardContext.Provider value={value}>
             {children}

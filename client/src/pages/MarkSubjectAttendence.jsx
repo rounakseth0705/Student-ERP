@@ -9,7 +9,7 @@ const MarkSubjectAttendence = () => {
     const navigate = useNavigate();
     const [studentIds, setStudentIds] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(null);
+    const [activeIndex, setActiveIndex] = useState([]);
     const [day, setDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }));
     const handleGetStudentsForAttendence = async () => {
         await getStudentsForAttendence(subjectId);
@@ -36,9 +36,9 @@ const MarkSubjectAttendence = () => {
                         <div key={index} className="grid grid-cols-3 mt-2">
                             <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
-                            <input checked={activeIndex === index && isChecked} onChange={(event) => {
+                            <input checked={activeIndex.includes(index) && isChecked} onChange={(event) => {
                                 setIsChecked(event.target.checked);
-                                setActiveIndex(index);
+                                setActiveIndex(prev => [...prev,index]);
                                 isChecked && setStudentIds(prev => [...prev,student._id]);
                             }} type="checkbox" className="flex justify-center items-center"/>
                         </div>

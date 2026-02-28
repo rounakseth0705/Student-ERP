@@ -188,7 +188,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path: "teacher-dashboard/attendence-history",
+        path: "teacher-dashboard/attendance-history",
         element: <ProtectedRoute>
           <AttendenceHistory/>
         </ProtectedRoute>

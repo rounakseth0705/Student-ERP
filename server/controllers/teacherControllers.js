@@ -1,3 +1,4 @@
+import Attendence from "../models/attendenceModel.js";
 import Course from "../models/courseModel.js";
 import Student from "../models/studentModel.js";
 import Subject from "../models/subjectModel.js";
@@ -116,8 +117,26 @@ export const getStudentsForAttendence = async (req,res) => {
         if (!subject) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const students = await Student.find({ courseId: subject.courseId }).populate("userId","name");
+        const courseStudents = await Student.find({ courseId: subject.courseId }).populate("userId","name");
+        const students = courseStudents.filter(student => student.semester === subject.semester);
         return res.json({ success: true, students, message: "List of students" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const getAttendances = async (req,res) => {
+    try {
+        const { teacherId } = req.params;
+        if (!teacherId) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const attendances = await Attendence.find({ teacherId }).populate("subjectId","subjectName");
+        if (!attendances) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        return res.json({ success: true, attendances, message: "List of attendances marked by you" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });
