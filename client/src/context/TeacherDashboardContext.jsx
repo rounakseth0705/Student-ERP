@@ -263,7 +263,7 @@ const TeacherDashboardProvider = ({ children }) => {
     }
     const attendanceHistory = async (teacherId) => {
         try {
-            const response = await API.get(`/teacher/attendance-history/${teacherId}`);
+            const response = await API.get(`/teacher/get-attendances/${teacherId}`);
             if (response) {
                 if (response.data.success) {
                     setAttendances(response.data.attendances);
@@ -277,7 +277,7 @@ const TeacherDashboardProvider = ({ children }) => {
                 toast.error("Something went wrong!");
             }
         } catch(error) {
-            toast.error(error.message)
+            toast.error(error.message);
         }
     }
     const value = { students, getCourseStudents, getSubjects, subjects, getSubjectAssignments, assignments, notes, updateAssignmentName, updateAssignmentSubmitDate, deleteAssignment, createAssignment, getAssignmentUploads, getSubjectNotes, updateNotesName, deleteNotes, createNotes, getStudentsForAttendence, studentsForAttendence, markAttendence, assignmentUploads, attendanceHistory, attendances }

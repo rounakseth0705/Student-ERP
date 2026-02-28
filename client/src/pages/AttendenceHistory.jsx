@@ -50,7 +50,7 @@ const AttendenceHistory = () => {
                                 </div>
                             }
                         </React.Fragment>
-                    )) : <div>No attendance has been marked by you in this semester</div>
+                    )) : <div className="text-center">You haven't marked any attendance in this semester</div>
                 }
             </div>
         </>

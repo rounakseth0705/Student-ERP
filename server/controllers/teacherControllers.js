@@ -132,7 +132,7 @@ export const getAttendances = async (req,res) => {
         if (!teacherId) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const attendances = await Attendence.find({ teacherId }).populate("subjectId","subjectName");
+        const attendances = await Attendence.find({ teacherId }).populate("subjectId","subjectName").populate("studentIds","name rollNo");
         if (!attendances) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
