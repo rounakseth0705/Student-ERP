@@ -111,14 +111,16 @@ const SubjectAssignments = () => {
                                     <div className="bg-blue-300 py-5 rounded">
                                         { assignmentUploads.length > 0 ?
                                             assignmentUploads.map((assignmentUpload,index) => (
-                                                <div className="flex justify-evenly items-center py-2">
+                                                <div key={index} className="flex justify-evenly items-center py-2">
                                                     <h1>{assignmentUpload.studentId.name}</h1>
                                                     <h1>{assignmentUpload.studentId.rollNo}</h1>
                                                     <span className="px-7 cursor-pointer">
                                                         <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
                                                     </span>
                                                     <span className="px-7 cursor-pointer">
-                                                        <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                                        <a href={assignmentUpload.assignmentUploadDownloadUrl} download>
+                                                            <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                                        </a>
                                                     </span>
                                                 </div>
                                             )) : <div className="text-center">No Assignment Uploads</div>

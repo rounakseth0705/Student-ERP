@@ -1,9 +1,12 @@
 import AssignmentUpload from "../models/assignmentUploadModel.js";
 import Subject from "../models/subjectModel.js";
-import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
+import { cloudinaryDownloadUrl, deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinaryUtils.js";
 
 export const uploadAssignment = async (req,res) => {
+    let assignmentUploadPublicId = null;
     try {
+        console.log(req.body);
+        console.log(req?.file);
         const { subjectId, assignmentId } = req.body;
         const assignmentUploadFile = req?.file;
         const studentId = req?.studentId;
@@ -15,15 +18,17 @@ export const uploadAssignment = async (req,res) => {
             return res.json({ success: false, message: "Something went wrong!" });
         }
         const result = await uploadToCloudinary(assignmentUploadFile.buffer, "assignmentUpload", "student");
-        if (result) {
+        if (!result || !result.public_id) {
             return res.json({ success: false, message: "Something went wrong!" });
         }
-        const assignmentUpload = await AssignmentUpload.create({ studentId, subjectId: subject._id, semester: subject.semester, courseId: subject.courseId, assignmentId, assignmentUploadUrl: result.secure_url });
-        if (!assignmentUpload) {
-            await deleteFromCloudinary(result.public_id);
-        }
+        assignmentUploadPublicId = result.public_id;
+        const assignmentUploadDownloadUrl = cloudinaryDownloadUrl(assignmentUploadPublicId);
+        await AssignmentUpload.create({ studentId, subjectId: subject._id, semester: subject.semester, courseId: subject.courseId, assignmentId, assignmentUploadUrl: result.secure_url, assignmentUploadDownloadUrl });
         return res.json({ success: true, message: "Assignment successfully uploaded" });
     } catch(error) {
+        if (assignmentUploadPublicId) {
+            await deleteFromCloudinary(assignmentUploadPublicId);
+        }
         console.log(error.message);
         return res.json({ success: false, message: error.message });
     }

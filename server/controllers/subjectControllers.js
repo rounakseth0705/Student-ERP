@@ -108,7 +108,7 @@ export const scheduleClass = async (req,res) => {
     try {
         const { subjectName, subjectCode, courseId, semester, day, classTime } = req.body;
         if (!subjectName || !subjectCode || !courseId || !semester || !day || !classTime) {
-            return res.json({ success: false, message: "Missing details" });
+            return res.json({ success: false, message: "Details Missing" });
         }
         const subject = await Subject.findOne({ subjectName, subjectCode, courseId, semester });
         if (!subject) {
@@ -133,18 +133,54 @@ export const scheduleClass = async (req,res) => {
 
 export const updateSchedule = async (req,res) => {
     try {
-        const { subjectName, subjectCode, courseId, semester, day, classTime } = req.body;
-        if (!subjectName || !subjectCode || !courseId || !semester || !day || !classTime) {
-            return res.json({ success: false, message: "Missing details" });
+        const { previousSubjectId, subjectName, subjectCode, courseId, semester, day, classTime } = req.body;
+        if (!previousSubjectId || !subjectName || !subjectCode || !courseId || !semester || !day || !classTime) {
+            return res.json({ success: false, message: "Details Missing" });
         }
         const subject = await Subject.findOne({ subjectName, subjectCode, courseId, semester });
         if (!subject) {
             return res.json({ success: false, message: "Invalid details" });
         }
-        if (!subject.schedule) {
-            return res.json({ success: false, message: "Subject not scheduled yet" });
+        const previouslyAssignedSubject = await Subject.findById(previousSubjectId);
+        if (!previouslyAssignedSubject) {
+            return res.json({ success: false, message: "Something went wrong!" });
         }
-        
+        const scheduleIndex = subject.schedule.findIndex(schedule => schedule.day === day);
+        if (!subject.schedule) {
+            subject.schedule = [{ day, classTime }];
+        } else {
+            if (scheduleIndex !== -1) {
+                subject.schedule[scheduleIndex].day = day;
+                subject.schedule[scheduleIndex].classTime = classTime;
+            } else {
+                subject.schedule.push({ day, classTime });
+            }
+        }
+        await subject.save();
+        const revisedSchedule = previouslyAssignedSubject.schedule?.filter(schedule => schedule.day !== day);
+        previouslyAssignedSubject.schedule = revisedSchedule;
+        await previouslyAssignedSubject.save();
+        return res.json({ success: true, message: "Schedule updated" });
+    } catch(error) {
+        console.log(error.message);
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteSchedule = async (req,res) => {
+    try {
+        const { subjectId, day } = req.params;
+        if (!subjectId || !day) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const subject = await Subject.findById(subjectId);
+        if (!subject) {
+            return res.json({ success: false, message: "Something went wrong!" });
+        }
+        const revisedSchedule = subject.schedule?.filter(schedule => schedule.day !== day);
+        subject.schedule = revisedSchedule;
+        await subject.save();
+        return res.json({ success: true, message: "Subject removed from schedule" });
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

@@ -5,7 +5,7 @@ import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 import leftLongArrow from "../assets/leftLongArrow.svg";
 
 const AssignSubjectToLecture = () => {
-    const { courseId, semester, day, classTime, schedule } = useParams();
+    const { previousSubjectId, courseId, semester, day, classTime, schedule } = useParams();
     const { scheduleClass, updateSchedule } = useContext(AdminDashboardContext);
     const navigate = useNavigate();
     const [subjectName, setSubjectName] = useState("");
@@ -15,7 +15,7 @@ const AssignSubjectToLecture = () => {
         if (schedule === "assignSchedule") {
             await scheduleClass(subjectName,subjectCode,courseId,semester,day,classTime);
         } else if (schedule === "updateSchedule") {
-            await updateSchedule(subjectName,subjectCode,courseId,semester,day,classTime);
+            await updateSchedule(previousSubjectId,subjectName,subjectCode,courseId,semester,day,classTime);
         }
     }
     return(

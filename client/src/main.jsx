@@ -110,6 +110,12 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
+        path: "admin-dashboard/courses/:previousSubjectId/:courseId/:semester/:day/:classTime/:schedule",
+        element: <ProtectedRoute>
+          <AssignSubjectToLecture/>
+        </ProtectedRoute>
+      },
+      {
         path: "admin-dashboard/courses/:courseId/:courseCode/:semester/create-subject",
         element: <ProtectedRoute>
           <CreateSubject/>

@@ -1,7 +1,7 @@
 import express from "express";
 import { authUser } from "../middlewares/authUser.js";
 import { verifyAccess } from "../middlewares/role.js";
-import { changeSubjectTeacher, createSubject, deleteSubject, fetchSubjectsByCourseId, getSemesterSubjects, getSubjects, getSubjectsForTeacher, scheduleClass, updateSchedule } from "../controllers/subjectControllers.js";
+import { changeSubjectTeacher, createSubject, deleteSchedule, deleteSubject, fetchSubjectsByCourseId, getSemesterSubjects, getSubjects, getSubjectsForTeacher, scheduleClass, updateSchedule } from "../controllers/subjectControllers.js";
 
 const subjectRouter = express.Router();
 
@@ -11,7 +11,8 @@ subjectRouter.delete("/delete-subject/:subjectId", authUser, verifyAccess("admin
 subjectRouter.get("/get-subjects", authUser, getSubjects);
 subjectRouter.get("/fetch-subjects/:courseId", authUser, fetchSubjectsByCourseId);
 subjectRouter.put("/schedule-class", authUser, verifyAccess("admin"), scheduleClass);
-subjectRouter.put("update-schedule", authUser, verifyAccess("admin"), updateSchedule);
+subjectRouter.put("/update-schedule", authUser, verifyAccess("admin"), updateSchedule);
+subjectRouter.delete("/delete-schedule/:subjectId/:day", authUser, verifyAccess("admin"), deleteSchedule);
 subjectRouter.get("/get-subjects/:teacherId", authUser, verifyAccess("teacher"), getSubjectsForTeacher);
 subjectRouter.get("/get-semester-subjects/:courseId/:semester", authUser, verifyAccess("student"), getSemesterSubjects);
 

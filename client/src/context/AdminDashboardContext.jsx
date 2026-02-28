@@ -236,9 +236,9 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const updateSchedule = async (subjectName,subjectCode,courseId,semester,day,classTime) => {
+    const updateSchedule = async (previousSubjectId,subjectName,subjectCode,courseId,semester,day,classTime) => {
         try {
-            const response = await API.put("/subject/update-schedule", { subjectName, subjectCode, courseId, semester, day, classTime });
+            const response = await API.put("/subject/update-schedule", { previousSubjectId, subjectName, subjectCode, courseId, semester, day, classTime });
             if (response) {
                 if (response.data.success) {
                     toast.success(response.data.message);
@@ -248,6 +248,22 @@ const AdminDashboardProvider = ({ children }) => {
                 }
             } else {
                 toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const deleteSchedule = async (subjectId,day) => {
+        try {
+            const response = await API.delete(`/subject/delete-schedule/${subjectId}/${day}`);
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!")
             }
         } catch(error) {
             toast.error(error.message);
@@ -320,7 +336,7 @@ const AdminDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { courses, teachers, students, createCourse, getCourses, deleteCourse, createAdmin, createTeacher, deleteTeacher, getTeachers, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent, deleteStudent, getStudents }
+    const value = { courses, teachers, students, createCourse, getCourses, deleteCourse, createAdmin, createTeacher, deleteTeacher, getTeachers, createSubject, deleteSubject, changeSubjectTeacher, scheduleClass, updateSchedule, createStudent, deleteStudent, getStudents, deleteSchedule }
     return(
         <AdminDashboardContext.Provider value={value}>
             {children}

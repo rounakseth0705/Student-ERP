@@ -76,6 +76,22 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const uploadAssignment = async (subjectId,assignmentId,assignmentUploadFile) => {
+        try {
+            const response = await API.post("/assignmentUploads/upload-assignment", { subjectId, assignmentId, assignmentUploadFile });
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const getNotes = async (notesSubjectId,notesCourseId,semester) => {
         try {
             const response = await API.get(`/notes/get-notes-student/${notesSubjectId}/${notesCourseId}/${semester}`);
@@ -95,7 +111,7 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes, assignments, getAssignments };
+    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes, assignments, getAssignments, uploadAssignment };
     return(
         <StudentDashboardContext.Provider value={value}>
             {children}

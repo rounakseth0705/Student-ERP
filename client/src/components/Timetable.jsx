@@ -3,10 +3,16 @@ import { UserContext } from "../context/AuthContext.jsx";
 import clockIcon from "../assets/clockIcon.svg";
 import plusIcon from "../assets/plusIcon.svg";
 import { useNavigate } from "react-router-dom";
+import removeIcon from "../assets/removeIcon.svg";
+import { AdminDashboardContext } from "../context/AdminDashboardContext.jsx";
 
 const Timetable = ({ filteredSubjects, courseId, semester }) => {
     const { userIdentity, getCurrentClassTime, selectedDay } = useContext(UserContext);
+    const { deleteSchedule } = useContext(AdminDashboardContext);
     const navigate = useNavigate();
+    const handleDeleteSchedule = async (subjectId) => {
+        await deleteSchedule(subjectId,selectedDay);
+    }
     return(
         <div className="my-2 mx-3 py-5 px-1 rounded-2xl shadow-lg sm:mx-10 sm:px-3 md:mx-15 md:px-4 lg:px-10">
             {
@@ -29,7 +35,10 @@ const Timetable = ({ filteredSubjects, courseId, semester }) => {
                                                     <h1>{assignedSubject.subjectName}</h1>
                                                     <h1 className="text-blue-600 text-sm sm:text-base">{assignedSubject.teacherId.userId?.name.toUpperCase()}</h1>
                                                 </span>
-                                                { !userIdentity && <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester}/${selectedDay}/${currentClassStartTime}/updateSchedule`)} className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button> }
+                                                { !userIdentity && <button onClick={() => navigate(`/admin-dashboard/courses/${assignedSubject._id}/${courseId}/${semester}/${selectedDay}/${currentClassStartTime}/updateSchedule`)} className="bg-amber-500 text-white rounded cursor-pointer py-2 px-1.5 hover:bg-amber-400 transition-all duration-400 ease-in-out sm:px-2 md:px-3">Update Schedule</button> }
+                                                { !userIdentity &&
+                                                    <img onClick={() => handleDeleteSchedule(assignedSubject._id)} src={removeIcon} alt="removeIcon" className="w-4 h-4 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out sm:w-5 sm:h-5"/>
+                                                }
                                             </div> :
                                             !userIdentity ?
                                                 <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${semester}/${selectedDay}/${currentClassStartTime}/assignSchedule`)} className="flex justify-center items-center gap-1 mx-4 px-2 py-2 rounded bg-blue-600 text-white cursor-pointer hover:bg-blue-500 transition-all duration-400 ease-in-out sm:px-5 sm:mx-8 md:mx-10 xl:mx-30">

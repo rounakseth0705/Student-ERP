@@ -6,7 +6,8 @@ const assignmentUploadSchema = new mongoose.Schema({
     semester: { type: Number, required: true },
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
     assignmentId: { type: mongoose.Schema.Types.ObjectId, ref: "assignment", required: true },
-    assignmentUploadUrl: { type: String, required: true }
+    assignmentUploadUrl: { type: String, required: true },
+    assignmentUploadDownloadUrl: { type: String, required: true }
 });
 
 const AssignmentUpload = mongoose.model("assignmentUpload", assignmentUploadSchema);
