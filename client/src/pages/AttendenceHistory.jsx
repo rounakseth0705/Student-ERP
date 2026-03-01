@@ -11,37 +11,77 @@ const AttendenceHistory = () => {
     const { userIdentity } = useContext(UserContext);
     const { attendanceHistory, attendances } = useContext(TeacherDashboardContext);
     const [isOpen, setIsOpen] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(null);
     const [activeAttendanceId, setActiveAttendanceId] = useState(null);
+    const [query, setQuery] = useState("");
+    const [result, setResult] = useState([]);
     const handleAttendanceHistory = async () => {
         await attendanceHistory(userIdentity._id);
     }
-    const handleArrowOpen = (attendanceId) => {
+    const handleArrowOpen = (attendanceId,index) => {
+        setActiveIndex(index);
         setActiveAttendanceId(attendanceId);
         setIsOpen(prev => !prev);
     }
     useEffect(() => {
         handleAttendanceHistory();
     },[]);
+    useEffect(() => {
+        const filteredAttendances = attendances.filter(attendance => attendance.subjectId.subjectName.toLowerCase().includes(query.trim().toLowerCase()) || new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }).includes(query.trim()));
+        setResult(filteredAttendances);
+    },[query]);
     return(
         <>
             <TeacherFeaturesHeader toDisplay="Attendance History"/>
-            <div className="mt-5">
-                { attendances.length > 0 ?
+            { attendances.length > 0 &&
+                <div className="my-5 text-center">
+                    <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search attendance" className="w-100 outline-0 rounded-3xl bg-gray-200 px-5 py-3"/>
+                </div>
+            }
+            <div className="mt-5 mx-30">
+                { attendances.length > 0 && query.trim() === "" ?
                     attendances.map((attendance,index) => (
                         <React.Fragment key={index}>
-                            <div className="flex justify-between items-center bg-blue-200 rounded shadow-lg">
-                                <span className="cursor-pointer px-7">
-                                    <img onClick={() => handleArrowOpen(attendance._id)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
+                            <div className="flex justify-between items-center bg-blue-200 rounded shadow-lg my-5 p-3">
+                                <h1 className="px-10">{index+1}.</h1>
+                                <span className="px-10">
+                                    <img onClick={() => handleArrowOpen(attendance._id,index)} src={rightArrowBlack} alt="rightArrowBlack" className={`cursor-pointer w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
                                 </span>
-                                <h1>{attendance.subjectId.subjectName}</h1>
-                                <h1>{attendance.semester}</h1>
-                                <h1 className="px-7">{new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                                <h1 className="px-10">{attendance.subjectId.subjectName}</h1>
+                                <h1 className="px-10">Semester {attendance.semester}</h1>
+                                <h1 className="px-10">{new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                            </div>
+                            { (isOpen && activeAttendanceId === attendance._id) &&
+                                <div className="bg-blue-300 py-2 rounded">
+                                    {
+                                        attendance?.studentIds.map((student,index) => (
+                                            <div key={index} className="flex justify-evenly items-center py-1">
+                                                <h1>{index+1}.</h1>
+                                                <h1>name</h1>
+                                                <h1>Roll no.</h1>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
+                        </React.Fragment>
+                    )) : result.length > 0 && query.trim() !== "" ?
+                    result.map((attendance,index) => (
+                        <React.Fragment key={index}>
+                            <div className="flex justify-between items-center bg-blue-200 rounded shadow-lg my-5 p-3">
+                                <span className="px-10">
+                                    <img onClick={() => handleArrowOpen(attendance._id,index)} src={rightArrowBlack} alt="rightArrowBlack" className={`cursor-pointer w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
+                                </span>
+                                <h1 className="px-10">{attendance.subjectId.subjectName}</h1>
+                                <h1 className="px-10">Semester {attendance.semester}</h1>
+                                <h1 className="px-10">{new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                             </div>
                             { (isOpen && activeAttendanceId === attendance._id) &&
                                 <div className="bg-blue-300 py-5 rounded">
                                     {
                                         attendance?.studentIds.map((student,index) => (
                                             <div key={index} className="flex justify-evenly items-center py-2">
+                                                <h1>{index+1}.</h1>
                                                 <h1>name</h1>
                                                 <h1>Roll no.</h1>
                                             </div>

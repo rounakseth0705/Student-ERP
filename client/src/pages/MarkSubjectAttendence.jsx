@@ -2,20 +2,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import leftLongArrow from "../assets/leftLongArrow.svg";
 import { useContext, useEffect, useState } from "react";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
+import { useRef } from "react";
 
 const MarkSubjectAttendence = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
     const { getStudentsForAttendence, studentsForAttendence, markAttendence } = useContext(TeacherDashboardContext);
     const navigate = useNavigate();
     const [studentIds, setStudentIds] = useState([]);
-    const [isChecked, setIsChecked] = useState(false);
-    const [activeIndex, setActiveIndex] = useState([]);
-    const [day, setDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }));
+    const day = useRef(new Date().toLocaleDateString("en-US", { weekday: "short" }));
     const handleGetStudentsForAttendence = async () => {
         await getStudentsForAttendence(subjectId);
     }
     const handleMarkAttendence = async () => {
-        await markAttendence(subjectId,studentIds,day);
+        await markAttendence(subjectId,studentIds,day.current);
+    }
+    const handleMarkStudent = (id) => {
+        setStudentIds(prev => prev.includes(id) ? prev.filter(studentId => studentId !== id) : [...prev,id]);
     }
     useEffect(() => {
         handleGetStudentsForAttendence();
@@ -36,11 +38,7 @@ const MarkSubjectAttendence = () => {
                         <div key={index} className="grid grid-cols-3 mt-2">
                             <h1 className="flex justify-center items-center">{student.userId.name}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
-                            <input checked={activeIndex.includes(index) && isChecked} onChange={(event) => {
-                                setIsChecked(event.target.checked);
-                                setActiveIndex(prev => [...prev,index]);
-                                isChecked && setStudentIds(prev => [...prev,student._id]);
-                            }} type="checkbox" className="flex justify-center items-center"/>
+                            <input checked={studentIds.includes(student._id)} onChange={() => handleMarkStudent(student._id)} type="checkbox" className="flex justify-center items-center"/>
                         </div>
                     ))
                 }

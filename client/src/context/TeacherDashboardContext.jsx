@@ -233,7 +233,9 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setStudentsForAttendence(response.data.students);
-                    toast.success(response.data.message);
+                    if (response.data.students.length > 0) {
+                        toast.success(response.data.message);
+                    }
                 } else {
                     toast.error(response.data.message);
                 }

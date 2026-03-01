@@ -14,7 +14,7 @@ const Attendence = () => {
             <div className="flex flex-col justify-between gap-3 mt-10 mx-80 rounded shadow-lg py-5 px-15 bg-gray-50 font-semibold">
                 <span className="flex justify-between items-center">
                     <h1 className="text-2xl">Overall Attendance</h1>
-                    <h1 className="text-2xl">{userIdentity.attendence}%</h1>
+                    <h1 className="text-2xl">{(userIdentity.classesAttended/userIdentity.courseId.classesDelivered[userIdentity.semester-1])*100}%</h1>
                 </span>
                 <span className="flex flex-col py-3">
                     <span className="flex justify-between items-center px-5">

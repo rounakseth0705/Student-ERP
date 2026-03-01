@@ -14,9 +14,9 @@ const SubjectWiseAttendence = () => {
     const handleGetSubjects = async () => {
         await getSubjects(userIdentity.courseId._id,userIdentity.semester);
     }
-    const handleGetSubjectWiseAttendance = async () => {
-        await getSubjectWiseAttendance(subjectIds);
-    }
+    // const handleGetSubjectWiseAttendance = async () => {
+    //     await getSubjectWiseAttendance(subjectIds);
+    // }
     useEffect(() => {
         handleGetSubjects();
         const arrayOfubjectIds = subjects.map(subject => subject._id);
@@ -29,7 +29,10 @@ const SubjectWiseAttendence = () => {
             <h1 className="text-center mt-5 text-blue-950 text-4xl font-semibold">Subject Wise Attendance</h1>
             <div className="mt-5 mx-30">
                 {
-                    subjects.map((subject,index) => (
+                    subjects.map((subject,index) => {
+                        const subjectAttendance = userIdentity?.subjectWiseAttendance?.find(subjectAttendance => subjectAttendance.subjectId === subject._id);
+                        const classesAttended = subjectAttendance ? subjectAttendance.classesAttended : 0;
+                        return(
                         <div key={index} className="bg-gray-50 shadow-lg my-5 py-2 px-3">
                             <h1 className="text-2xl text-center my-2 font-semibold">{subject.subjectName}</h1>
                             <span className="flex justify-between items-center text-blue-600 mt-3">
@@ -39,11 +42,11 @@ const SubjectWiseAttendence = () => {
                             </span>
                             <span className="flex justify-between items-center my-1">
                                 <h1 className="px-5">{subject.subjectCode}</h1>
-                                <h1 className="px-5">0/{subject.classesDelivered}</h1>
-                                <h1 className="px-5">33.33%</h1>
+                                <h1 className="px-5">{classesAttended}/{subject.classesDelivered}</h1>
+                                <h1 className="px-5">{ classesAttended ? ((classesAttended/subject.classesDelivered) * 100) : 0}%</h1>
                             </span>
                         </div>
-                    ))
+                    )})
                 }
             </div>
         </>

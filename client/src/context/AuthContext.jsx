@@ -204,50 +204,57 @@ const AuthProvider = ({ children }) => {
         if (day === "Mon") {
             dayToShow = currentDate - 0 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
                 dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Tue") {
             dayToShow = currentDate - 1 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
                 dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Wed") {
             dayToShow = currentDate - 2 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
                 dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Thu") {
             dayToShow = currentDate - 3 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
                 dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Fri") {
             dayToShow = currentDate - 4 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
                 dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Sat") {
             dayToShow = currentDate - 5 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
                 dayToShow = totalDays - dayToShow;
             }
             return dayToShow;
         } else if (day === "Sun") {
             dayToShow = currentDate - 6 + index;
             if (dayToShow < 1) {
-                totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+                totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         }

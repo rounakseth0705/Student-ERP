@@ -44,11 +44,15 @@ const updateAttendence = async (studentId,subjectId,courseId,semester) => {
     const totalClassesAttended = student.classesAttended + 1;
     student.classesAttended = totalClassesAttended;
     student.attendence = (totalClassesAttended / totalClassesDelivered) * 100;
-    const subjectWiseAttendance = student.subjectWiseAttendance?.find(subjectWiseAttendance => subjectWiseAttendance.subjectId.equals(subjectId));
-    if (subjectWiseAttendance) {
-        subjectWiseAttendance.classesAttended = subjectWiseAttendance.classesAttended + 1;
+    const subjectAttendanceIndex = student.subjectWiseAttendance?.findIndex(subjectAttendance => subjectAttendance.subjectId.equals(subjectId));
+    if (!student.subjectWiseAttendance) {
+        student.subjectWiseAttendance = [{ subjectId, classesAttended: 1 }];
     } else {
-        student.subjectWiseAttendance?.push({ subjectId, classesAttended: 1 });
+        if (subjectAttendanceIndex !== -1) {
+            student.subjectWiseAttendance[subjectAttendanceIndex].classesAttended = student.subjectWiseAttendance[subjectAttendanceIndex].classesAttended + 1;
+        } else {
+            student.subjectWiseAttendance.push({ subjectId, classesAttended: 1 });
+        }
     }
     await student.save();
 }
@@ -72,39 +76,39 @@ export const getDayWiseAttendence = async (req,res) => {
     }
 }
 
-export const getSubjectWiseAttendance = async (req,res) => {
-    try {
-        const subjectIds = req.params.subjectIds.split(",");
-        const studentId = req?.studentId;
-        if (!subjectIds) {
-            return res.json({ success: false, message: "Something went wrong!" });
-        }
-        const attendances = await Attendence.find({ subjectId: { $in: subjectIds } });
-        if (!attendances) {
-            return res.json({ success: false, message: "Something went wrong!" });
-        }
-        let classAttendances = [];
-        attendances.forEach(attendance => {
-            subjectIds.map(subjectId => {
-                if (subjectId === attendance.subjectId) {
-                    if (attendance.studentIds.includes(studentId)) {
-                        if (classAttendances.length === 0) {
-                            classAttendances.push({ subjectId: subjectId, classAttended: 1 });
-                        } else if (classAttendances.some(classAttended => classAttended.subjectId === subjectId)) {
-                            const classAttendance = classAttendances.find(classAttendance => classAttendance.subjectId === subjectId);
-                            if (classAttendance) {
-                                classAttendance.classAttended = classAttendance.classAttended + 1;
-                            }
-                        } else {
-                            classAttendances.push({ subjectId: subjectId, classAttended: 1 });
-                        }
-                    }
-                }
-            });
-        });
-        return res.json({ success: true, classAttendances, message: "Subject wise attendance" });
-    } catch(error) {
-        console.log(error.message);
-        return res.json({ success: false, message: error.message });
-    }
-}
+// export const getSubjectWiseAttendance = async (req,res) => {
+//     try {
+//         const subjectIds = req.params.subjectIds.split(",");
+//         const studentId = req?.studentId;
+//         if (!subjectIds) {
+//             return res.json({ success: false, message: "Something went wrong!" });
+//         }
+//         const attendances = await Attendence.find({ subjectId: { $in: subjectIds } });
+//         if (!attendances) {
+//             return res.json({ success: false, message: "Something went wrong!" });
+//         }
+//         let classAttendances = [];
+//         attendances.forEach(attendance => {
+//             subjectIds.map(subjectId => {
+//                 if (subjectId === attendance.subjectId) {
+//                     if (attendance.studentIds.includes(studentId)) {
+//                         if (classAttendances.length === 0) {
+//                             classAttendances.push({ subjectId: subjectId, classAttended: 1 });
+//                         } else if (classAttendances.some(classAttended => classAttended.subjectId === subjectId)) {
+//                             const classAttendance = classAttendances.find(classAttendance => classAttendance.subjectId === subjectId);
+//                             if (classAttendance) {
+//                                 classAttendance.classAttended = classAttendance.classAttended + 1;
+//                             }
+//                         } else {
+//                             classAttendances.push({ subjectId: subjectId, classAttended: 1 });
+//                         }
+//                     }
+//                 }
+//             });
+//         });
+//         return res.json({ success: true, classAttendances, message: "Subject wise attendance" });
+//     } catch(error) {
+//         console.log(error.message);
+//         return res.json({ success: false, message: error.message });
+//     }
+// }
