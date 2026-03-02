@@ -102,7 +102,6 @@ export const verifyStudent = async (req,res) => {
 export const getCourseStudents = async (req,res) => {
     try {
         const { courseId } = req.params;
-        console.log(courseId);
         if (!courseId) {
             return res.json({ success: false, message: "Something went wrong!" });
         }

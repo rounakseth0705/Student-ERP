@@ -39,6 +39,7 @@ import AdminProfile from './pages/AdminProfile.jsx';
 import TeacherProfile from './pages/TeacherProfile.jsx';
 import StudentProfile from './pages/StudentProfile.jsx';
 import CreateAdmin from './pages/CreateAdmin.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Login/>
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword/>
       },
       {
         path: "admin-dashboard",

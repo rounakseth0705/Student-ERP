@@ -3,9 +3,11 @@ import userIcon from "../assets/userIcon.svg";
 import passwordIcon from "../assets/passwordIcon.svg";
 import { UserContext } from "../context/AuthContext.jsx";
 import CreateFirstAdmin from "../components/createFirstAdmin.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const { login, isAdminExists } = useContext(UserContext);
+    const navigate = useNavigate();
     const [role, setRole] = useState("student");
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
@@ -21,11 +23,11 @@ const Login = () => {
             <h1 className="text-white text-3xl font-semibold mb-5 sm:text-5xl sm:font-extrabold sm:mb-10">{role.toUpperCase()} LOGIN</h1>
             <form className="flex flex-col justify-center items-center">
                 <div className="flex justify-center items-center gap-1 m-2 sm:gap-5 sm:m-5">
-                    <img src={userIcon} alt="userIcon" className="h-15 w-15 sm:h-20 sm:w-20" />
+                    <img src={userIcon} alt="userIcon" className="h-15 w-15 sm:h-20 sm:w-20"/>
                     <input onChange={(event) => setUserId(event.target.value)} value={userId} type="text" placeholder={ role==="student" ? "Student Id" : role==="teacher" ? "Teacher Id" : "Email or Mobile no." } className="bg-gray-400 text-blue-950 outline-0 w-60 p-3 rounded-4xl sm:w-100 sm:p-5 md:w-120" />
                 </div>
                 <div className="flex justify-center items-center gap-1 m-2 sm:gap-5 sm:m-5">
-                    <img src={passwordIcon} alt="passwordIcon" className="h-15 w-15 sm:h-20 sm:w-20" />
+                    <img src={passwordIcon} alt="passwordIcon" className="h-15 w-15 sm:h-20 sm:w-20"/>
                     <input onChange={(event) => setPassword(event.target.value)} value={password} type="password" placeholder="Password" className="bg-gray-400 text-blue-950 outline-0 w-60 p-3 rounded-4xl sm:w-100 sm:p-5 md:w-120" />
                 </div>
                 <button onClick={(event) => handleLogin(event)} className="bg-white text-blue-950 font-semibold mt-5 py-2 px-10 rounded-full hover:opacity-75 transition-all duration-500 ease-in-out cursor-pointer sm:text-3xl sm:py-5 sm:px-20">LOGIN</button>
@@ -35,6 +37,10 @@ const Login = () => {
                 <option value="teacher">teacher</option>
                 <option value="admin">admin</option>
             </select>
+            <span className="flex justify-center items-center gap-1 mt-3">
+                <h1>Forgot Password?</h1>
+                <h1 onClick={() => navigate("forgot-password")} className="text-blue-950 cursor-pointer underline">click here</h1>
+            </span>
         </div>
     ) : (
         <CreateFirstAdmin/>

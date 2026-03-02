@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
     const [userIdentity, setUserIdentity] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isOtpSent, setIsOtpSent] = useState(false);
     const [isAdminExists, setIsAdminExists] = useState(true);
     const [course, setCourse] = useState({});
     const [subjects, setSubjects] = useState([]);
@@ -94,6 +95,23 @@ const AuthProvider = ({ children }) => {
             setIsLoggedIn(false);
             navigate("/");
             toast.success("logged out successfully");
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
+    const sendResetPasswordOtp = async (email) => {
+        try {
+            const response = await API.put("/user/send-password-reset-otp", { email });
+            if (response) {
+                if (response.data.success) {
+                    setIsOtpSent(true);
+                    toast.success(response.data.message);
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
         } catch(error) {
             toast.error(error.message);
         }
@@ -335,7 +353,7 @@ const AuthProvider = ({ children }) => {
             }).catch(() => logout());
         }
     },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime, sendResetPasswordOtp, isOtpSent };
     return(
         <UserContext.Provider value={value}>
             {children}
