@@ -108,11 +108,12 @@ const SubjectAssignments = () => {
                                 </span>
                             </div>
                             { (isOpen && activeIndex === index) &&
-                                    <div className="bg-blue-300 py-5 rounded">
+                                    <div className="bg-blue-300 mx-20 py-3 rounded">
                                         { assignmentUploads.length > 0 ?
                                             assignmentUploads.map((assignmentUpload,index) => (
                                                 <div key={index} className="flex justify-evenly items-center py-2">
-                                                    <h1>{assignmentUpload.studentId.name}</h1>
+                                                    <h1>{index+1}.</h1>
+                                                    <h1>{assignmentUpload.studentId.userId.name}</h1>
                                                     <h1>{assignmentUpload.studentId.rollNo}</h1>
                                                     <span className="px-7 cursor-pointer">
                                                         <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>

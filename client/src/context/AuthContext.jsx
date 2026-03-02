@@ -206,7 +206,7 @@ const AuthProvider = ({ children }) => {
             if (dayToShow < 1) {
                 // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
                 totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         } else if (day === "Tue") {
@@ -214,7 +214,7 @@ const AuthProvider = ({ children }) => {
             if (dayToShow < 1) {
                 // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
                 totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         } else if (day === "Wed") {
@@ -222,7 +222,7 @@ const AuthProvider = ({ children }) => {
             if (dayToShow < 1) {
                 // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
                 totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         } else if (day === "Thu") {
@@ -230,7 +230,7 @@ const AuthProvider = ({ children }) => {
             if (dayToShow < 1) {
                 // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
                 totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         } else if (day === "Fri") {
@@ -238,7 +238,7 @@ const AuthProvider = ({ children }) => {
             if (dayToShow < 1) {
                 // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
                 totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         } else if (day === "Sat") {
@@ -246,7 +246,7 @@ const AuthProvider = ({ children }) => {
             if (dayToShow < 1) {
                 // totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
                 totalDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-                dayToShow = totalDays - dayToShow;
+                dayToShow = totalDays + dayToShow;
             }
             return dayToShow;
         } else if (day === "Sun") {

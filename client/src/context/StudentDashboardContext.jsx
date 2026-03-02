@@ -8,6 +8,7 @@ const StudentDashboardProvider = ({ children }) => {
     const [subjects, setSubjects] = useState([]);
     const [todayAttendence, setTodayAttendence] = useState([]);
     const [assignments, setAssignments] = useState([]);
+    const [assignmentUploads, setAssignmentUploads] = useState([]);
     const [notes, setNotes] = useState([]);
     const getSubjects = async (courseId,semester) => {
         try {
@@ -78,7 +79,11 @@ const StudentDashboardProvider = ({ children }) => {
     }
     const uploadAssignment = async (subjectId,assignmentId,assignmentUploadFile) => {
         try {
-            const response = await API.post("/assignmentUploads/upload-assignment", { subjectId, assignmentId, assignmentUploadFile });
+            const formData = new FormData();
+            formData.append("subjectId",subjectId);
+            formData.append("assignmentId",assignmentId);
+            formData.append("assignmentUploadFile",assignmentUploadFile);
+            const response = await API.post("/assignmentUploads/upload-assignment", formData);
             if (response) {
                 if (response.data.success) {
                     toast.success(response.data.message);
@@ -90,6 +95,22 @@ const StudentDashboardProvider = ({ children }) => {
             }
         } catch(error) {
             toast.error(error.message);
+        }
+    }
+    const getAssignmentUploads = async (subjectId) => {
+        try {
+            const response = await API.get(`/assignmentUploads/get-assignment-uploads-student/${subjectId}`);
+            if (response) {
+                if (response.data.success) {
+                    setAssignmentUploads(response.data.assignmentUploads);
+                } else {
+                    toast.error("Can't fetch assignment state");
+                }
+            } else {
+                toast.error("Can't fetch assignment state");
+            }
+        } catch(error) {
+            toast.error("Can't fetch assignment state");
         }
     }
     const getNotes = async (notesSubjectId,notesCourseId,semester) => {
@@ -111,7 +132,7 @@ const StudentDashboardProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
-    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes, assignments, getAssignments, uploadAssignment };
+    const value = { subjects, getSubjects, getTodayAttendence, todayAttendence, getSubjectWiseAttendance, getNotes, notes, assignments, getAssignments, uploadAssignment, getAssignmentUploads, assignmentUploads };
     return(
         <StudentDashboardContext.Provider value={value}>
             {children}

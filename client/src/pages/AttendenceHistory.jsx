@@ -52,13 +52,13 @@ const AttendenceHistory = () => {
                                 <h1 className="px-10">{new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                             </div>
                             { (isOpen && activeAttendanceId === attendance._id) &&
-                                <div className="bg-blue-300 py-2 rounded">
+                                <div className="bg-blue-300 mx-20 py-2 rounded">
                                     {
                                         attendance?.studentIds.map((student,index) => (
                                             <div key={index} className="flex justify-evenly items-center py-1">
                                                 <h1>{index+1}.</h1>
-                                                <h1>name</h1>
-                                                <h1>Roll no.</h1>
+                                                <h1>{student.userId.name}</h1>
+                                                <h1>{student.rollNo}</h1>
                                             </div>
                                         ))
                                     }
@@ -77,13 +77,13 @@ const AttendenceHistory = () => {
                                 <h1 className="px-10">{new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                             </div>
                             { (isOpen && activeAttendanceId === attendance._id) &&
-                                <div className="bg-blue-300 py-5 rounded">
+                                <div className="bg-blue-300 mx-20 py-2 rounded">
                                     {
                                         attendance?.studentIds.map((student,index) => (
-                                            <div key={index} className="flex justify-evenly items-center py-2">
+                                            <div key={index} className="flex justify-evenly items-center py-1">
                                                 <h1>{index+1}.</h1>
-                                                <h1>name</h1>
-                                                <h1>Roll no.</h1>
+                                                <h1>{student.userId.name}</h1>
+                                                <h1>{student.rollNo}</h1>
                                             </div>
                                         ))
                                     }

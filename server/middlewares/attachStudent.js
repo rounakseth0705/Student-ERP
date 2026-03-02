@@ -12,6 +12,7 @@ export const attachStudent = async (req,res,next) => {
             return res.json({ success: false, message: "Student profile not found" });
         }
         req.studentId = student._id;
+        next();
     } catch(error) {
         console.log(error.message);
         return res.json({ success: false, message: error.message });

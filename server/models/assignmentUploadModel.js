@@ -7,6 +7,7 @@ const assignmentUploadSchema = new mongoose.Schema({
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: "course", required: true },
     assignmentId: { type: mongoose.Schema.Types.ObjectId, ref: "assignment", required: true },
     assignmentUploadUrl: { type: String, required: true },
+    assignmentUploadPublicId: { type: String, required: true },
     assignmentUploadDownloadUrl: { type: String, required: true }
 });
 

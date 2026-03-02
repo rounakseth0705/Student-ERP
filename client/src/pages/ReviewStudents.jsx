@@ -36,15 +36,18 @@ const ReviewStudents = () => {
                 </div>
                 <hr className="mb-2"/>
                 { query.trim() === "" && students.length > 0 ?
-                    students.map(student => (
-                        <div key={student._id} className="grid grid-cols-5 my-1 text-sm sm:text-base">
-                            <h1 className="flex justify-center items-center">{student.userId.name}</h1>
-                            <h1 className="flex justify-center items-center">{student.studentId}</h1>
-                            <h1 className="flex justify-center items-center">{student.rollNo}</h1>
-                            <h1 className="flex justify-center items-center">{student.semester}</h1>
-                            <h1 className="flex justify-center items-center">{student.attendence}%</h1>
-                        </div>
-                    )) : query.trim() !== "" && result.length > 0 ?
+                    students.map(student => {
+                        const attendance = student.classesAttended !== 0 && student.courseId.classesDelivered[student.semester-1] ?(student.classesAttended/student.courseId.classesDelivered[student.semester-1])*100 : 0;
+                        return(
+                            <div key={student._id} className="grid grid-cols-5 my-1 text-sm sm:text-base">
+                                <h1 className="flex justify-center items-center">{student.userId.name}</h1>
+                                <h1 className="flex justify-center items-center">{student.studentId}</h1>
+                                <h1 className="flex justify-center items-center">{student.rollNo}</h1>
+                                <h1 className="flex justify-center items-center">{student.semester}</h1>
+                                <h1 className="flex justify-center items-center">{attendance}%</h1>
+                            </div>
+                        )
+                    }) : query.trim() !== "" && result.length > 0 ?
                     result.map(student => (
                         <div key={student._id} className="grid grid-cols-5 my-1 text-xs sm:text-base">
                             <h1 className="flex justify-center items-center">{student.userId.name}</h1>

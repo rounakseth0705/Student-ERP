@@ -110,7 +110,7 @@ export const getCourseStudents = async (req,res) => {
         if (!course) {
             return res.json({ success: false, message: "Invalid course!" });
         }
-        const students = await Student.find({ courseId }).populate("userId","name");
+        const students = await Student.find({ courseId }).populate("userId","name").populate("courseId","classesDelivered");
         if (!students) {
             return res.json({ success: false, message: "No students exists in this course" });
         }
