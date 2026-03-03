@@ -21,7 +21,7 @@ const TeacherCreateButton = ({ create, isUploading, setIsUploading, name, setNam
         }
     }
     return(
-        <button onClick={handleCreateAssignment} disabled={isCreating ? true : false} className="bg-red-500 rounded py-3 px-5 mt-5 text-white cursor-pointer hover:opacity-80 transition-all duration-400 ease-in-out">{ isUploading ? "Upload" : "Create" } {create}</button>
+        <button onClick={handleCreateAssignment} disabled={isCreating ? true : false} className="bg-red-500 rounded py-3 px-2 mt-5 text-white text-sm cursor-pointer hover:opacity-80 transition-all duration-400 ease-in-out sm:px-3 md:text-base md:px-5">{ isUploading ? "Upload" : "Create" } {create}</button>
     )
 }
 

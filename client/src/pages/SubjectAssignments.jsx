@@ -66,45 +66,45 @@ const SubjectAssignments = () => {
         <>
             <img onClick={() => navigate("/teacher-dashboard/assignments")} src={leftLongArrow} alt="leftArrow" className="absolute left-10 top-4 w-10 h-10 cursor-pointer"/>
             <h1 className="text-center mt-5 text-3xl font-semibold text-blue-950">{subjectName} ({subjectCode})</h1>
-            <div className="mt-10 mx-30">
+            <div className="mt-10 mx-5 sm:mx-7 md:mx-10 lg:mx-15 xl:mx-30">
                 {
                     assignments.map((assignment,index) => (
                         <React.Fragment key={index}>
                             <div className="flex justify-between items-center my-5 py-3 bg-blue-200 rounded shadow-lg">
-                                <span className="cursor-pointer px-7">
-                                    <img onClick={() => handleArrowOpen(index,assignment._id)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
+                                <span className="cursor-pointer mx-2 sm:mx-3 md:px-4 lg:mx-7">
+                                    <img onClick={() => handleArrowOpen(index,assignment._id)} src={rightArrowBlack} alt="rightArrowBlack" className={`w-4 h-4 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"} md:w-5 md:h-5`}/>
                                 </span>
-                                <span className="flex justify-center items-center gap-3 px-7">
+                                <span className="flex justify-center items-center gap-1 mx-2 sm:mx-3 md:mx-4 lg:mx-7 lg:gap-3">
                                     { isNameEditing && activeIndex === index ?
-                                        <input onChange={(event) => setAssignmentUpdatedName(event.target.value)} value={assignmentUpdatedName} type="text" className="w-27 rounded bg-gray-200 outline-0"/>
-                                        : <h1>{assignment.assignmentName}</h1>
+                                        <input onChange={(event) => setAssignmentUpdatedName(event.target.value)} value={assignmentUpdatedName} type="text" className="w-20 rounded bg-gray-200 outline-0 lg:w-25 xl:w-27"/>
+                                        : <h1 className="text-sm md:text-base">{assignment.assignmentName}</h1>
                                     }
                                     { isNameEditing && activeIndex === index ?
                                         <img onClick={() => handleAssignmentNameInputBoxClosing(assignment._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
-                                        <img onClick={() => handleAssignmentNameInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
+                                        <img onClick={() => handleAssignmentNameInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-3 h-3 cursor-pointer md:w-4 md:h-4"/>
                                     }
                                 </span>
-                                <h1 className="px-7">{new Date(assignment.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
-                                <span className="flex justify-center items-center gap-3 px-7">
+                                <h1 className="text-sm mx-2 sm:mx-3 md:text-base md:mx-4 lg:mx-7">{new Date(assignment.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                                <span className="flex justify-center items-center gap-1 mx-2 sm:mx-3 md:mx-4 lg:mx-7 lg:gap-3">
                                     { isSubmitDateEditing && activeIndex === index ?
                                         <input onChange={(event) => setAssignmentUpdatedSubmitDate(event.target.value)} value={assignmentUpdatedSubmitDate} type="date" className="w-35 px-2 rounded bg-gray-200 outline-0"/> :
-                                        <h1>{new Date(assignment.assignmentSubmitDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                                        <h1 className="text-sm md:text-base">{new Date(assignment.assignmentSubmitDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                                     }
                                     { isSubmitDateEditing && activeIndex === index ?
                                         <img onClick={() => handleAssignmentSubmitDateInputBoxClosing(assignment._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
-                                        <img onClick={() => handleAssignmentSubmitDateInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
+                                        <img onClick={() => handleAssignmentSubmitDateInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-3 h-3 cursor-pointer md:w-4 md:h-4"/>
                                     }
                                 </span>
-                                <span className="px-7 cursor-pointer">
-                                    <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
+                                <span className="mx-2 sm:mx-3 md:mx-4 lg:mx-7 cursor-pointer">
+                                    <img src={fileOpenIcon} alt="fileOpenIcon" className="w-4 h-4 md:w-5 md:h-5"/>
                                 </span>
-                                <span className="px-7 cursor-pointer">
+                                <span className="mx-2 sm:mx-3 md:mx-4 lg:mx-7 cursor-pointer">
                                     <a href={assignment.assignmentDownloadUrl} download>
-                                        <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                        <img src={downloadIcon} alt="downloadIcon" className="w-4 h-4 md:w-5 md:h-5"/>
                                     </a>
                                 </span>
-                                <span className="px-7 cursor-pointer">
-                                    <img onClick={() => handleDeleteAssignment(assignment._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 hover:opacity-60"/>
+                                <span className="mx-2 sm:mx-3 md:mx-4 lg:mx-7 cursor-pointer">
+                                    <img onClick={() => handleDeleteAssignment(assignment._id)} src={removeIcon} alt="removeIcon" className="w-4 h-4 hover:opacity-60 md:w-5 md:h-5"/>
                                 </span>
                             </div>
                             { (isOpen && activeIndex === index) &&
@@ -115,10 +115,10 @@ const SubjectAssignments = () => {
                                                     <h1>{index+1}.</h1>
                                                     <h1>{assignmentUpload.studentId.userId.name}</h1>
                                                     <h1>{assignmentUpload.studentId.rollNo}</h1>
-                                                    <span className="px-7 cursor-pointer">
+                                                    <span className="mx-2 sm:mx-3 md:mx-4 lg:mx-7 cursor-pointer">
                                                         <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
                                                     </span>
-                                                    <span className="px-7 cursor-pointer">
+                                                    <span className="mx-2 sm:mx-3 md:mx-4 lg:mx-7 cursor-pointer">
                                                         <a href={assignmentUpload.assignmentUploadDownloadUrl} download>
                                                             <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
                                                         </a>
