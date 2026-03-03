@@ -31,7 +31,7 @@ const StudentDashboardProvider = ({ children }) => {
             const response = await API.get(`/attendence/get-day-wise-attendence/${day}/${month}/${year}/${courseId}/${semester}`);
             if (response) {
                 if (response.data.success) {
-                    setTodayAttendence(response.data.attendences);
+                    setTodayAttendence(response.data.attendances);
                 } else {
                     toast.error(response.data.message);
                 }

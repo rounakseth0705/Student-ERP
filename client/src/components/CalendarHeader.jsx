@@ -7,11 +7,11 @@ const CalendarHeader = ({ setSelectedDayAndDate, getDate, toShow }) => {
     const { selectedDate, } = useContext(UserContext);
     return(
         <>
-            <h1 className="text-center mt-5 text-4xl font-semibold text-blue-950">{toShow}</h1>
-            <div className="flex justify-between items-center bg-blue-400 mt-5 text-white">
-                <img src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
-                <h1 className="my-5 text-2xl font-semibold">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
-                <img src={rightArrow} alt="rightArrow" className="w-10 h-10 mx-10 cursor-pointer"/>
+            <h1 className="text-center mt-3 font-semibold text-blue-950 sm:text-3xl md:text-4xl sm:mt-5">{toShow}</h1>
+            <div className="flex justify-between items-center bg-blue-400 mt-3 text-white sm:mt-5">
+                <img src={leftArrow} alt="leftArrow" className="w-10 h-10 mx-5 cursor-pointer sm:mx-10"/>
+                <h1 className="my-5 font-semibold sm:text-2xl">{new Date().toLocaleString("en-US", { month: "long" })} ({new Date().getFullYear()})</h1>
+                <img src={rightArrow} alt="rightArrow" className="w-10 h-10 mx-5 cursor-pointer sm:mx-10"/>
             </div>
             <div className="bg-blue-300 grid grid-cols-7 mt-1 mx-3 py-3 text-blue-950 sm:mx-10 md:mx-15 xl:px-3">
                 <h1 className="flex justify-center items-center text-sm sm:text-base sm:mx-3 md:mx-5 lg:mx-7 xl:mx-10">Mon</h1>

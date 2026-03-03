@@ -9,7 +9,7 @@ const UserProfileHeader = () => {
     const navigate = useNavigate();
     return(
         <div className="bg-blue-500">
-            <img onClick={() => navigate(`/${user.role}-dashboard`)} src={homeIcon} alt="homeIcon" className="fixed left-15 top-4 w-10 h-10 cursor-pointer"/>
+            <img onClick={() => navigate(`/${user.role}-dashboard`)} src={homeIcon} alt="homeIcon" className="fixed left-10 top-6 w-8 h-8 cursor-pointer sm:w-10 sm:h-10 sm:top-4 sm:left-15"/>
             <h1 className="text-center text-white text-4xl font-semibold pt-5">Profile</h1>
             <div className="flex flex-col items-center p-3">
                 <span className="mt-5">

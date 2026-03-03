@@ -116,6 +116,23 @@ const AuthProvider = ({ children }) => {
             toast.error(error.message);
         }
     }
+    const updatePasswordWithOtp = async (email,otp,newPassword) => {
+        try {
+            const response = await API.put("/user/update-password-otp", { email, otp, newPassword });
+            if (response) {
+                if (response.data.success) {
+                    toast.success(response.data.message);
+                    navigate("/");
+                } else {
+                    toast.error(response.data.message);
+                }
+            } else {
+                toast.error("Something went wrong!");
+            }
+        } catch(error) {
+            toast.error(error.message);
+        }
+    }
     const checkAdmin = async () => {
         try {
             const response = await API.get("/user/get-admins");
@@ -353,7 +370,7 @@ const AuthProvider = ({ children }) => {
             }).catch(() => logout());
         }
     },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime, sendResetPasswordOtp, isOtpSent };
+    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime, sendResetPasswordOtp, isOtpSent, updatePasswordWithOtp };
     return(
         <UserContext.Provider value={value}>
             {children}

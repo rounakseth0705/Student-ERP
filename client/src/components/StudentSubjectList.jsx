@@ -15,7 +15,7 @@ const StudentSubjectList = ({ isNavigate=false }) => {
         handleGetSubjects();
     },[]);
     return(
-        <div className="grid grid-cols-2 gap-10 mt-15 mx-50">
+        <div className="grid grid-cols-1 gap-8 mt-8 mx-10 sm:mt-15 sm:grid-cols-2 sm:mx-12 sm:gap-5 md:gap-10 md:mx-20 lg:mx-40 xl:mx-50">
             {
                 subjects.map((subject,index) => (
                     <div key={index} onClick={() => isNavigate && navigate(`${subject._id}/${subject.subjectName}/${subject.subjectCode}`)} className={`flex flex-col justify-center items-center py-5 bg-blue-200 text-blue-950 font-semibold rounded shadow-lg ${isNavigate && "cursor-pointer"} hover:bg-blue-100 hover:text-blue-900 transition-all ease-in-out duration-400`}>

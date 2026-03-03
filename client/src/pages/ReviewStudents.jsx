@@ -25,11 +25,10 @@ const ReviewStudents = () => {
         <div className="flex flex-col justify-center items-center">
             <img onClick={() => navigate("/teacher-dashboard")} src={homeIcon} alt="homeIcon" className="absolute left-10 top-6 w-8 h-8 cursor-pointer"/>
             <h1 className="mt-5 text-blue-950 text-2xl font-semibold sm:text-3xl md:text-4xl">List of Students in {userIdentity.courseId.courseName}</h1>
-            <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search student" className="mt-5 py-3 px-5 bg-gray-300 rounded-full outline-0 w-80 md:py-5 sm:w-110 md:w-150"/>
+            <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search student" className="mt-5 py-3 px-5 bg-gray-300 rounded-full outline-0 w-70 md:py-5 sm:w-110 md:w-150"/>
             <div className="bg-blue-50 rounded shadow-2xl mt-5 w-[95vw] sm:w-[90vw]">
-                <div className="grid grid-cols-5 py-2 text-blue-950 font-semibold text-sm sm:text-base md:text-2xl">
+                <div className="grid grid-cols-4 py-2 text-blue-950 font-semibold text-sm sm:text-base md:text-2xl">
                     <h1 className="flex justify-center items-center">Name</h1>
-                    <h1 className="flex justify-center items-center">ID</h1>
                     <h1 className="flex justify-center items-center">Roll No.</h1>
                     <h1 className="flex justify-center items-center">Semester</h1>
                     <h1 className="flex justify-center items-center">Attendence</h1>
@@ -39,9 +38,8 @@ const ReviewStudents = () => {
                     students.map(student => {
                         const attendance = student.classesAttended !== 0 && student.courseId.classesDelivered[student.semester-1] ?(student.classesAttended/student.courseId.classesDelivered[student.semester-1])*100 : 0;
                         return(
-                            <div key={student._id} className="grid grid-cols-5 my-1 text-sm sm:text-base">
+                            <div key={student._id} className="grid grid-cols-4 my-1 text-xs sm:text-sm md:text-base">
                                 <h1 className="flex justify-center items-center">{student.userId.name}</h1>
-                                <h1 className="flex justify-center items-center">{student.studentId}</h1>
                                 <h1 className="flex justify-center items-center">{student.rollNo}</h1>
                                 <h1 className="flex justify-center items-center">{student.semester}</h1>
                                 <h1 className="flex justify-center items-center">{attendance}%</h1>
@@ -49,9 +47,8 @@ const ReviewStudents = () => {
                         )
                     }) : query.trim() !== "" && result.length > 0 ?
                     result.map(student => (
-                        <div key={student._id} className="grid grid-cols-5 my-1 text-xs sm:text-base">
+                        <div key={student._id} className="grid grid-cols-4 my-1 text-xs sm:text-sm md:text-base">
                             <h1 className="flex justify-center items-center">{student.userId.name}</h1>
-                            <h1 className="flex justify-center items-center">{student.studentId}</h1>
                             <h1 className="flex justify-center items-center">{student.rollNo}</h1>
                             <h1 className="flex justify-center items-center">{student.semester}</h1>
                             <h1 className="flex justify-center items-center">{student.attendence}%</h1>

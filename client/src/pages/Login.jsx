@@ -39,7 +39,7 @@ const Login = () => {
             </select>
             <span className="flex justify-center items-center gap-1 mt-3">
                 <h1>Forgot Password?</h1>
-                <h1 onClick={() => navigate("forgot-password")} className="text-blue-950 cursor-pointer underline">click here</h1>
+                <h1 onClick={() => navigate("forgot-password")} className="text-blue-950 cursor-pointer hover:underline">click here</h1>
             </span>
         </div>
     ) : (

@@ -14,36 +14,32 @@ const SubjectWiseAttendence = () => {
     const handleGetSubjects = async () => {
         await getSubjects(userIdentity.courseId._id,userIdentity.semester);
     }
-    // const handleGetSubjectWiseAttendance = async () => {
-    //     await getSubjectWiseAttendance(subjectIds);
-    // }
     useEffect(() => {
         handleGetSubjects();
         const arrayOfubjectIds = subjects.map(subject => subject._id);
         setSubjectIds(arrayOfubjectIds);
-        // handleGetSubjectWiseAttendance();
     },[]);
     return(
         <>
-            <img onClick={() => navigate("/student-dashboard/attendance")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-15 top-5 w-10 h-10 cursor-pointer"/>
-            <h1 className="text-center mt-5 text-blue-950 text-4xl font-semibold">Subject Wise Attendance</h1>
-            <div className="mt-5 mx-30">
+            <img onClick={() => navigate("/student-dashboard/attendance")} src={leftLongArrow} alt="ArrowIcon" className="absolute left-3 top-5 w-6 h-6 cursor-pointer sm:left-8 sm:w-8 sm:h-8 md:w-10 md:h-10 md:left-15"/>
+            <h1 className="text-center mt-5 text-blue-950 font-semibold sm:text-2xl md:text-3xl lg:text-4xl">Subject Wise Attendance</h1>
+            <div className="mt-5 mx-3 sm:mx-10 md:mx-20 lg:mx-25 xl:mx-30">
                 {
                     subjects.map((subject,index) => {
                         const subjectAttendance = userIdentity?.subjectWiseAttendance?.find(subjectAttendance => subjectAttendance.subjectId === subject._id);
                         const classesAttended = subjectAttendance ? subjectAttendance.classesAttended : 0;
                         return(
-                        <div key={index} className="bg-gray-50 shadow-lg my-5 py-2 px-3">
-                            <h1 className="text-2xl text-center my-2 font-semibold">{subject.subjectName}</h1>
-                            <span className="flex justify-between items-center text-blue-600 mt-3">
-                                <h1 className="px-5">Course Code</h1>
-                                <h1 className="px-5">Attended/Delivered</h1>
-                                <h1 className="px-5">Percentage</h1>
+                        <div key={index} className="bg-gray-50 shadow-lg my-5 py-2 px-1 sm:px-3">
+                            <h1 className="text-center my-2 font-semibold sm:text-2xl">{subject.subjectName}</h1>
+                            <span className="flex justify-between items-center text-sm text-blue-600 mt-3 sm:text-base">
+                                <h1 className="sm:px-5">Subject Code</h1>
+                                <h1 className="sm:px-5">Attended/Delivered</h1>
+                                <h1 className="sm:px-5">Percentage</h1>
                             </span>
-                            <span className="flex justify-between items-center my-1">
-                                <h1 className="px-5">{subject.subjectCode}</h1>
-                                <h1 className="px-5">{classesAttended}/{subject.classesDelivered}</h1>
-                                <h1 className="px-5">{ classesAttended ? ((classesAttended/subject.classesDelivered) * 100) : 0}%</h1>
+                            <span className="flex justify-between items-center my-1 text-sm sm:text-base">
+                                <h1 className="sm:px-5">{subject.subjectCode}</h1>
+                                <h1 className="sm:px-5">{classesAttended}/{subject.classesDelivered}</h1>
+                                <h1 className="sm:px-5">{ classesAttended ? ((classesAttended/subject.classesDelivered) * 100) : 0}%</h1>
                             </span>
                         </div>
                     )})

@@ -188,14 +188,14 @@ export const sendResetPasswordOtp = async (req,res) => {
 export const updatePasswordWithOtp = async (req,res) => {
     try {
         const { email, otp, newPassword } = req.body;
-        if (!email || !otp || !password) {
+        if (!email || !otp || !newPassword) {
             return res.json({ success: false, message: "Details missing" });
         }
         const existingUser = await User.findOne({ email });
         if (!existingUser) {
             return res.json({ success: false, message: "User not found" });
         }
-        if (existingUser.otp !== "" || existingUser.otp !== otp) {
+        if (existingUser.otp === "" || existingUser.otp !== otp) {
             return res.json({ success: false, message: "Invalid otp" });
         }
         if (existingUser.otpExpireAt < Date.now()) {

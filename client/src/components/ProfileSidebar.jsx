@@ -8,7 +8,7 @@ const ProfileSidebar = ({ isMenuClicked,setIsMenuClicked }) => {
     const { user, userIdentity } = useContext(UserContext);
     const navigate = useNavigate();
     return isMenuClicked && (
-        <div className="fixed top-0 w-40 h-screen bg-blue-300 flex flex-col items-center rounded-r-2xl shadow-2xl sm:w-60">
+        <div className="fixed top-0 w-[42vw] h-screen bg-blue-300 flex flex-col items-center rounded-r-2xl shadow-2xl sm:w-50 md:w-60">
             <span onClick={() => setIsMenuClicked((prev) => !prev)} className="mt-8">
                 <img src={crossIcon} alt="crossIcon" className="h-10 w-10 cursor-pointer"/>
             </span>
@@ -17,7 +17,7 @@ const ProfileSidebar = ({ isMenuClicked,setIsMenuClicked }) => {
             </span>
             <h1 className="text-blue-950 mt-2 font-semibold">{user.name}</h1>
             { userIdentity && <h1 className="text-blue-950">{userIdentity.courseId.courseName}</h1> }
-            <button onClick={() => navigate("view-profile")} className="bg-white my-3 text-blue-950 px-3 py-1 rounded cursor-pointer shadow-lg">View Profile Details</button>
+            <button onClick={() => navigate("view-profile")} className="bg-white my-3 text-blue-950 text-sm px-2 py-1 rounded cursor-pointer shadow-lg sm:px-3 sm:text-base">View Profile Details</button>
             { user.role === "admin" &&
                 <button onClick={() => navigate("create-admin")} className="mt-20 bg-white text-blue-950 px-3 py-1 rounded-2xl cursor-pointer shadow-lg">Create Admin</button>
             }

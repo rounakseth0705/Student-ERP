@@ -252,7 +252,7 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     toast.success(response.data.message);
-                    navigate("/mark-attendence");
+                    navigate("/teacher-dashboard/mark-attendence");
                 } else {
                     toast.error(response.data.message);
                 }
