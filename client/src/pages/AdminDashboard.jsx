@@ -11,7 +11,7 @@ const AdminDashboard = () => {
         <>
             <Navbar setIsMenuClicked={setIsMenuClicked}/>
             <ProfileSidebar isMenuClicked={isMenuClicked} setIsMenuClicked={setIsMenuClicked}/>
-            <UserDashboard option1="Teachers" option2="Create Teacher" option3="Students" option4="Create Student" option5="Courses" option6="Create Course" dashboard="admin-dashboard" navigate1="teachers" navigate2="create-teacher" navigate3="students" navigate4="create-student" navigate5="courses" navigate6="create-course"/>
+            <UserDashboard role="admin" option1="Teachers" option2="Create Teacher" option3="Students" option4="Create Student" option5="Courses" option6="Create Course" dashboard="admin-dashboard" navigate1="teachers" navigate2="create-teacher" navigate3="students" navigate4="create-student" navigate5="courses" navigate6="create-course"/>
         </>
     )
 }
