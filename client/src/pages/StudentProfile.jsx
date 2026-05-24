@@ -3,10 +3,10 @@ import UserProfileFooter from "../components/UserProfileFooter";
 
 const StudentProfile = () => {
     return(
-        <>
+        <div className="bg-gray-200 min-h-screen">
             <UserProfileHeader/>
             <UserProfileFooter/>
-        </>
+        </div>
     )
 }
 
