@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import userIcon from "../assets/userIcon.svg";
 import passwordIcon from "../assets/passwordIcon.svg";
 import { UserContext } from "../context/AuthContext.jsx";
-import CreateFirstAdmin from "../components/createFirstAdmin.jsx";
+import CreateFirstAdmin from "../components/CreateFirstAdmin.jsx";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
