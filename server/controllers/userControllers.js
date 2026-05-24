@@ -24,6 +24,10 @@ export const adminSignUp = async (req,res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ name, mobileNo, email, password: hashedPassword, role });
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined");
+        }
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
@@ -84,6 +88,7 @@ export const UserCreation = async (req,res) => {
 
 export const adminLogin = async (req,res) => {
     try {
+        console.log("Server reached fjgbee");
         const { identifier, password } = req.body;
         if (!identifier || !password) {
             return res.json({ success: false, message: "Missing details" });
@@ -95,6 +100,10 @@ export const adminLogin = async (req,res) => {
         const isMatch = await bcrypt.compare(password, existingUser.password);
         if (!isMatch) {
             return res.json({ success: false, message: "Invalid password" });
+        }
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined");
         }
         const token = jwt.sign({ id: existingUser._id, role: existingUser.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
         return res.json({ success: true, user: existingUser, token, message: "Admin logged in successfully" });
