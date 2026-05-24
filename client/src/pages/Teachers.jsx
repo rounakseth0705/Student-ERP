@@ -25,46 +25,47 @@ const Teachers = () => {
         setResult(filteredTeachers);
     },[query]);
     return(
-        <>
-            <img onClick={() => navigate("/admin-dashboard")} src={homeIcon} alt="homeIcon" className="absolute left-15 w-10 h-10 cursor-pointer"/>
-            <h1 className="text-center text-4xl font-semibold mt-5">LIST OF TEACHERS</h1>
+        <div className="bg-blue-100 min-h-screen">
+            <div className="flex justify-between items-center px-[2vw] py-[2vh] sm:px-5 sm:py-6 lg:py-4">
+                <img onClick={() => navigate("/admin-dashboard")} src={homeIcon} alt="homeIcon" className="w-5 h-5 cursor-pointer sm:w-8 sm:h-8 lg:w-10 lg:h-10"/>
+                <h1 className="font-semibold sm:text-3xl lg:text-4xl">LIST OF TEACHERS</h1>
+                <button className="bg-blue-500 text-white cursor-pointer p-1 rounded text-xs sm:text-base">Create Teacher</button>
+            </div>
             <div className="flex flex-col items-center">
-                <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search teacher" className="m-5 px-5 py-3 bg-gray-300 outline-0 rounded-full w-80 sm:w-100 md:py-5 md:w-110 lg:w-150"/>
-                <div className="p-5 bg-blue-100 shadow-lg rounded w-[95vw] sm:w-[90vw]">
-                    <div className="grid grid-cols-5 gap-3 my-5 mx-auto font-semibold text-blue-950 xl:text-2xl">
-                        <h1 className="flex justify-center border">NAME</h1>
-                        <h1 className="flex justify-center border">COURSE</h1>
-                        <h1 className="flex justify-center border">TEACHER ID</h1>
-                        <h1 className="flex justify-center border">EMPLOYEE ID</h1>
-                        <h1 className="flex justify-center border">ACTION</h1>
+                <input onChange={(event) => setQuery(event.target.value)} value={query} type="text" placeholder="search teacher" className="my-2 px-5 py-2 bg-gray-300 outline-0 rounded-full w-[70vw] text-sm sm:text-base sm:my-4 sm:w-100 sm:py-4 md:px-7 md:w-110 lg:py-5 lg:w-150 lg:my-5"/>
+                <div className="bg-gray-100 shadow-2xl rounded w-[97vw] py-3 my-2 sm:py-5 sm:px-2 sm:my-4 sm:w-[95vw] md:px-3 lg:my-2 lg:px-4 xl:px-5">
+                    <div className="grid grid-cols-4 gap-x-1 gap-y-3 mb-3 mx-auto font-semibold text-blue-950 text-xs sm:text-base sm:gap-x-2 lg:gap-3 lg:mb-4 lg:text-2xl">
+                        <h1 className="flex justify-center">NAME</h1>
+                        <h1 className="flex justify-center">COURSE</h1>
+                        <h1 className="flex justify-center">TEACHER ID</h1>
+                        <h1 className="flex justify-center">ACTION</h1>
                     </div>
+                    <hr />
                     { query.trim() === "" && teachers.length > 0 ?
                         teachers.map((teacher,index) => (
-                            <div key={index} className="grid grid-cols-5 gap-1 my-2">
-                                <h1 className="flex justify-center border">{teacher.userId.name}</h1>
-                                <h1 className="flex justify-center border">{teacher.courseId.courseName}</h1>
-                                <h1 className="flex justify-center border">{teacher.teacherId}</h1>
-                                <h1 className="flex justify-center border">{teacher.employeeId}</h1>
-                                <div className="flex justify-center border">
-                                    <img onClick={() =>  handleDeleteTeacher(teacher.teacherId,teacher.employeeId)} src={removeIcon} alt="removeIcon" className="w-5 h-5 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out"/>
+                            <div key={index} className="grid grid-cols-4 gap-1 my-2 text-xs sm:text-base">
+                                <h1 className="flex justify-center">{teacher.userId.name}</h1>
+                                <h1 className="flex justify-center">{teacher.courseId.courseName}</h1>
+                                <h1 className="flex justify-center">{teacher.teacherId}</h1>
+                                <div className="flex justify-center">
+                                    <img onClick={() =>  handleDeleteTeacher(teacher.teacherId,teacher.employeeId)} src={removeIcon} alt="removeIcon" className="w-4 h-4 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out sm:w-5 sm:h-5"/>
                                 </div>
                             </div>
                         )) : query.trim() !== "" && result.length > 0 ?
                         result.map((teacher,index) => (
-                            <div key={index} className="grid grid-cols-5 gap-1 my-2">
-                                <h1 className="flex justify-center border">{teacher.userId.name}</h1>
-                                <h1 className="flex justify-center border">{teacher.courseId.courseName}</h1>
-                                <h1 className="flex justify-center border">{teacher.teacherId}</h1>
-                                <h1 className="flex justify-center border">{teacher.employeeId}</h1>
-                                <div className="flex justify-center border">
-                                    <img onClick={() =>  handleDeleteTeacher(teacher.teacherId,teacher.employeeId)} src={removeIcon} alt="removeIcon" className="w-5 h-5 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out"/>
+                            <div key={index} className="grid grid-cols-4 gap-1 my-2 text-xs sm:text-base">
+                                <h1 className="flex justify-center">{teacher.userId.name}</h1>
+                                <h1 className="flex justify-center">{teacher.courseId.courseName}</h1>
+                                <h1 className="flex justify-center">{teacher.teacherId}</h1>
+                                <div className="flex justify-center">
+                                    <img onClick={() =>  handleDeleteTeacher(teacher.teacherId,teacher.employeeId)} src={removeIcon} alt="removeIcon" className="w-4 h-4 cursor-pointer hover:opacity-60 transition-all duration-400 ease-in-out sm:w-5 sm:h-5"/>
                                 </div>
                             </div>
                         )) : <div className="text-center">No teacher found</div>
                     }
                 </div>
+            </div>
         </div>
-        </>
     )
 }
 
