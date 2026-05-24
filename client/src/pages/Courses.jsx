@@ -19,7 +19,7 @@ const Courses = () => {
             <div className="grid gap-5 grid-cols-2 mx-10 my-10 sm:mx-20 md:mx-30 lg:mx-40 sm:grid-cols-3 md:grid-cols-4">
                 { courses.length > 0 &&
                     courses.map((course) => (
-                        <div onClick={() => navigate(`/admin-dashboard/courses/${course._id}`)} key={course._id} className="flex justify-center items-center p-10 border text-white bg-blue-500 rounded hover:bg-blue-400 transition-all duration-400 ease-in-out cursor-pointer">
+                        <div onClick={() => navigate(`/admin-dashboard/courses/${course._id}`)} key={course._id} className="flex justify-center items-center p-10 text-white bg-blue-500 rounded hover:shadow-md hover:shadow-blue-500 hover:scale-105 active:scale-105 active:shadow-md active:shadow-blue-500 transition-all duration-700 ease-in-out cursor-pointer">
                             <h1 className="sm:text-2xl">{course.courseName}</h1>
                         </div>
                     ))
