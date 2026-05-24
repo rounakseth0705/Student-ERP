@@ -34,45 +34,45 @@ const UserProfileFooter = () => {
         setIsForgotPassword(prev => !prev);
     }
     return(
-        <div className="mt-5 text-blue-950 text-center">
-            <span className="my-3 font-semibold">
-                <h1>Email :- {user.email}</h1>
-                <h1>Mobile No. :- {user.mobileNo}</h1>
+        <div className="mt-5 text-gray-600 text-center">
+            <span className="flex flex-col items-center gap-3 my-3 font-semibold">
+                <h1 className="bg-white w-80 rounded-2xl px-4 py-5 shadow-lg text-xs sm:w-110 sm:text-base">Email :- {user.email}</h1>
+                <h1 className="bg-white w-80 rounded-2xl px-4 py-5 shadow-lg text-xs sm:w-110 sm:text-base">Mobile No. :- {user.mobileNo}</h1>
             </span>
             { userIdentity &&
-                <span className="font-semibold">
-                    <h1 className="mt-3">{user.role === "student" ? `Student ID :- ${userIdentity.studentId}` : `Teacher ID :- ${userIdentity.teacherId}`}</h1>
-                    <h1>{user.role === "student" ? `Roll No. :- ${userIdentity.rollNo}` : `Employee ID :- ${userIdentity.employeeId}`}</h1>
+                <span className="flex flex-col items-center gap-3 font-semibold mt-3">
+                    <h1 className="bg-white w-80 rounded-2xl px-4 py-5 shadow-lg text-xs sm:w-110 sm:text-base">{user.role === "student" ? `Student ID :- ${userIdentity.studentId}` : `Teacher ID :- ${userIdentity.teacherId}`}</h1>
+                    <h1 className="bg-white w-80 rounded-2xl px-4 py-5 shadow-lg text-xs sm:w-110 sm:text-base">{user.role === "student" ? `Roll No. :- ${userIdentity.rollNo}` : `Employee ID :- ${userIdentity.employeeId}`}</h1>
                 </span>
             }
-            <button onClick={() => setIsUpdating(prev => !prev)} className="bg-red-500 text-white mt-10 rounded px-3 py-1 cursor-pointer hover:bg-red-400 transition-all duration-300 ease-in-out">Update Password</button>
+            <button onClick={() => setIsUpdating(prev => !prev)} className="bg-red-500 text-white mt-10 mb-5 text-xs rounded px-3 py-1 cursor-pointer hover:bg-red-400 transition-all duration-300 ease-in-out sm:text-base">Update Password</button>
             { isUpdating &&
-                <div className="flex flex-col items-center mt-8">
+                <div className="flex flex-col items-center py-8">
                     { isForgotPassword &&
-                        <input onChange={(event) => setIdentifier(event.target.value)} value={identifier} type="text" placeholder="enter email or mobile" className="bg-gray-200 my-1 px-2 py-1 outline-0 rounded"/>
+                        <input onChange={(event) => setIdentifier(event.target.value)} value={identifier} type="text" placeholder="enter email or mobile" className="bg-white my-1 px-2 py-1 outline-0 rounded text-xs sm:text-base"/>
                     }
                     { !isForgotPassword &&
                         <div className="flex justify-center items-center gap-1">
-                            <input onChange={(event) => setOldPassword(event.target.value)} value={oldPassword} type={isEyeing ? "text" : "password"} placeholder="enter old password" className="bg-gray-200 my-1 px-2 py-1 outline-0 rounded"/>
+                            <input onChange={(event) => setOldPassword(event.target.value)} value={oldPassword} type={isEyeing ? "text" : "password"} placeholder="enter old password" className="bg-white my-1 px-2 py-1 outline-0 rounded text-xs sm:text-base"/>
                             <span onClick={() => setIsEyeing(prev => !prev)}>
                                 <img src={eyeIcon} alt="eyeIcon" className="w-4 h-4 cursor-pointer"/>
                             </span>
                         </div>
                     }
                     <div className="flex justify-center items-center gap-1">
-                        <input onChange={(event) => setNewPassword(event.target.value)} value={newPassword} type={isEyeing ? "text" : "password"} placeholder="enter new password" className="bg-gray-200 my-1 px-2 py-1 outline-0 rounded"/>
+                        <input onChange={(event) => setNewPassword(event.target.value)} value={newPassword} type={isEyeing ? "text" : "password"} placeholder="enter new password" className="bg-white my-1 px-2 py-1 outline-0 rounded text-xs sm:text-base"/>
                         <span onClick={() => setIsEyeing(prev => !prev)}>
                             <img src={eyeIcon} alt="eyeIcon" className="w-4 h-4 cursor-pointer"/>
                         </span>
                     </div>
                     <div className="flex justify-center items-center gap-1">
-                        <input onChange={(event) => setConformNewPassword(event.target.value)} value={conformNewPassword} type={isEyeing ? "text" : "password"} placeholder="conform new password" className="bg-gray-200 my-1 px-2 py-1 outline-0 rounded"/>
+                        <input onChange={(event) => setConformNewPassword(event.target.value)} value={conformNewPassword} type={isEyeing ? "text" : "password"} placeholder="conform new password" className="bg-white my-1 px-2 py-1 outline-0 rounded text-xs sm:text-base"/>
                         <span onClick={() => setIsEyeing(prev => !prev)}>
                             <img src={eyeIcon} alt="eyeIcon" className="w-4 h-4 cursor-pointer"/>
                         </span>
                     </div>
-                    <button onClick={handleUpdatePassword} className="bg-green-500 text-white mt-3 px-3 py-1 cursor-pointer rounded hover:bg-green-400 transition-all duration-300 ease-in-out">Set new password</button>
-                    <h1 onClick={handleForgotPassword} className="mt-2 underline cursor-pointer">{isForgotPassword ? "Try another way?" : "Forgot password?"}</h1>
+                    <button onClick={handleUpdatePassword} className="bg-green-500 text-white mt-3 px-3 py-1 cursor-pointer rounded hover:bg-green-400 transition-all duration-300 ease-in-out text-xs sm:text-base">Set new password</button>
+                    <h1 onClick={handleForgotPassword} className="mt-2 underline cursor-pointer text-xs sm:text-base">{isForgotPassword ? "Try another way?" : "Forgot password?"}</h1>
                 </div>
             }
         </div>
