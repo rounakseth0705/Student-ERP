@@ -67,7 +67,7 @@ const AttendenceHistory = () => {
                     )) : result.length > 0 && query.trim() !== "" ?
                     result.map((attendance,index) => (
                         <React.Fragment key={index}>
-                            <div className="flex justify-between items-center bg-blue-200 rounded shadow-lg my-5 p-3 text-sm sm:text-base">
+                            <div className="flex justify-between items-center bg-blue-200 rounded shadow-lg my-5 p-3 text-xs sm:text-base">
                                 <span className="mx-1 sm:mx-5 lg:mx-10">
                                     <img onClick={() => handleArrowOpen(attendance._id,index)} src={rightArrowBlack} alt="rightArrowBlack" className={`cursor-pointer w-5 h-5 duration-300 ${activeIndex === index && isOpen ? "rotate-90" : "rotate-0"}`}/>
                                 </span>
@@ -76,13 +76,13 @@ const AttendenceHistory = () => {
                                 <h1 className="mx-1 sm:mx-5 lg:mx-10">{new Date(attendance.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                             </div>
                             { (isOpen && activeAttendanceId === attendance._id) &&
-                                <div className="bg-blue-300 mx-20 py-2 rounded">
+                                <div className="bg-blue-300 mx-10 py-2 rounded sm:mx-20">
                                     {
                                         attendance?.studentIds.map((student,index) => (
                                             <div key={index} className="flex justify-evenly items-center py-1">
-                                                <h1>{index+1}.</h1>
-                                                <h1>{student.userId.name}</h1>
-                                                <h1>{student.rollNo}</h1>
+                                                <h1 className="text-xs sm:text-base">{index+1}.</h1>
+                                                <h1 className="text-xs sm:text-base">{student.userId.name}</h1>
+                                                <h1 className="text-xs sm:text-base">{student.rollNo}</h1>
                                             </div>
                                         ))
                                     }
