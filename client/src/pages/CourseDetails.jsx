@@ -44,7 +44,7 @@ const CourseDetails = () => {
             <div className="flex justify-between items-center py-2 px-2 sm:py-5 sm:px-4 lg:py-4 lg:px-5">
                 <img onClick={() => navigate("/admin-dashboard/courses")} src={leftArrowBlack} alt="ArrowIcon" className="w-6 h-6 cursor-pointer sm:w-8 sm:h-8 lg:w-10 lg:h-10"/>
                 <h1 className="text-blue-950 font-semibold sm:text-2xl lg:text-3xl">Course Details</h1>
-                <button onClick={() => navigate(`/${user.role}-dashboard/view-profile`)} className="bg-blue-500 text-white cursor-pointer rounded p-1">View Profile</button>
+                <button onClick={() => navigate(`/${user.role}-dashboard/view-profile`)} className="bg-blue-500 text-white cursor-pointer rounded p-1 text-xs sm:text-base">View Profile</button>
             </div>
             <div className="flex flex-col justify-center items-center gap-5">
                 <CourseDetailsCard courseName={course.courseName} courseCode={course.courseCode} duration={course.duration} semesters={course.semesters}/>
