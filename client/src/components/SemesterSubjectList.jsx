@@ -22,9 +22,9 @@ const SemesterSubjectList = ({ filteredSubjects, courseId, courseCode, semester 
     return(
         <>
             <div className="flex justify-center items-center gap-12 sm:gap-50 md:gap-80 lg:gap-150 xl:gap-200">
-                { filteredSubjects.length > 0 && <h1 className="text-blue-950 text-2xl font-semibold p-2 ml-2 sm:mx-5">Subjects List</h1> }
+                { filteredSubjects.length > 0 && <h1 className="text-blue-950 font-semibold p-2 ml-2 sm:text-2xl sm:mx-5">Subjects List</h1> }
                 { !userIdentity &&
-                    <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${courseCode}/${semester}/create-subject`)} className="flex justify-center items-center gap-1 bg-blue-600 text-white text-sm rounded cursor-pointer p-2 mr-2 hover:bg-blue-500 transition-all duration-400 ease-in-out sm:text-base sm:mx-5">Add Subject</button>
+                    <button onClick={() => navigate(`/admin-dashboard/courses/${courseId}/${courseCode}/${semester}/create-subject`)} className="flex justify-center items-center gap-1 bg-blue-600 text-white text-sm rounded cursor-pointer py-1 px-2 mr-2 hover:bg-blue-500 transition-all duration-400 ease-in-out sm:text-base sm:p-2 sm:mx-5">Add Subject</button>
                 }
             </div>
             { filteredSubjects.length > 0 &&
@@ -40,10 +40,10 @@ const SemesterSubjectList = ({ filteredSubjects, courseId, courseCode, semester 
                             <React.Fragment key={index}>
                                 <hr/>
                                 <div className={`grid ${userIdentity ? "grid-cols-3" : "grid-cols-4"} p-2`}>
-                                    <h1 className="flex justify-center flex-wrap sm:mx-2 md:mx-2 lg:mx-7">{subject.subjectName}</h1>
-                                    <h1 className="flex justify-center sm:mx-2 md:mx-2 lg:mx-7">{subject.subjectCode}</h1>
+                                    <h1 className="flex justify-center flex-wrap text-xs sm:text-base sm:mx-2 md:mx-2 lg:mx-7">{subject.subjectName}</h1>
+                                    <h1 className="flex justify-center text-xs sm:text-base sm:mx-2 md:mx-2 lg:mx-7">{subject.subjectCode}</h1>
                                     <div className="flex justify-center gap-1 sm:gap-2">
-                                        { isEditing && subject.subjectCode===temperarySubjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" className="border rounded px-1 w-20 sm:w-25 md:w-30"/> : <h1 className="sm:mx-2 md:mx-2 lg:mx-7">{ userIdentity ? subject.teacherId.userId.name : subject.teacherId.teacherId }</h1> }
+                                        { isEditing && subject.subjectCode===temperarySubjectCode ? <input onChange={(event) => setNewTeacherId(event.target.value)} value={newTeacherId} type="text" className="border rounded px-1 w-20 text-xs sm:text-base sm:w-25 md:w-30"/> : <h1 className="text-xs sm:text-base sm:mx-2 md:mx-2 lg:mx-7">{ userIdentity ? subject.teacherId.userId.name : subject.teacherId.teacherId }</h1> }
                                         { (isEditing && subject.subjectCode===temperarySubjectCode) && <img onClick={() => handleEditTeacherId(subject.subjectCode,subject.teacherId.teacherId)} src={checkIcon} alt="checkIcon" className="w-5 h-5 cursor-pointer" /> }
                                     </div>
                                     { !userIdentity &&
