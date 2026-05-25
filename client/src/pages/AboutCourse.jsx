@@ -8,7 +8,7 @@ import CalendarHeader from "../components/CalendarHeader.jsx";
 import Timetable from "../components/Timetable.jsx";
 
 const AboutCourse = () => {
-    const { getCourse, course, getSubjects, userIdentity, subjects, setSelectedDay, selectedDate, setSelectedDate, currentDate, day, getDate, getSelectedDay } = useContext(UserContext);
+    const { user, getCourse, course, getSubjects, userIdentity, subjects, setSelectedDay, selectedDate, setSelectedDate, currentDate, day, getDate, getSelectedDay } = useContext(UserContext);
     const navigate = useNavigate();
     const handleGetCourse = async () => {
         await getCourse(userIdentity.courseId._id);
@@ -25,9 +25,12 @@ const AboutCourse = () => {
         handleGetSubjects();
     },[]);
     return(
-        <div>
-            <img onClick={() => navigate("/teacher-dashboard")} src={homeIcon} alt="homeIcon" className="absolute left-10 top-5 w-8 h-8 cursor-pointer"/>
-            <h1 className="text-center mt-5 text-3xl font-semibold text-blue-950">About {userIdentity.courseId.courseName}</h1>
+        <div className="bg-gray-50">
+            <div className="flex justify-between items-center py-2 px-2 sm:py-5 sm:px-4 lg:py-4 lg:px-5">
+                <img onClick={() => navigate("/teacher-dashboard")} src={homeIcon} alt="homeIcon" className="w-6 h-6 cursor-pointer sm:w-8 sm:h-8 lg:w-10 lg:h-10"/>
+                <h1 className="font-semibold text-blue-950 sm:text-2xl lg:text-3xl">About {userIdentity.courseId.courseName}</h1>
+                <button onClick={() => navigate(`/${user.role}-dashboard/view-profile`)} className="bg-blue-400 text-white rounded p-1 cursor-pointer text-xs sm:text-base">View Profile</button>
+            </div>
             <div className="mt-5 flex justify-center items-center">
                 <CourseDetailsCard courseName={course.courseName} courseCode={course.courseCode} duration={course.duration} semesters={course.semesters}/>
             </div>
