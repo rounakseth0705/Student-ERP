@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import leftLongArrow from "../assets/leftLongArrow.svg";
+import leftArrowBlack from "../assets/leftArrowBlack.svg";
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/AuthContext.jsx";
 import { TeacherDashboardContext } from "../context/TeacherDashboardContext.jsx";
@@ -9,6 +9,7 @@ import downloadIcon from "../assets/downloadIcon.svg";
 import removeIcon from "../assets/removeIcon.svg";
 import checkIcon from "../assets/checkIcon.svg";
 import TeacherCreateButton from "../components/TeacherCreateButton.jsx";
+import CurrentTime from "../components/CurrentTime.jsx";
 
 const SubjectNotes = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
@@ -41,34 +42,37 @@ const SubjectNotes = () => {
     },[]);
     return(
         <>
-            <img onClick={() => navigate("/teacher-dashboard/notes")} src={leftLongArrow} alt="leftArrow" className="absolute left-10 top-4 w-10 h-10 cursor-pointer"/>
-            <h1 className="text-center mt-5 text-3xl font-semibold text-blue-950">{subjectName} ({subjectCode})</h1>
-            <div className="mt-10 mx-40">
+            <div className="flex justify-between items-center p-4 sm:p-5 lg:py-4 lg:px-6">
+                <img onClick={() => navigate("/teacher-dashboard/notes")} src={leftArrowBlack} alt="leftArrow" className="w-6 h-6 cursor-pointer sm:w-8 sm:h-8 lg:w-10 lg:h-10"/>
+                <h1 className="font-semibold text-blue-950 sm:text-2xl lg:text-3xl">{subjectName} ({subjectCode})</h1>
+                <CurrentTime/>
+            </div>
+            <div className="my-10 mx-[6vw] sm:mx-10 md:mx-15 lg:mx-20 xl:mx-45">
                 {
                     notes.map((note,index) => (
                         <React.Fragment key={index}>
                             <div className="flex justify-between items-center my-5 py-3 bg-blue-200 rounded shadow-lg">
-                                <span className="flex justify-center items-center gap-3 px-20">
+                                <span className="flex justify-center items-center gap-2 mx-[5vw] sm:gap-3 sm:mx-10 lg:mx-20">
                                     { isEditing && activeIndex === index ?
                                         <input onChange={(event) => setNotesUpdatedName(event.target.value)} value={notesUpdatedName} type="text" className="w-27 rounded shadow-lg outline-0 bg-gray-200 px-1"/> :
-                                        <h1>{note.notesName}</h1>
+                                        <h1 className="text-xs sm:text-base">{note.notesName}</h1>
                                     }
                                     { isEditing && activeIndex === index ?
-                                        <img onClick={() => handleInputBoxClosing(note._id)} src={checkIcon} alt="checkIcon" className="w-4 h-4 cursor-pointer"/> :
-                                        <img onClick={() => handleInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-4 h-4 cursor-pointer"/>
+                                        <img onClick={() => handleInputBoxClosing(note._id)} src={checkIcon} alt="checkIcon" className="w-3 h-3 cursor-pointer sm:w-4 sm:h-4"/> :
+                                        <img onClick={() => handleInputBoxOpening(index)} src={editIcon} alt="editIcon" className="w-3 h-3 cursor-pointer sm:w-4 sm:h-4"/>
                                     }
                                 </span>
-                                <h1 className="px-20">{new Date(note.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
-                                <span className="px-20 cursor-pointer">
+                                <h1 className="mx-[5vw] text-xs sm:text-base sm:mx-10 lg:mx-20">{new Date(note.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
+                                {/* <span className="px-20 cursor-pointer">
                                     <img src={fileOpenIcon} alt="fileOpenIcon" className="w-5 h-5"/>
-                                </span>
-                                <span className="px-20 cursor-pointer">
+                                </span> */}
+                                <span className="mx-[5vw] cursor-pointer sm:mx-10 lg:mx-20">
                                     <a href={note.notesDownloadUrl} download>
-                                        <img src={downloadIcon} alt="downloadIcon" className="w-5 h-5"/>
+                                        <img src={downloadIcon} alt="downloadIcon" className="w-4 h-4 sm:w-5 sm:h-5"/>
                                     </a>
                                 </span>
-                                <span className="px-20 cursor-pointer">
-                                    <img onClick={() => handleDeleteNotes(note._id)} src={removeIcon} alt="removeIcon" className="w-5 h-5 hover:opacity-60"/>
+                                <span className="mx-[5vw] cursor-pointer sm:mx-10 lg:mx-20">
+                                    <img onClick={() => handleDeleteNotes(note._id)} src={removeIcon} alt="removeIcon" className="w-4 h-4 hover:opacity-60 sm:w-5 sm:h-5"/>
                                 </span>
                             </div>
                         </React.Fragment>
