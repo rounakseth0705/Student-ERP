@@ -45,7 +45,7 @@ const Timetable = ({ filteredSubjects, courseId, semester }) => {
                                                 Assign Subject
                                                 <img src={plusIcon} alt="plusIcon" className="w-4 h-4 sm:w-5 sm:h-5"/>
                                                 </button> :
-                                                <h1 className="mx-6 sm:mx-10 md:mx-15 lg:mx-20 xl:mx-30">Not yet scheduled</h1> :
+                                                <h1 className="mx-6 text-xs sm:text-base sm:mx-10 md:mx-15 lg:mx-20 xl:mx-30">Not yet scheduled</h1> :
                                         <div className="mx-6 text-xs sm:text-base sm:mx-10 md:mx-15 lg:mx-20 xl:mx-30">No Subject</div>
                                     }
                                 </> : <h1 className="text-xs mx-auto font-semibold sm:text-base">No timetable available</h1>

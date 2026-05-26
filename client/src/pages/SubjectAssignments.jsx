@@ -68,9 +68,9 @@ const SubjectAssignments = () => {
             <div className="flex justify-between items-center p-4 sm:p-5 lg:py-4 lg:px-6">
                 <img onClick={() => navigate("/teacher-dashboard/assignments")} src={leftArrowBlack} alt="leftArrow" className="w-6 h-6 cursor-pointer sm:w-8 sm:h-8 lg:w-10 lg:h-10"/>
                 <h1 className="font-semibold text-blue-950 sm:text-2xl lg:text-3xl">{subjectName} ({subjectCode})</h1>
-                <CurrentTime />
+                <button className="bg-blue-400 text-white rounded p-1 cursor-pointer text-xs sm:text-base">Check Schedule</button>
             </div>
-            <div className="mt-10 mx-3 sm:mx-7 md:mx-10 lg:mx-15 xl:mx-30">
+            <div className="my-10 mx-3 sm:mx-7 md:mx-10 lg:mx-15 xl:mx-30">
                 {
                     assignments.map((assignment,index) => (
                         <React.Fragment key={index}>
@@ -80,7 +80,7 @@ const SubjectAssignments = () => {
                                 </span>
                                 <span className="flex justify-center items-center gap-1 mx-2 sm:mx-3 md:mx-4 lg:mx-7 lg:gap-3">
                                     { isNameEditing && activeIndex === index ?
-                                        <input onChange={(event) => setAssignmentUpdatedName(event.target.value)} value={assignmentUpdatedName} type="text" className="w-20 rounded bg-gray-200 outline-0 lg:w-25 xl:w-27"/>
+                                        <input onChange={(event) => setAssignmentUpdatedName(event.target.value)} value={assignmentUpdatedName} type="text" className="w-20 rounded bg-gray-200 text-xs outline-0 sm:text-base lg:w-25 xl:w-27"/>
                                         : <h1 className="text-xs sm:text-base">{assignment.assignmentName}</h1>
                                     }
                                     { isNameEditing && activeIndex === index ?
@@ -91,7 +91,7 @@ const SubjectAssignments = () => {
                                 <h1 className="text-xs mx-2 sm:mx-3 sm:text-base md:mx-4 lg:mx-7">{new Date(assignment.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                                 <span className="flex justify-center items-center gap-1 mx-2 sm:mx-3 md:mx-4 lg:mx-7 lg:gap-3">
                                     { isSubmitDateEditing && activeIndex === index ?
-                                        <input onChange={(event) => setAssignmentUpdatedSubmitDate(event.target.value)} value={assignmentUpdatedSubmitDate} type="date" className="w-35 px-2 rounded bg-gray-200 outline-0"/> :
+                                        <input onChange={(event) => setAssignmentUpdatedSubmitDate(event.target.value)} value={assignmentUpdatedSubmitDate} type="date" className="w-35 text-xs px-2 rounded bg-gray-200 outline-0 sm:text-base"/> :
                                         <h1 className="text-xs sm:text-base">{new Date(assignment.assignmentSubmitDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</h1>
                                     }
                                     { isSubmitDateEditing && activeIndex === index ?
@@ -137,9 +137,9 @@ const SubjectAssignments = () => {
                 }
                 { isUploading &&
                     <div className="flex justify-between items-center bg-blue-300 py-3 rounded shadow-lg">
-                        <input onChange={(event) => setAssignmentName(event.target.value)} value={assignmentName} type="text" placeholder="enter assignment name" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
-                        <input onChange={(event) => setAssignmentSubmitDate(event.target.value)} value={assignmentSubmitDate} type="date" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
-                        <input onChange={(event) => setAssignmentFile(event.target.files[0])} type="file" className="mx-5 rounded py-1 px-3 outline-0 bg-gray-200"/>
+                        <input onChange={(event) => setAssignmentName(event.target.value)} value={assignmentName} type="text" placeholder="enter name" className="ml-[2vw] rounded py-1 px-[1vw] outline-0 bg-gray-200 w-[22vw] text-xs sm:text-base sm:w-[22vw] sm:ml-[3vw] sm:px-3 lg:w-[15vw]"/>
+                        <input onChange={(event) => setAssignmentSubmitDate(event.target.value)} value={assignmentSubmitDate} type="date" className="rounded py-1 px-[1vw] outline-0 bg-gray-200 text-xs w-[25vw] sm:px-3 sm:text-base sm:w-[20vw] md:w-[17vw] lg:w-[13.5vw] xl:w-[11vw]"/>
+                        <input onChange={(event) => setAssignmentFile(event.target.files[0])} type="file" className="mr-[2vw] rounded py-1 px-[1vw] outline-0 bg-gray-200 text-xs w-[23vw] sm:px-3 sm:mr-[3vw] sm:text-base sm:w-[30vw] md:w-[25vw] lg:w-[16vw] xl:w-[15vw]"/>
                     </div>
                 }
                 <TeacherCreateButton create="Assignment" isUploading={isUploading} setIsUploading={setIsUploading} name={assignmentName} setName={setAssignmentName} subjectId={subjectId} submitDate={assignmentSubmitDate} setSubmitDate={setAssignmentSubmitDate} file={assignmentFile}/>
