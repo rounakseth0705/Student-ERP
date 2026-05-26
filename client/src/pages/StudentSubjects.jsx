@@ -1,5 +1,5 @@
 import StudentFeaturesHeader from "../components/StudentFeaturesHeader";
-import StudentSubjectList from "../components/StudentSubjectList";
+import StudentSubjectList from "../components/StudentSubjectList.jsx";
 
 const StudentSubjects = () => {
     return(
