@@ -337,7 +337,6 @@ const AuthProvider = ({ children }) => {
             API.get("user/verify-admin").then(res => {
                 if (res.data.success) {
                     setUser(res.data.user);
-                    setToken(res.data.token);
                     setIsLoggedIn(true);
                     navigate(location.pathname);
                 } else {
@@ -349,7 +348,6 @@ const AuthProvider = ({ children }) => {
                 if (res.data.success) {
                     setUser(res.data.user);
                     setUserIdentity(res.data.teacher);
-                    setToken(res.data.token);
                     setIsLoggedIn(true);
                     navigate(location.pathname);
                 } else {
@@ -361,7 +359,6 @@ const AuthProvider = ({ children }) => {
                 if (res.data.success) {
                     setUser(res.data.user);
                     setUserIdentity(res.data.student);
-                    setToken(res.data.token);
                     setIsLoggedIn(true);
                     navigate(location.pathname);
                 } else {
