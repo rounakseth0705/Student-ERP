@@ -10,7 +10,6 @@ import editIcon from "../assets/editIcon.svg";
 import checkIcon from "../assets/checkIcon.svg";
 import removeIcon from "../assets/removeIcon.svg";
 import TeacherCreateButton from "../components/TeacherCreateButton.jsx";
-import CurrentTime from "../components/CurrentTime.jsx";
 
 const SubjectAssignments = () => {
     const { subjectId, subjectName, subjectCode } = useParams();
@@ -68,7 +67,7 @@ const SubjectAssignments = () => {
             <div className="flex justify-between items-center p-4 sm:p-5 lg:py-4 lg:px-6">
                 <img onClick={() => navigate("/teacher-dashboard/assignments")} src={leftArrowBlack} alt="leftArrow" className="w-6 h-6 cursor-pointer sm:w-8 sm:h-8 lg:w-10 lg:h-10"/>
                 <h1 className="font-semibold text-blue-950 sm:text-2xl lg:text-3xl">{subjectName} ({subjectCode})</h1>
-                <button className="bg-blue-400 text-white rounded p-1 cursor-pointer text-xs sm:text-base">Check Schedule</button>
+                <button onClick={() => navigate(`/teacher-dashboard/about-${userIdentity.courseId.courseName.toLowerCase()}`)} className="bg-blue-400 text-white rounded p-1 cursor-pointer text-xs sm:text-base">Check Schedule</button>
             </div>
             <div className="my-10 mx-3 sm:mx-7 md:mx-10 lg:mx-15 xl:mx-30">
                 {
