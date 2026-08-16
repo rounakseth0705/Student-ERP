@@ -36,8 +36,7 @@ const AuthProvider = ({ children }) => {
                         setUser(response.data.user);
                         setToken(response.data.token);
                         setIsLoggedIn(true);
-                        navigate("/admin-dashboard");                   
-                        toast.success(response.data.message);
+                        navigate("/admin-dashboard");
                         return;
                     } else {
                         toast.error(response.data.message);
@@ -56,7 +55,6 @@ const AuthProvider = ({ children }) => {
                         setToken(response.data.token);
                         setIsLoggedIn(true);
                         navigate("/teacher-dashboard");
-                        toast.success("Logged in successfully");
                         return;
                     } else {
                         toast.error(response.data.message);
@@ -75,7 +73,6 @@ const AuthProvider = ({ children }) => {
                         setToken(response.data.token);
                         setIsLoggedIn(true);
                         navigate("/student-dashboard");
-                        toast.success("Logged in successfully");
                         return;
                     } else {
                         toast.error(response.data.message);
