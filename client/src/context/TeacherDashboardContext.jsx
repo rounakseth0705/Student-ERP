@@ -20,7 +20,6 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setStudents(response.data.students);
-                    toast.success(response.data.message);
                 } else {
                     toast.error(response.data.message);
                 }
