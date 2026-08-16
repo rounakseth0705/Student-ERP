@@ -82,6 +82,10 @@ export const teacherLogin = async (req,res) => {
         if (!isUser || !isMatch || isUser.role !== "teacher") {
             return res.json({ success: false, message: "Invalid teacher id or password" });
         }
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined");
+        }
         const token = jwt.sign({ id: isUser._id, role: isUser.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
         return res.json({ success: true, user: isUser, teacher, token, message: "Teacher successfully logged in" });
     } catch(error) {
