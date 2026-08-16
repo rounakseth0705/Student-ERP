@@ -232,9 +232,6 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setStudentsForAttendence(response.data.students);
-                    if (response.data.students.length > 0) {
-                        toast.success(response.data.message);
-                    }
                 } else {
                     toast.error(response.data.message);
                 }
@@ -268,9 +265,6 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setAttendances(response.data.attendances);
-                    if (response.data.attendances.length > 0) {
-                        toast.success(response.data.message);
-                    }
                 } else {
                     toast.error(response.data.message);
                 }
