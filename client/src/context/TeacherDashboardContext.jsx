@@ -37,7 +37,6 @@ const TeacherDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setSubjects(response.data.subjects);
-                    toast.success(response.data.message);
                 } else {
                     toast.error(response.data.message);
                 }
