@@ -18,7 +18,6 @@ const AdminDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setCourses(response.data.courses);
-                    toast.success(response.data.message);
                     return;
                 }
             } else {
@@ -155,7 +154,6 @@ const AdminDashboardProvider = ({ children }) => {
             if (response) {
                 if (response.data.success) {
                     setTeachers(response.data.teachers);
-                    toast.success(response.data.message);
                 } else {
                     toast.error(response.data.message);
                 }

@@ -1,0 +1,25 @@
+services:
+  # 1. Backend Service (Node.js API)
+  - type: web
+    name: student-erp-server
+    env: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: NODE_ENV
+        value: production
+
+  # 2. Frontend Static Site (SPA)
+  - type: web
+    name: student-erp-client
+    env: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
