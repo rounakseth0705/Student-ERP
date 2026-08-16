@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
     const [userIdentity, setUserIdentity] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [isOtpSent, setIsOtpSent] = useState(false);
     const [isAdminExists, setIsAdminExists] = useState(true);
     const [course, setCourse] = useState({});
@@ -326,48 +327,103 @@ const AuthProvider = ({ children }) => {
             return date.toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
         }
     }
+    // useEffect(() => {
+    //     checkAdmin();
+    //     const token = localStorage.getItem("token");
+    //     const role = localStorage.getItem("role");
+    //     if (!token || !role) {
+    //         return;
+    //     }
+    //     if (role === "admin") {
+    //         API.get("user/verify-admin").then(res => {
+    //             if (res.data.success) {
+    //                 setUser(res.data.user);
+    //                 setIsLoggedIn(true);
+    //                 navigate(location.pathname);
+    //             } else {
+    //                 logout();
+    //             }
+    //         }).catch(() => logout());
+    //     } else if (role === "teacher") {
+    //         API.get("teacher/verify-teacher").then(res => {
+    //             if (res.data.success) {
+    //                 setUser(res.data.user);
+    //                 setUserIdentity(res.data.teacher);
+    //                 setIsLoggedIn(true);
+    //                 navigate(location.pathname);
+    //             } else {
+    //                 logout();
+    //             }
+    //         }).catch(() => logout());
+    //     } else if (role === "student") {
+    //         API.get("student/verify-student").then(res => {
+    //             if (res.data.success) {
+    //                 setUser(res.data.user);
+    //                 setUserIdentity(res.data.student);
+    //                 setIsLoggedIn(true);
+    //                 navigate(location.pathname);
+    //             } else {
+    //                 logout();
+    //             }
+    //         }).catch(() => logout());
+    //     }
+    // },[])
     useEffect(() => {
-        checkAdmin();
-        const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role");
-        if (!token || !role) {
-            return;
-        }
-        if (role === "admin") {
-            API.get("user/verify-admin").then(res => {
-                if (res.data.success) {
-                    setUser(res.data.user);
-                    setIsLoggedIn(true);
-                    navigate(location.pathname);
-                } else {
-                    logout();
+        const verifyUser = async () => {
+            try {
+                await checkAdmin();
+    
+                const token = localStorage.getItem("token");
+                const role = localStorage.getItem("role");
+    
+                if (!token || !role) {
+                    setIsCheckingAuth(false);
+                    return;
                 }
-            }).catch(() => logout());
-        } else if (role === "teacher") {
-            API.get("teacher/verify-teacher").then(res => {
-                if (res.data.success) {
-                    setUser(res.data.user);
-                    setUserIdentity(res.data.teacher);
-                    setIsLoggedIn(true);
-                    navigate(location.pathname);
-                } else {
-                    logout();
+    
+                if (role === "admin") {
+                    const res = await API.get("user/verify-admin");
+    
+                    if (res.data.success) {
+                        setUser(res.data.user);
+                        setIsLoggedIn(true);
+                    } else {
+                        logout();
+                    }
+    
+                } else if (role === "teacher") {
+                    const res = await API.get("teacher/verify-teacher");
+    
+                    if (res.data.success) {
+                        setUser(res.data.user);
+                        setUserIdentity(res.data.teacher);
+                        setIsLoggedIn(true);
+                    } else {
+                        logout();
+                    }
+    
+                } else if (role === "student") {
+                    const res = await API.get("student/verify-student");
+    
+                    if (res.data.success) {
+                        setUser(res.data.user);
+                        setUserIdentity(res.data.student);
+                        setIsLoggedIn(true);
+                    } else {
+                        logout();
+                    }
                 }
-            }).catch(() => logout());
-        } else if (role === "student") {
-            API.get("student/verify-student").then(res => {
-                if (res.data.success) {
-                    setUser(res.data.user);
-                    setUserIdentity(res.data.student);
-                    setIsLoggedIn(true);
-                    navigate(location.pathname);
-                } else {
-                    logout();
-                }
-            }).catch(() => logout());
-        }
-    },[])
-    const value = { user, userIdentity, token, isLoggedIn, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime, sendResetPasswordOtp, isOtpSent, updatePasswordWithOtp };
+    
+            } catch (error) {
+                logout();
+            } finally {
+                setIsCheckingAuth(false);
+            }
+        };
+    
+        verifyUser();
+    }, []);
+    const value = { user, userIdentity, token, isLoggedIn, isCheckingAuth, isAdminExists, course, subjects, isEditing, newTeacherId, temperarySubjectCode, selectedDate, currentDate, updatePassword, updatePasswordWithIdentifier, setSelectedDate, setTemperarySubjectCode, setNewTeacherId, setSubjects, setIsEditing, login, logout, createAdmin, getCourse, getSubjects, selectedDay, setSelectedDay, day, getDate, getSelectedDay, getCurrentClassTime, sendResetPasswordOtp, isOtpSent, updatePasswordWithOtp };
     return(
         <UserContext.Provider value={value}>
             {children}
